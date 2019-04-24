@@ -1,0 +1,24 @@
+{
+	"name": "CsvSales",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FS_Notebook",
+			"type": "LinkedServiceReference"
+		},
+		"type": "FileShare",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": ",",
+				"rowDelimiter": "",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 0,
+				"firstRowAsHeader": true
+			},
+			"fileName": "*.csv"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

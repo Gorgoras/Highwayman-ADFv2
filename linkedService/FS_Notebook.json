@@ -1,0 +1,16 @@
+{
+	"name": "FS_Notebook",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "C:\\Laburo\\Tests",
+			"userId": "DESKTOP-DIIS9C2\\marti",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJhMzA0YTA1MC05ZThiLTQwMDEtODA4Ny1iZjM1N2Q5NmU5ZWUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-Notebook",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
