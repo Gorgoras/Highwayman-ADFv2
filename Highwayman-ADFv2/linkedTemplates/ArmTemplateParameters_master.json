@@ -1,0 +1,54 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "highwayman-adfv2"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStore1_servicePrincipalKey": {
+			"value": ""
+		},
+		"FS_Notebook_password": {
+			"value": ""
+		},
+		"CsvSales_properties_typeProperties_fileName": {
+			"value": "*.csv"
+		},
+		"LakeSales_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"LakeSales_properties_typeProperties_folderPath": {
+			"value": "Sales"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
+			"value": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_servicePrincipalId": {
+			"value": "92edc83e-82bc-46a3-ab79-2fc09b752cd0"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_tenant": {
+			"value": "ca1d08b0-9543-4bd9-8718-42becddc7786"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_subscriptionId": {
+			"value": "fc2b6f69-07e8-4361-a14c-926b7e50d69e"
+		},
+		"AzureDataLakeStore1_properties_typeProperties_resourceGroupName": {
+			"value": "Wasteland"
+		},
+		"AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://chargecard764Id.vault.azure.net/"
+		},
+		"FS_Notebook_properties_typeProperties_userId": {
+			"value": "DESKTOP-DIIS9C2\\marti"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
