@@ -1,9 +1,0 @@
-{
-	"name": "AzureKeyVault",
-	"properties": {
-		"type": "AzureKeyVault",
-		"typeProperties": {
-			"baseUrl": "https://chargecard764Id.vault.azure.net/"
-		}
-	}
-}
