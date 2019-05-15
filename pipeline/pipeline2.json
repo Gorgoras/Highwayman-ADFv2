@@ -1,0 +1,20 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			}
+		],
+		"parameters": {
+			"asd": {
+				"type": "string",
+				"defaultValue": "[asdasd"
+			}
+		}
+	}
+}
