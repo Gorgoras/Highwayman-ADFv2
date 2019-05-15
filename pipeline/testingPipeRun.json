@@ -1,0 +1,14 @@
+{
+	"name": "testingPipeRun",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"typeProperties": {
+					"waitTimeInSeconds": 60
+				}
+			}
+		]
+	}
+}
