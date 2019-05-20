@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
 		},
+		"Blob_brahminstorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
+		},
 		"CsvSales_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "*.csv"
@@ -91,6 +95,9 @@
 					},
 					"AzureDataLakeStore1_servicePrincipalKey": {
 						"value": "[parameters('AzureDataLakeStore1_servicePrincipalKey')]"
+					},
+					"Blob_brahminstorage_connectionString": {
+						"value": "[parameters('Blob_brahminstorage_connectionString')]"
 					},
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
