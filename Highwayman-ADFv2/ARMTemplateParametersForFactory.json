@@ -11,11 +11,17 @@
 		"AzureDataLakeStore1_servicePrincipalKey": {
 			"value": ""
 		},
+		"Blob_brahminstorage_connectionString": {
+			"value": ""
+		},
 		"FS_Notebook_password": {
 			"value": ""
 		},
-		"Blob_brahminstorage_connectionString": {
+		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"value": ""
+		},
+		"Caravan2_brahmin_properties_typeProperties_folderPath": {
+			"value": "caravan2"
 		},
 		"CsvSales_properties_typeProperties_fileName": {
 			"value": "*.csv"

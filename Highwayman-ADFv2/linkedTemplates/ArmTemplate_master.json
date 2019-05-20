@@ -15,13 +15,21 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'servicePrincipalKey' of 'AzureDataLakeStore1'"
 		},
+		"Blob_brahminstorage_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
+		},
 		"FS_Notebook_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
 		},
-		"Blob_brahminstorage_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
+		"Caravan2_brahmin_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"Caravan2_brahmin_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2"
 		},
 		"CsvSales_properties_typeProperties_fileName": {
 			"type": "string",
@@ -119,6 +127,12 @@
 					},
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"Caravan2_brahmin_properties_typeProperties_fileName": {
+						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]"
+					},
+					"Caravan2_brahmin_properties_typeProperties_folderPath": {
+						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
 					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"

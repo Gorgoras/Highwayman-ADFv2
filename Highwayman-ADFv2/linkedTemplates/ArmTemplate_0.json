@@ -47,6 +47,14 @@
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
 		},
+		"Caravan2_brahmin_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"Caravan2_brahmin_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2"
+		},
 		"LakeSales_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": ""
@@ -162,6 +170,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Blob_brahminstorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('Blob_brahminstorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/IR-DBs')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -191,17 +212,32 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Blob_brahminstorage')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/Caravan2_brahmin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
 				"annotations": [],
-				"type": "AzureBlobStorage",
+				"type": "AzureBlob",
 				"typeProperties": {
-					"connectionString": "[parameters('Blob_brahminstorage_connectionString')]"
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/LakeSales')]",
@@ -257,31 +293,39 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CsvBrahminReader')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/readLakeMetadata')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Blob_brahminstorage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "*.csv",
-						"container": "caravan2"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": []
+				"activities": [
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Caravan2_brahmin",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							]
+						}
+					}
+				],
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]"
 			]
 		},
 		{
@@ -311,45 +355,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/FS_Notebook')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/readLakeMetadata')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "CsvBrahminReader",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting"
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSetting"
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CsvBrahminReader')]"
 			]
 		},
 		{
