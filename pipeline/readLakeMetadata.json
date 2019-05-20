@@ -14,15 +14,12 @@
 				},
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "CsvBrahminReader",
+						"referenceName": "Caravan2_brahmin",
 						"type": "DatasetReference"
 					},
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSetting"
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSetting"
-					}
+					"fieldList": [
+						"childItems"
+					]
 				}
 			}
 		]
