@@ -1,0 +1,39 @@
+{
+	"name": "CsvBrahmin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_brahminstorage",
+			"type": "LinkedServiceReference"
+		},
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "AuditLog.csv",
+				"container": "caravan2"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "CreationDate",
+				"type": "String"
+			},
+			{
+				"name": "UserIds",
+				"type": "String"
+			},
+			{
+				"name": "Operations",
+				"type": "String"
+			},
+			{
+				"name": "AuditData",
+				"type": "String"
+			}
+		]
+	}
+}

@@ -1,5 +1,5 @@
 {
-	"name": "readLakeMetadata",
+	"name": "readCsvMetadata",
 	"properties": {
 		"activities": [
 			{
@@ -16,6 +16,12 @@
 					"dataset": {
 						"referenceName": "CsvBrahmin",
 						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"structure"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSetting"
 					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSetting"
