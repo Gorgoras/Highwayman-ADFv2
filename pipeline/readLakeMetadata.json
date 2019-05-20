@@ -1,0 +1,30 @@
+{
+	"name": "readLakeMetadata",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "CsvBrahminReader",
+						"type": "DatasetReference"
+					},
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSetting"
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSetting"
+					}
+				}
+			}
+		]
+	}
+}
