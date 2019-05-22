@@ -17,6 +17,12 @@
 		"FS_Notebook_password": {
 			"value": ""
 		},
+		"SQL_SOURCEDB_connectionString": {
+			"value": ""
+		},
+		"SQL_WASTELAND_connectionString": {
+			"value": ""
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"value": ""
 		},
