@@ -15,7 +15,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}"
+						"sqlReaderQuery": {
+							"value": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}",
+							"type": "Expression"
+						}
 					},
 					"dataset": {
 						"referenceName": "CustomerSink",
@@ -36,10 +39,13 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}"
+						"sqlReaderQuery": {
+							"value": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}",
+							"type": "Expression"
+						}
 					},
 					"dataset": {
-						"referenceName": "CustomerSink",
+						"referenceName": "CustomerSource",
 						"type": "DatasetReference"
 					}
 				}
