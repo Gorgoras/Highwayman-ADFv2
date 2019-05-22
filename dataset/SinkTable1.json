@@ -1,0 +1,17 @@
+{
+	"name": "SinkTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SQL_WASTELAND",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": {
+				"value": "@pipeline().parameters.TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}

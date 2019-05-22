@@ -1,0 +1,17 @@
+{
+	"name": "SourceTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SQL_SOURCEDB",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": {
+				"value": "@pipeline().parameters.TableName",
+				"type": "Expression"
+			}
+		}
+	}
+}
