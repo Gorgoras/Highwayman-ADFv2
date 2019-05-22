@@ -200,7 +200,7 @@
 						}
 					},
 					{
-						"name": "Copy Data1",
+						"name": "DeltaCopy",
 						"type": "Copy",
 						"dependsOn": [
 							{
