@@ -91,6 +91,14 @@
 					}
 				]
 			}
-		]
+		],
+		"parameters": {
+			"WatermarkField": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			}
+		}
 	}
 }
