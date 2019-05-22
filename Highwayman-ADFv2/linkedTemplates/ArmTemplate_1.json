@@ -13,88 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/CustomerSource')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_SOURCEDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "NameStyle",
-						"type": "bit"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "varchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[SalesLT].[Customer]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -192,6 +110,132 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/GenericWatermark')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OldWatermark",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}",
+									"type": "Expression"
+								}
+							},
+							"dataset": {
+								"referenceName": "CustomerSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "NewWatermark",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}",
+									"type": "Expression"
+								}
+							},
+							"dataset": {
+								"referenceName": "CustomerSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Copy Data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "OldWatermark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "NewWatermark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM @{pipeline().parameters.TableName} where @{pipeline().parameters.WatermarkField} > @{activity('OldWatermark').output.firstRow.old} AND @{pipeline().parameters.WatermarkField} <= @{activity('NewWatermark').output.firstRow.new}",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "CustomerSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CustomerSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"WatermarkField": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LoadOnly3')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -237,9 +281,7 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CustomerSource')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",

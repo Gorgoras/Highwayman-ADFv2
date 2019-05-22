@@ -1,0 +1,131 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name",
+			"defaultValue": "highwayman-adfv2"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/GenericWatermark')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OldWatermark",
+						"type": "Lookup",
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}",
+									"type": "Expression"
+								}
+							},
+							"dataset": {
+								"referenceName": "CustomerSink",
+								"type": "DatasetReference"
+							}
+						}
+					},
+					{
+						"name": "NewWatermark",
+						"type": "Lookup",
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}",
+									"type": "Expression"
+								}
+							},
+							"dataset": {
+								"referenceName": "CustomerSink",
+								"type": "DatasetReference"
+							}
+						}
+					},
+					{
+						"name": "Copy Data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "OldWatermark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "NewWatermark",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM @{pipeline().parameters.TableName} where @{pipeline().parameters.WatermarkField} > @{activity('OldWatermark').output.firstRow.old} AND @{pipeline().parameters.WatermarkField} <= @{activity('NewWatermark').output.firstRow.new}",
+									"type": "Expression"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "CustomerSource",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "CustomerSink",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"parameters": {
+					"WatermarkField": {
+						"type": "string"
+					},
+					"TableName": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	]
+}
