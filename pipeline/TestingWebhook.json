@@ -14,7 +14,8 @@
 				},
 				"typeProperties": {
 					"url": "https://s2events.azure-automation.net/webhooks?token=m%2buQ7K9SLpDK2%2brqv5OVjmPTYk0JxcJa2Tl5FLBmXBk%3d",
-					"method": "POST"
+					"method": "POST",
+					"body": "{p}"
 				}
 			}
 		]
