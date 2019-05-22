@@ -15,7 +15,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select MAX(@pipeline().parameters.WatermarkField) as old from @pipeline().parameters.TableName"
+						"sqlReaderQuery": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}"
 					},
 					"dataset": {
 						"referenceName": "CustomerSink",
@@ -36,7 +36,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select MAX(@pipeline().parameters.WatermarkField) as new from @pipeline().parameters.TableName"
+						"sqlReaderQuery": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}"
 					},
 					"dataset": {
 						"referenceName": "CustomerSink",
@@ -71,7 +71,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT * FROM @pipeline().parameters.TableName where @{pipeline().parameters.WatermarkField} > @{activity('OldWatermark').output.firstRow.old} AND @{pipeline().parameters.WatermarkField} <= @{activity('NewWatermark').output.firstRow.new}"
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM @{pipeline().parameters.TableName} where @{pipeline().parameters.WatermarkField} > @{activity('OldWatermark').output.firstRow.old} AND @{pipeline().parameters.WatermarkField} <= @{activity('NewWatermark').output.firstRow.new}",
+							"type": "Expression"
+						}
 					},
 					"sink": {
 						"type": "AzureSqlSink"
