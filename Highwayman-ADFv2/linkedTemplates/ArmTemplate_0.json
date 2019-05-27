@@ -263,11 +263,13 @@
 				"typeProperties": {
 					"format": {
 						"type": "TextFormat",
-						"columnDelimiter": "\t",
-						"rowDelimiter": "",
+						"columnDelimiter": ",",
+						"quoteChar": "\"",
+						"nullValue": "\\N",
+						"encodingName": null,
 						"treatEmptyAsNull": true,
-						"skipLineCount": 1266,
-						"firstRowAsHeader": true
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
 					},
 					"fileName": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
@@ -478,10 +480,38 @@
 								"referenceName": "Caravan2_brahmin",
 								"type": "DatasetReference",
 								"parameters": {}
+							},
+							"fieldList": [
+								"structure"
+							]
+						}
+					},
+					{
+						"name": "Set Variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ReadFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "CamposVCF",
+							"value": {
+								"value": "@{JSON(STRING(activity('ReadFile').output.structure[4]))['name']}",
+								"type": "Expression"
 							}
 						}
 					}
 				],
+				"variables": {
+					"CamposVCF": {
+						"type": "String"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": [
