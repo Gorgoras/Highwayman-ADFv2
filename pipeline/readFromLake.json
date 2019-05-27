@@ -16,9 +16,40 @@
 					"dataset": {
 						"referenceName": "Caravan2_brahmin",
 						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"structure"
+					]
+				}
+			},
+			{
+				"name": "Set Variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ReadFile",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"typeProperties": {
+					"variableName": "CamposVCF",
+					"value": {
+						"value": "@{JSON(STRING(activity('ReadFile').output.structure[4]))['name']}",
+						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Append Variable1",
+				"type": "AppendVariable"
 			}
-		]
+		],
+		"variables": {
+			"CamposVCF": {
+				"type": "String"
+			}
+		}
 	}
 }
