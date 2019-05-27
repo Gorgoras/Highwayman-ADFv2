@@ -40,10 +40,6 @@
 						"type": "Expression"
 					}
 				}
-			},
-			{
-				"name": "Append Variable1",
-				"type": "AppendVariable"
 			}
 		],
 		"variables": {
