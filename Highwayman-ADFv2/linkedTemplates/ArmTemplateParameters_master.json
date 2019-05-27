@@ -24,10 +24,10 @@
 			"value": ""
 		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
-			"value": ""
+			"value": "R_2019_05_07_12_37_48_user_S5-0071-174-GDM017937_CHIP2_GWS-TSVC_variants_IonCode_0501.vcf"
 		},
 		"Caravan2_brahmin_properties_typeProperties_folderPath": {
-			"value": "caravan2"
+			"value": "caravan2/VCF"
 		},
 		"CsvSales_properties_typeProperties_fileName": {
 			"value": "*.csv"
