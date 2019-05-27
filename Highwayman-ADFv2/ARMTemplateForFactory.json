@@ -571,11 +571,11 @@
 				"typeProperties": {
 					"format": {
 						"type": "TextFormat",
-						"columnDelimiter": ",",
+						"columnDelimiter": "\t",
 						"rowDelimiter": "",
 						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
+						"skipLineCount": 1266,
+						"firstRowAsHeader": true
 					},
 					"fileName": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
