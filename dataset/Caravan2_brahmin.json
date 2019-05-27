@@ -9,11 +9,11 @@
 		"typeProperties": {
 			"format": {
 				"type": "TextFormat",
-				"columnDelimiter": ",",
+				"columnDelimiter": "\t",
 				"rowDelimiter": "",
 				"treatEmptyAsNull": true,
-				"skipLineCount": 0,
-				"firstRowAsHeader": false
+				"skipLineCount": 1266,
+				"firstRowAsHeader": true
 			},
 			"fileName": "R_2019_05_07_12_37_48_user_S5-0071-174-GDM017937_CHIP2_GWS-TSVC_variants_IonCode_0501.vcf",
 			"folderPath": "caravan2/VCF"
