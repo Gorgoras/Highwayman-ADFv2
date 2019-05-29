@@ -7,6 +7,10 @@
 			"metadata": "Data Factory Name",
 			"defaultValue": "highwayman-adfv2"
 		},
+		"ADW_SETTLEMENT_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ADW_SETTLEMENT'"
+		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
@@ -105,6 +109,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"ADW_SETTLEMENT_connectionString": {
+						"value": "[parameters('ADW_SETTLEMENT_connectionString')]"
 					},
 					"AzureBlobStorage1_connectionString": {
 						"value": "[parameters('AzureBlobStorage1_connectionString')]"

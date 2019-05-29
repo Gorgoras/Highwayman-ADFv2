@@ -7,6 +7,10 @@
 			"metadata": "Data Factory Name",
 			"defaultValue": "highwayman-adfv2"
 		},
+		"ADW_SETTLEMENT_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ADW_SETTLEMENT'"
+		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
@@ -469,67 +473,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/readFromLake')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "ReadFile",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "Caravan2_brahmin",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"structure"
-							]
-						}
-					},
-					{
-						"name": "Set Variable1",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "ReadFile",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "CamposVCF",
-							"value": {
-								"value": "@{replace(JSON(STRING(activity('ReadFile').output.structure[0]))['name'], '#', '')}",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"variables": {
-					"CamposVCF": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/readLakeMetadata')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -566,6 +509,112 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/readVCFFromLake')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ReadFile",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Caravan2_brahmin",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"structure",
+								"itemName"
+							]
+						}
+					},
+					{
+						"name": "SetearParamDinamico",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "ReadFile",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "CamposVCF",
+							"value": {
+								"value": "@{replace(JSON(STRING(activity('ReadFile').output.structure[9]))['name'], '#', '')}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "CrearTablaDinamica",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "SetearParamDinamico",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[CrearTablaDinamica]",
+							"storedProcedureParameters": {
+								"NombreTabla": {
+									"value": {
+										"value": "@replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')",
+										"type": "Expression"
+									},
+									"type": "String"
+								},
+								"Numero": {
+									"value": {
+										"value": "@variables('CamposVCF')",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ADW_SETTLEMENT",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"variables": {
+					"CamposVCF": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]",
+				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
 			]
 		},
 		{
@@ -981,6 +1030,19 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADW_SETTLEMENT')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('ADW_SETTLEMENT_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",

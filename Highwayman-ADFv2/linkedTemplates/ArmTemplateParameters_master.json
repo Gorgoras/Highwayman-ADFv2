@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "highwayman-adfv2"
 		},
+		"ADW_SETTLEMENT_connectionString": {
+			"value": ""
+		},
 		"AzureBlobStorage1_connectionString": {
 			"value": ""
 		},
