@@ -36,7 +36,7 @@
 				"typeProperties": {
 					"variableName": "CamposVCF",
 					"value": {
-						"value": "@{JSON(STRING(activity('ReadFile').output.structure[4]))['name']}",
+						"value": "@{JSON(STRING(activity('ReadFile').output.structure[2]))['name']}",
 						"type": "Expression"
 					}
 				}
