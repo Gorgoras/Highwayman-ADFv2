@@ -229,7 +229,10 @@
 					"storedProcedureName": "[dbo].[Drop_Table]",
 					"storedProcedureParameters": {
 						"NombreTabla": {
-							"value": "@replace(replace(activity('readvcf_file').output.itemName,'.vcf',''),'-','_')",
+							"value": {
+								"value": "@replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')",
+								"type": "Expression"
+							},
 							"type": "String"
 						}
 					}
