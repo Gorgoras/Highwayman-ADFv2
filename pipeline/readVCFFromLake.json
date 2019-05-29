@@ -125,6 +125,58 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "unpivotTablePASS",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Copy VCF to SQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "SqlDWSource",
+						"sqlReaderStoredProcedureName": "[dbo].[UnpivotTable]",
+						"storedProcedureParameters": {
+							"NombreTabla": {
+								"type": "String",
+								"value": "[dbo].@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}"
+							},
+							"Filter": {
+								"type": "String",
+								"value": "PASS"
+							}
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowPolyBase": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Warehouse_Dinamica",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Unificado_Warehouse",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"variables": {
