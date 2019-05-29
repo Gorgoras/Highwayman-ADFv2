@@ -603,6 +603,51 @@
 							"referenceName": "ADW_SETTLEMENT",
 							"type": "LinkedServiceReference"
 						}
+					},
+					{
+						"name": "Copy VCF to SQL",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "CrearTablaDinamica",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BlobSource",
+								"recursive": true
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Caravan2_brahmin",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Warehouse_Dinamica",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"variables": {
@@ -614,7 +659,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]",
-				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
+				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]",
+				"[concat(variables('factoryId'), '/datasets/Warehouse_Dinamica')]"
 			]
 		},
 		{
@@ -1029,6 +1075,29 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Warehouse_Dinamica')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADW_SETTLEMENT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"tableName": {
+						"value": "[dbo].@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
 			]
 		},
 		{

@@ -163,9 +163,6 @@
 					},
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
-					},
-					"CsvSales_properties_typeProperties_fileName": {
-						"value": "[parameters('CsvSales_properties_typeProperties_fileName')]"
 					}
 				}
 			},
@@ -184,6 +181,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"CsvSales_properties_typeProperties_fileName": {
+						"value": "[parameters('CsvSales_properties_typeProperties_fileName')]"
 					}
 				}
 			},
