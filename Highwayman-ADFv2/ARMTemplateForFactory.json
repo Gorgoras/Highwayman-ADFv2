@@ -648,6 +648,64 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "unpivotTablePASS",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Copy VCF to SQL",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[UnpivotTable]",
+								"storedProcedureParameters": {
+									"NombreTabla": {
+										"type": "String",
+										"value": {
+											"value": "[dbo].@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
+											"type": "Expression"
+										}
+									},
+									"Filter": {
+										"type": "String",
+										"value": "PASS"
+									}
+								}
+							},
+							"sink": {
+								"type": "SqlDWSink",
+								"allowPolyBase": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Warehouse_Dinamica",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Unificado_Warehouse",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"variables": {
@@ -660,7 +718,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]",
 				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]",
-				"[concat(variables('factoryId'), '/datasets/Warehouse_Dinamica')]"
+				"[concat(variables('factoryId'), '/datasets/Warehouse_Dinamica')]",
+				"[concat(variables('factoryId'), '/datasets/Unificado_Warehouse')]"
 			]
 		},
 		{
@@ -1075,6 +1134,85 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Unificado_Warehouse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADW_SETTLEMENT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "CHROM",
+						"type": "varchar"
+					},
+					{
+						"name": "POS",
+						"type": "varchar"
+					},
+					{
+						"name": "ID",
+						"type": "varchar"
+					},
+					{
+						"name": "REF",
+						"type": "varchar"
+					},
+					{
+						"name": "ALT",
+						"type": "varchar"
+					},
+					{
+						"name": "QUAL",
+						"type": "varchar"
+					},
+					{
+						"name": "FILTER",
+						"type": "varchar"
+					},
+					{
+						"name": "INFO",
+						"type": "varchar"
+					},
+					{
+						"name": "FORMAT",
+						"type": "varchar"
+					},
+					{
+						"name": "MUESTRA",
+						"type": "varchar"
+					},
+					{
+						"name": "VALOR",
+						"type": "varchar"
+					},
+					{
+						"name": "ORIGEN",
+						"type": "varchar"
+					},
+					{
+						"name": "FECHA_COPIA",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RESULTADO",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[Unificado]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
 			]
 		},
 		{

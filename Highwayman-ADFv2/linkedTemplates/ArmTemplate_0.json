@@ -368,6 +368,85 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Unificado_Warehouse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADW_SETTLEMENT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "CHROM",
+						"type": "varchar"
+					},
+					{
+						"name": "POS",
+						"type": "varchar"
+					},
+					{
+						"name": "ID",
+						"type": "varchar"
+					},
+					{
+						"name": "REF",
+						"type": "varchar"
+					},
+					{
+						"name": "ALT",
+						"type": "varchar"
+					},
+					{
+						"name": "QUAL",
+						"type": "varchar"
+					},
+					{
+						"name": "FILTER",
+						"type": "varchar"
+					},
+					{
+						"name": "INFO",
+						"type": "varchar"
+					},
+					{
+						"name": "FORMAT",
+						"type": "varchar"
+					},
+					{
+						"name": "MUESTRA",
+						"type": "varchar"
+					},
+					{
+						"name": "VALOR",
+						"type": "varchar"
+					},
+					{
+						"name": "ORIGEN",
+						"type": "varchar"
+					},
+					{
+						"name": "FECHA_COPIA",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RESULTADO",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[Unificado]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Warehouse_Dinamica')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -531,158 +610,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/readVCFFromLake')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "ReadFile",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "Caravan2_brahmin",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"structure",
-								"itemName"
-							]
-						}
-					},
-					{
-						"name": "SetearParamDinamico",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "ReadFile",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "CamposVCF",
-							"value": {
-								"value": "@{replace(JSON(STRING(activity('ReadFile').output.structure[9]))['name'], '#', '')}",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "CrearTablaDinamica",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [
-							{
-								"activity": "SetearParamDinamico",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[CrearTablaDinamica]",
-							"storedProcedureParameters": {
-								"NombreTabla": {
-									"value": {
-										"value": "@replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')",
-										"type": "Expression"
-									},
-									"type": "String"
-								},
-								"Numero": {
-									"value": {
-										"value": "@variables('CamposVCF')",
-										"type": "Expression"
-									},
-									"type": "String"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "ADW_SETTLEMENT",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "Copy VCF to SQL",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "CrearTablaDinamica",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": true
-							},
-							"sink": {
-								"type": "SqlDWSink",
-								"allowPolyBase": false
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "Caravan2_brahmin",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Warehouse_Dinamica",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"variables": {
-					"CamposVCF": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]",
-				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]",
-				"[concat(variables('factoryId'), '/datasets/Warehouse_Dinamica')]"
 			]
 		}
 	]
