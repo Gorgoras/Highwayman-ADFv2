@@ -676,7 +676,7 @@
 									"NombreTabla": {
 										"type": "String",
 										"value": {
-											"value": "[dbo].@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
+											"value": "@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
 											"type": "Expression"
 										}
 									},
