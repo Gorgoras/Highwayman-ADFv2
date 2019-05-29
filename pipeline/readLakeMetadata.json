@@ -17,6 +17,9 @@
 						"referenceName": "CsvBrahmin",
 						"type": "DatasetReference"
 					},
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSetting"
+					},
 					"formatSettings": {
 						"type": "DelimitedTextReadSetting"
 					}
