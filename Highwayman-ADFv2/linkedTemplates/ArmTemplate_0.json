@@ -57,7 +57,7 @@
 		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
-			"defaultValue": "R_2019_05_07_12_37_48_user_S5-0071-174-GDM017937_CHIP2_GWS-TSVC_variants_IonCode_0501.vcf"
+			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
 		},
 		"Caravan2_brahmin_properties_typeProperties_folderPath": {
 			"type": "string",
@@ -263,13 +263,14 @@
 				"typeProperties": {
 					"format": {
 						"type": "TextFormat",
-						"columnDelimiter": ",",
+						"columnDelimiter": "\t",
+						"rowDelimiter": "\n",
 						"quoteChar": "\"",
 						"nullValue": "\\N",
 						"encodingName": null,
 						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
+						"skipLineCount": 1266,
+						"firstRowAsHeader": true
 					},
 					"fileName": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
@@ -501,7 +502,7 @@
 						"typeProperties": {
 							"variableName": "CamposVCF",
 							"value": {
-								"value": "@{JSON(STRING(activity('ReadFile').output.structure[4]))['name']}",
+								"value": "@{JSON(STRING(activity('ReadFile').output.structure[2]))['name']}",
 								"type": "Expression"
 							}
 						}
@@ -541,6 +542,9 @@
 								"referenceName": "CsvBrahmin",
 								"type": "DatasetReference",
 								"parameters": {}
+							},
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSetting"
 							},
 							"formatSettings": {
 								"type": "DelimitedTextReadSetting"
