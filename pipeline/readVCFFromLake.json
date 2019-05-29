@@ -1,5 +1,5 @@
 {
-	"name": "readFromLake",
+	"name": "readVCFFromLake",
 	"properties": {
 		"activities": [
 			{
@@ -36,7 +36,7 @@
 				"typeProperties": {
 					"variableName": "CamposVCF",
 					"value": {
-						"value": "@{replace(JSON(STRING(activity('ReadFile').output.structure[0]))['name'], '#', '')}",
+						"value": "@{replace(JSON(STRING(activity('ReadFile').output.structure[9]))['name'], '#', '')}",
 						"type": "Expression"
 					}
 				}
