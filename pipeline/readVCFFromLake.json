@@ -151,7 +151,10 @@
 						"storedProcedureParameters": {
 							"NombreTabla": {
 								"type": "String",
-								"value": "[dbo].@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}"
+								"value": {
+									"value": "@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
+									"type": "Expression"
+								}
 							},
 							"Filter": {
 								"type": "String",
