@@ -1,0 +1,73 @@
+{
+	"name": "ADW_Unificado",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADW_SETTLEMENT",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "CHROM",
+				"type": "varchar"
+			},
+			{
+				"name": "POS",
+				"type": "varchar"
+			},
+			{
+				"name": "ID",
+				"type": "varchar"
+			},
+			{
+				"name": "REF",
+				"type": "varchar"
+			},
+			{
+				"name": "ALT",
+				"type": "varchar"
+			},
+			{
+				"name": "QUAL",
+				"type": "varchar"
+			},
+			{
+				"name": "FILTER",
+				"type": "varchar"
+			},
+			{
+				"name": "INFO",
+				"type": "varchar"
+			},
+			{
+				"name": "FORMAT",
+				"type": "varchar"
+			},
+			{
+				"name": "MUESTRA",
+				"type": "varchar"
+			},
+			{
+				"name": "VALOR",
+				"type": "varchar"
+			},
+			{
+				"name": "ORIGEN",
+				"type": "varchar"
+			},
+			{
+				"name": "FECHA_COPIA",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "RESULTADO",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[Unificado]"
+		}
+	}
+}
