@@ -36,7 +36,11 @@
 		"parameters": {
 			"asd": {
 				"type": "array",
-				"defaultValue": "[a,b,c]"
+				"defaultValue": [
+					"a",
+					"b",
+					"c"
+				]
 			}
 		}
 	}
