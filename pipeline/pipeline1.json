@@ -3,39 +3,27 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data1",
-				"type": "Copy",
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
+				"name": "Set Variable1",
+				"type": "SetVariable",
 				"typeProperties": {
-					"source": {
-						"type": "FileSystemSource",
-						"recursive": true
-					},
-					"sink": {
-						"type": "AzureDataLakeStoreSink"
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "CsvSales",
-						"type": "DatasetReference"
+					"variableName": "Var1",
+					"value": {
+						"value": "@pipeline().parameters.FileName",
+						"type": "Expression"
 					}
-				],
-				"outputs": [
-					{
-						"referenceName": "LakeSales",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			}
-		]
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"Var1": {
+				"type": "String"
+			}
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
