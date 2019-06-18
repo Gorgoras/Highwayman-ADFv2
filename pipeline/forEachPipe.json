@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "forEachPipe",
 	"properties": {
 		"activities": [
 			{
@@ -17,7 +17,7 @@
 							"type": "ExecutePipeline",
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pipeline1",
+									"referenceName": "setVar",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
