@@ -354,41 +354,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Set Variable1",
-						"type": "SetVariable",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "Var1",
-							"value": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"parameters": {
-					"FileName": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"Var1": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"name": "[concat(parameters('factoryName'), '/forEachPipe')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -412,7 +378,7 @@
 									"userProperties": [],
 									"typeProperties": {
 										"pipeline": {
-											"referenceName": "pipeline1",
+											"referenceName": "setVar",
 											"type": "PipelineReference"
 										},
 										"waitOnCompletion": true,
@@ -441,7 +407,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/pipeline1')]"
+				"[concat(variables('factoryId'), '/pipelines/setVar')]"
 			]
 		},
 		{
@@ -875,6 +841,40 @@
 				"[concat(variables('factoryId'), '/datasets/Warehouse_Dinamica')]",
 				"[concat(variables('factoryId'), '/datasets/Unificado_Warehouse')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/setVar')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Var1",
+							"value": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"Var1": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/testingPipeRun')]",
