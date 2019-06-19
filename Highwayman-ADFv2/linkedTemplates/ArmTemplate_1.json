@@ -926,7 +926,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LoadOnly3')]",
+			"name": "[concat(parameters('factoryName'), '/LoadOnly10')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -946,7 +946,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select top 3 * from SalesLT.Customer order by CustomerID asc"
+								"sqlReaderQuery": "select top 10 * from SalesLT.Customer order by CustomerID asc"
 							},
 							"sink": {
 								"type": "AzureSqlSink"
