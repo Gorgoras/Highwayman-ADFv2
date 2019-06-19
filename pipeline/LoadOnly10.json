@@ -1,5 +1,5 @@
 {
-	"name": "LoadOnly3",
+	"name": "LoadOnly10",
 	"properties": {
 		"activities": [
 			{
@@ -15,7 +15,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select top 3 * from SalesLT.Customer order by CustomerID asc"
+						"sqlReaderQuery": "select top 10 * from SalesLT.Customer order by CustomerID asc"
 					},
 					"sink": {
 						"type": "AzureSqlSink"
