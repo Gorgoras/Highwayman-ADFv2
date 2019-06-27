@@ -19,7 +19,12 @@
 							"value": "@pipeline().parameters.name",
 							"type": "Expression"
 						}
-					}
+					},
+					"libraries": [
+						{
+							"jar": ""
+						}
+					]
 				},
 				"linkedServiceName": {
 					"referenceName": "Mi_Databricks",
