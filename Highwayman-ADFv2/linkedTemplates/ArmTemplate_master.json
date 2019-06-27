@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
 		},
+		"Databricks_Meli_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
+		},
 		"FS_Notebook_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
@@ -122,14 +126,11 @@
 					"Blob_brahminstorage_connectionString": {
 						"value": "[parameters('Blob_brahminstorage_connectionString')]"
 					},
+					"Databricks_Meli_accessToken": {
+						"value": "[parameters('Databricks_Meli_accessToken')]"
+					},
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
-					},
-					"SQL_SOURCEDB_connectionString": {
-						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
-					},
-					"SQL_WASTELAND_connectionString": {
-						"value": "[parameters('SQL_WASTELAND_connectionString')]"
 					},
 					"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri')]"
@@ -181,6 +182,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SQL_SOURCEDB_connectionString": {
+						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
+					},
+					"SQL_WASTELAND_connectionString": {
+						"value": "[parameters('SQL_WASTELAND_connectionString')]"
 					},
 					"CsvSales_properties_typeProperties_fileName": {
 						"value": "[parameters('CsvSales_properties_typeProperties_fileName')]"

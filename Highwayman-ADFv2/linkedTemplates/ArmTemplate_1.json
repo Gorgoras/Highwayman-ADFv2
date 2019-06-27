@@ -7,6 +7,14 @@
 			"metadata": "Data Factory Name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
+		"SQL_SOURCEDB_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SQL_SOURCEDB'"
+		},
+		"SQL_WASTELAND_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
+		},
 		"CsvSales_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "*.csv"
@@ -16,6 +24,40 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SQL_SOURCEDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('SQL_SOURCEDB_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IR-DBs",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQL_WASTELAND')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('SQL_WASTELAND_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IR-DBs",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/readCsvMetadata')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -44,7 +86,8 @@
 								"structure"
 							],
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting"
+								"type": "AzureBlobStorageReadSetting",
+								"recursive": true
 							},
 							"formatSettings": {
 								"type": "DelimitedTextReadSetting"
@@ -81,7 +124,8 @@
 								"parameters": {}
 							},
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting"
+								"type": "AzureBlobStorageReadSetting",
+								"recursive": true
 							},
 							"formatSettings": {
 								"type": "DelimitedTextReadSetting"
@@ -496,7 +540,9 @@
 					"tableName": "[[SalesLT].[Customer]"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CustomerSource')]",
@@ -578,7 +624,9 @@
 					"tableName": "[[SalesLT].[Customer]"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SQL_Unificado')]",
@@ -655,7 +703,9 @@
 					"tableName": "[[dbo].[Unificado]"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
@@ -676,7 +726,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SinkTable1')]",
@@ -697,7 +749,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceTable')]",
@@ -718,7 +772,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceTable1')]",
@@ -739,7 +795,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GenericSourceDB-Wasteland')]",

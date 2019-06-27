@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
 		},
+		"Databricks_Meli_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
+		},
 		"FS_Notebook_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
@@ -324,6 +328,50 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/PipeConDatabricks')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "DatabricksJob1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/DataFactoryScripts/Tarea1ConDataFactory",
+							"baseParameters": {
+								"input": {
+									"value": "@pipeline().parameters.name",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "Databricks_Meli",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"parameters": {
+					"name": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Databricks_Meli')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/TestingWebhook')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -488,7 +536,8 @@
 								"structure"
 							],
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting"
+								"type": "AzureBlobStorageReadSetting",
+								"recursive": true
 							},
 							"formatSettings": {
 								"type": "DelimitedTextReadSetting"
@@ -527,7 +576,8 @@
 								"parameters": {}
 							},
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting"
+								"type": "AzureBlobStorageReadSetting",
+								"recursive": true
 							},
 							"formatSettings": {
 								"type": "DelimitedTextReadSetting"
@@ -1619,6 +1669,24 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('Blob_brahminstorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Databricks_Meli')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://eastus2.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('Databricks_Meli_accessToken')]"
+					},
+					"existingClusterId": "0610-153831-abode187"
 				}
 			},
 			"dependsOn": []

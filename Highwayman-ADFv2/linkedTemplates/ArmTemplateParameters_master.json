@@ -17,6 +17,9 @@
 		"Blob_brahminstorage_connectionString": {
 			"value": ""
 		},
+		"Databricks_Meli_accessToken": {
+			"value": ""
+		},
 		"FS_Notebook_password": {
 			"value": ""
 		},
