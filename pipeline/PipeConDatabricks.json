@@ -1,0 +1,36 @@
+{
+	"name": "PipeConDatabricks",
+	"properties": {
+		"activities": [
+			{
+				"name": "DatabricksJob1",
+				"type": "DatabricksNotebook",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"notebookPath": "/DataFactoryScripts/Tarea1ConDataFactory",
+					"baseParameters": {
+						"input": {
+							"value": "@pipeline().parameters.name",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "Databricks_Meli",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"name": {
+				"type": "string"
+			}
+		}
+	}
+}
