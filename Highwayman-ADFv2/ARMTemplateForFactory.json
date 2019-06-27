@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
 		},
+		"Mi_Databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
+		},
 		"SQL_SOURCEDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_SOURCEDB'"
@@ -346,7 +350,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/DataFactoryScripts/Tarea1ConDataFactory",
+							"notebookPath": "/ADFScripts/ScriptJob1",
 							"baseParameters": {
 								"input": {
 									"value": "@pipeline().parameters.name",
@@ -355,7 +359,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "Databricks_Meli",
+							"referenceName": "Mi_Databricks",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -368,7 +372,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Databricks_Meli')]"
+				"[concat(variables('factoryId'), '/linkedServices/Mi_Databricks')]"
 			]
 		},
 		{
@@ -1714,6 +1718,29 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/IR-Notebook')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Mi_Databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://eastus2.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('Mi_Databricks_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "1",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "5.4.x-scala2.11"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SQL_SOURCEDB')]",

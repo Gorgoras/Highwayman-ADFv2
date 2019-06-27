@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
 		},
+		"Mi_Databricks_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
+		},
 		"SQL_SOURCEDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_SOURCEDB'"
@@ -129,8 +133,8 @@
 					"Databricks_Meli_accessToken": {
 						"value": "[parameters('Databricks_Meli_accessToken')]"
 					},
-					"FS_Notebook_password": {
-						"value": "[parameters('FS_Notebook_password')]"
+					"Mi_Databricks_accessToken": {
+						"value": "[parameters('Mi_Databricks_accessToken')]"
 					},
 					"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri')]"
@@ -161,9 +165,6 @@
 					},
 					"LakeSales_properties_typeProperties_folderPath": {
 						"value": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
-					},
-					"FS_Notebook_properties_typeProperties_userId": {
-						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -183,11 +184,17 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"FS_Notebook_password": {
+						"value": "[parameters('FS_Notebook_password')]"
+					},
 					"SQL_SOURCEDB_connectionString": {
 						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"FS_Notebook_properties_typeProperties_userId": {
+						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
 					},
 					"CsvSales_properties_typeProperties_fileName": {
 						"value": "[parameters('CsvSales_properties_typeProperties_fileName')]"

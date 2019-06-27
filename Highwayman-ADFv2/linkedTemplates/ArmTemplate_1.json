@@ -7,6 +7,10 @@
 			"metadata": "Data Factory Name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
+		"FS_Notebook_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FS_Notebook'"
+		},
 		"SQL_SOURCEDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_SOURCEDB'"
@@ -14,6 +18,10 @@
 		"SQL_WASTELAND_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
+		},
+		"FS_Notebook_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DIIS9C2\\marti"
 		},
 		"CsvSales_properties_typeProperties_fileName": {
 			"type": "string",
@@ -24,6 +32,28 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/FS_Notebook')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "C:\\Laburo\\Tests",
+					"userId": "[parameters('FS_Notebook_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FS_Notebook_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-Notebook",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SQL_SOURCEDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -458,7 +488,9 @@
 					"fileName": "[parameters('CsvSales_properties_typeProperties_fileName')]"
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FS_Notebook')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CustomerSink')]",

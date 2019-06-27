@@ -23,6 +23,9 @@
 		"FS_Notebook_password": {
 			"value": ""
 		},
+		"Mi_Databricks_accessToken": {
+			"value": ""
+		},
 		"SQL_SOURCEDB_connectionString": {
 			"value": ""
 		},

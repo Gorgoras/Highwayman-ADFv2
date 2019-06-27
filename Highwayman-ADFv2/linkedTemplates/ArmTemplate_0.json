@@ -27,9 +27,9 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
 		},
-		"FS_Notebook_password": {
+		"Mi_Databricks_accessToken": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'FS_Notebook'"
+			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -70,10 +70,6 @@
 		"LakeSales_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "Sales"
-		},
-		"FS_Notebook_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "DESKTOP-DIIS9C2\\marti"
 		}
 	},
 	"variables": {
@@ -256,6 +252,29 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Mi_Databricks')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://eastus2.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('Mi_Databricks_accessToken')]"
+					},
+					"newClusterNodeType": "Standard_DS3_v2",
+					"newClusterNumOfWorker": "1",
+					"newClusterSparkEnvVars": {
+						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+					},
+					"newClusterVersion": "5.4.x-scala2.11"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/IR-DBs')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -303,7 +322,7 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/DataFactoryScripts/Tarea1ConDataFactory",
+							"notebookPath": "/ADFScripts/ScriptJob1",
 							"baseParameters": {
 								"input": {
 									"value": "@pipeline().parameters.name",
@@ -312,7 +331,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "Databricks_Meli",
+							"referenceName": "Mi_Databricks",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -325,7 +344,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Databricks_Meli')]"
+				"[concat(variables('factoryId'), '/linkedServices/Mi_Databricks')]"
 			]
 		},
 		{
@@ -669,30 +688,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FS_Notebook')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "C:\\Laburo\\Tests",
-					"userId": "[parameters('FS_Notebook_properties_typeProperties_userId')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('FS_Notebook_password')]"
-					}
-				},
-				"connectVia": {
-					"referenceName": "IR-Notebook",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/IR-Notebook')]"
 			]
 		}
 	]
