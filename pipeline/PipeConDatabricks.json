@@ -13,7 +13,7 @@
 					"secureInput": false
 				},
 				"typeProperties": {
-					"notebookPath": "/DataFactoryScripts/Tarea1ConDataFactory",
+					"notebookPath": "/ADFScripts/ScriptJob1",
 					"baseParameters": {
 						"input": {
 							"value": "@pipeline().parameters.name",
@@ -22,7 +22,7 @@
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "Databricks_Meli",
+					"referenceName": "Mi_Databricks",
 					"type": "LinkedServiceReference"
 				}
 			}
