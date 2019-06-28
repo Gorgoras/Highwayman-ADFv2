@@ -19,6 +19,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
 		},
+		"Lakegen2clusterAvro_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"Lakegen2clusterAvro_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "clusterhdinsight/DataFactoryAvro"
+		},
 		"FS_Notebook_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "DESKTOP-DIIS9C2\\marti"
@@ -117,6 +125,27 @@
 						"type": "UTF8"
 					}
 				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Lakegen2clusterAvro')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlobFSFile",
+				"typeProperties": {
+					"format": {
+						"type": "AvroFormat"
+					},
+					"fileName": "[parameters('Lakegen2clusterAvro_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('Lakegen2clusterAvro_properties_typeProperties_folderPath')]"
+				}
 			},
 			"dependsOn": []
 		},
@@ -1158,135 +1187,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceTable')]",
 				"[concat(variables('factoryId'), '/datasets/SinkTable')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/GenericWatermark')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "OldWatermark",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}",
-									"type": "Expression"
-								}
-							},
-							"dataset": {
-								"referenceName": "CustomerSink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "NewWatermark",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}",
-									"type": "Expression"
-								}
-							},
-							"dataset": {
-								"referenceName": "CustomerSource",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "DeltaCopy",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "OldWatermark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "NewWatermark",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "SELECT * FROM @{pipeline().parameters.TableName} where @{pipeline().parameters.WatermarkField} > @{activity('OldWatermark').output.firstRow.old} AND @{pipeline().parameters.WatermarkField} <= @{activity('NewWatermark').output.firstRow.new}",
-									"type": "Expression"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink"
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "CustomerSource",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "CustomerSink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"parameters": {
-					"WatermarkField": {
-						"type": "string"
-					},
-					"TableName": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CustomerSink')]",
-				"[concat(variables('factoryId'), '/datasets/CustomerSource')]"
 			]
 		}
 	]
