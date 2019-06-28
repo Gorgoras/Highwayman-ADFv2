@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"notebookPath": "/ADFScripts/ScriptJob1",
 					"baseParameters": {
-						"input": "ADFRun"
+						"input": {
+							"value": "@pipeline().parameters.input",
+							"type": "Expression"
+						}
 					}
 				},
 				"linkedServiceName": {
@@ -26,6 +29,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"input": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
