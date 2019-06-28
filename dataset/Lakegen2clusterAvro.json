@@ -1,0 +1,18 @@
+{
+	"name": "Lakegen2clusterAvro",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LakeGen2_cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureBlobFSFile",
+		"typeProperties": {
+			"format": {
+				"type": "AvroFormat"
+			},
+			"fileName": "",
+			"folderPath": "clusterhdinsight/DataFactoryAvro"
+		}
+	}
+}
