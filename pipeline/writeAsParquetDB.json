@@ -1,5 +1,5 @@
 {
-	"name": "writeAsParquet",
+	"name": "writeAsParquetDB",
 	"properties": {
 		"activities": [
 			{
