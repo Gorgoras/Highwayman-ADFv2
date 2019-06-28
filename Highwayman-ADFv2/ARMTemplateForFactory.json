@@ -75,6 +75,14 @@
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryAvro"
 		},
+		"Lakegen2clusterORC_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "clusterhdinsight/DataFactoryORC"
+		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
@@ -1023,6 +1031,56 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/writeAsORCDF')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Leer DB y copiar",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource"
+							},
+							"sink": {
+								"type": "AzureBlobFSSink"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Source_Customer",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Lakegen2clusterORC",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Source_Customer')]",
+				"[concat(variables('factoryId'), '/datasets/Lakegen2clusterORC')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/writeAsParquetDB')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1607,6 +1665,29 @@
 					},
 					"fileName": "[parameters('Lakegen2clusterAvro_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('Lakegen2clusterAvro_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Lakegen2clusterORC')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlobFSFile",
+				"typeProperties": {
+					"format": {
+						"type": "OrcFormat"
+					},
+					"fileName": "[parameters('Lakegen2clusterORC_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
 				}
 			},
 			"dependsOn": [

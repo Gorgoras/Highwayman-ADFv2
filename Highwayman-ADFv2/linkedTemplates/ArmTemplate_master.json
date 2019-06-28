@@ -75,6 +75,14 @@
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryAvro"
 		},
+		"Lakegen2clusterORC_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "clusterhdinsight/DataFactoryORC"
+		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
@@ -220,6 +228,12 @@
 					},
 					"Lakegen2clusterAvro_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterAvro_properties_typeProperties_folderPath')]"
+					},
+					"Lakegen2clusterORC_properties_typeProperties_fileName": {
+						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_fileName')]"
+					},
+					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
+						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
 					},
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"

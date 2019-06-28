@@ -56,6 +56,12 @@
 		"Lakegen2clusterAvro_properties_typeProperties_folderPath": {
 			"value": "clusterhdinsight/DataFactoryAvro"
 		},
+		"Lakegen2clusterORC_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
+			"value": "clusterhdinsight/DataFactoryORC"
+		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"value": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
 		},
