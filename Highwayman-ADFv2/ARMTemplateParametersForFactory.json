@@ -23,6 +23,9 @@
 		"FS_Notebook_password": {
 			"value": ""
 		},
+		"LakeGen2_cluster_accountKey": {
+			"value": ""
+		},
 		"Mi_Databricks_accessToken": {
 			"value": ""
 		},
@@ -67,6 +70,9 @@
 		},
 		"FS_Notebook_properties_typeProperties_userId": {
 			"value": "DESKTOP-DIIS9C2\\marti"
+		},
+		"LakeGen2_cluster_properties_typeProperties_url": {
+			"value": "https://gen2cluster.dfs.core.windows.net"
 		}
 	}
 }

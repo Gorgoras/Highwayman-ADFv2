@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
 		},
+		"LakeGen2_cluster_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'LakeGen2_cluster'"
+		},
 		"Mi_Databricks_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
@@ -54,6 +58,10 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
+		},
+		"LakeGen2_cluster_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
 		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
@@ -252,6 +260,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LakeGen2_cluster')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('LakeGen2_cluster_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('LakeGen2_cluster_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Mi_Databricks')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -410,7 +435,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/writeAsParquet')]",
+			"name": "[concat(parameters('factoryName'), '/writeAsParquetDB')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -635,85 +660,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStore1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Unificado_Warehouse')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ADW_SETTLEMENT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "CHROM",
-						"type": "varchar"
-					},
-					{
-						"name": "POS",
-						"type": "varchar"
-					},
-					{
-						"name": "ID",
-						"type": "varchar"
-					},
-					{
-						"name": "REF",
-						"type": "varchar"
-					},
-					{
-						"name": "ALT",
-						"type": "varchar"
-					},
-					{
-						"name": "QUAL",
-						"type": "varchar"
-					},
-					{
-						"name": "FILTER",
-						"type": "varchar"
-					},
-					{
-						"name": "INFO",
-						"type": "varchar"
-					},
-					{
-						"name": "FORMAT",
-						"type": "varchar"
-					},
-					{
-						"name": "MUESTRA",
-						"type": "varchar"
-					},
-					{
-						"name": "VALOR",
-						"type": "varchar"
-					},
-					{
-						"name": "ORIGEN",
-						"type": "varchar"
-					},
-					{
-						"name": "FECHA_COPIA",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RESULTADO",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[Unificado]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
 			]
 		}
 	]
