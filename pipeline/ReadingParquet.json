@@ -1,10 +1,11 @@
 {
-	"name": "LoadOnly10",
+	"name": "ReadingParquet",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data1",
+				"name": "Copiar de lake a db",
 				"type": "Copy",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,10 +13,15 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select top 10 * from SalesLT.Customer order by CustomerID asc"
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSetting",
+							"recursive": true,
+							"wildcardFileName": "*.parquet"
+						}
 					},
 					"sink": {
 						"type": "AzureSqlSink"
@@ -24,17 +30,18 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CustomerSource",
+						"referenceName": "Unificado_Parquet",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "CustomerSink",
+						"referenceName": "Sql_unificado_wasteland",
 						"type": "DatasetReference"
 					}
 				]
 			}
-		]
+		],
+		"annotations": []
 	}
 }

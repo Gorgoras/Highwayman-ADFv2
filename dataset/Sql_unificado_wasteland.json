@@ -1,0 +1,76 @@
+{
+	"name": "Sql_unificado_wasteland",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SQL_WASTELAND",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Indice",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CustomerID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "NameStyle",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Title",
+				"type": "nvarchar"
+			},
+			{
+				"name": "FirstName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MiddleName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "LastName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Suffix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SalesPerson",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmailAddress",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Phone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PasswordHash",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PasswordSalt",
+				"type": "nvarchar"
+			},
+			{
+				"name": "rowguid",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"tableName": "[dbo].[Unificado]"
+		}
+	}
+}

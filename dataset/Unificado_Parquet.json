@@ -1,0 +1,85 @@
+{
+	"name": "Unificado_Parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LakeGen2_cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "ADFRun1",
+				"fileSystem": "clusterhdinsight"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Indice",
+				"type": "INT32"
+			},
+			{
+				"name": "CustomerID",
+				"type": "INT32"
+			},
+			{
+				"name": "NameStyle",
+				"type": "BOOLEAN"
+			},
+			{
+				"name": "Title",
+				"type": "UTF8"
+			},
+			{
+				"name": "FirstName",
+				"type": "UTF8"
+			},
+			{
+				"name": "MiddleName",
+				"type": "UTF8"
+			},
+			{
+				"name": "LastName",
+				"type": "UTF8"
+			},
+			{
+				"name": "Suffix",
+				"type": "UTF8"
+			},
+			{
+				"name": "SalesPerson",
+				"type": "UTF8"
+			},
+			{
+				"name": "EmailAddress",
+				"type": "UTF8"
+			},
+			{
+				"name": "Phone",
+				"type": "UTF8"
+			},
+			{
+				"name": "PasswordHash",
+				"type": "UTF8"
+			},
+			{
+				"name": "PasswordSalt",
+				"type": "UTF8"
+			},
+			{
+				"name": "rowguid",
+				"type": "UTF8"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "INT96"
+			},
+			{
+				"name": "CompanyName",
+				"type": "UTF8"
+			}
+		]
+	}
+}
