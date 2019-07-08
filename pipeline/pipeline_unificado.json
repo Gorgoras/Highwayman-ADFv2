@@ -5,6 +5,7 @@
 			{
 				"name": "Copy Data1",
 				"type": "Copy",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,9 +13,10 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SqlDWSource"
+						"type": "AzureSqlSource"
 					},
 					"sink": {
 						"type": "AzureSqlSink"
@@ -23,7 +25,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ADW_Unificado",
+						"referenceName": "Source_Customer",
 						"type": "DatasetReference"
 					}
 				],
@@ -34,6 +36,7 @@
 					}
 				]
 			}
-		]
+		],
+		"annotations": []
 	}
 }

@@ -5,6 +5,7 @@
 			{
 				"name": "ReadFile",
 				"type": "GetMetadata",
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -12,6 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "Caravan2_brahmin",
@@ -34,6 +36,7 @@
 						]
 					}
 				],
+				"userProperties": [],
 				"typeProperties": {
 					"variableName": "CamposVCF",
 					"value": {
@@ -60,6 +63,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[CrearTablaDinamica]",
 					"storedProcedureParameters": {
@@ -102,14 +106,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
 						"type": "BlobSource",
 						"recursive": true
 					},
 					"sink": {
-						"type": "SqlDWSink",
-						"allowPolyBase": false
+						"type": "AzureSqlSink"
 					},
 					"enableStaging": false
 				},
@@ -121,7 +125,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Warehouse_Dinamica",
+						"referenceName": "SinkTable1",
 						"type": "DatasetReference"
 					}
 				]
@@ -144,23 +148,10 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SqlDWSource",
-						"sqlReaderStoredProcedureName": "[dbo].[UnpivotTable]",
-						"storedProcedureParameters": {
-							"NombreTabla": {
-								"type": "String",
-								"value": {
-									"value": "@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
-									"type": "Expression"
-								}
-							},
-							"Filter": {
-								"type": "String",
-								"value": "PASS"
-							}
-						}
+						"type": "AzureSqlSource"
 					},
 					"sink": {
 						"type": "SqlDWSink",
@@ -170,7 +161,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Warehouse_Dinamica",
+						"referenceName": "SourceTable1",
 						"type": "DatasetReference"
 					}
 				],
@@ -199,6 +190,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[AgregarResultado]"
 				},
@@ -225,6 +217,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[Drop_Table]",
 					"storedProcedureParameters": {
@@ -260,6 +253,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"storedProcedureName": "[dbo].[LimpiarDuplicados]"
 				},
@@ -273,6 +267,7 @@
 			"CamposVCF": {
 				"type": "String"
 			}
-		}
+		},
+		"annotations": []
 	}
 }
