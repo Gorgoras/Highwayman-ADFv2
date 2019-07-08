@@ -515,7 +515,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "SqlDWSource"
+								"type": "AzureSqlSource"
 							},
 							"sink": {
 								"type": "AzureSqlSink"
@@ -524,7 +524,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "ADW_Unificado",
+								"referenceName": "Source_Customer",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -541,7 +541,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ADW_Unificado')]",
+				"[concat(variables('factoryId'), '/datasets/Source_Customer')]",
 				"[concat(variables('factoryId'), '/datasets/SQL_Unificado')]"
 			]
 		},
@@ -747,8 +747,7 @@
 								"recursive": true
 							},
 							"sink": {
-								"type": "SqlDWSink",
-								"allowPolyBase": false
+								"type": "AzureSqlSink"
 							},
 							"enableStaging": false
 						},
@@ -761,7 +760,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Warehouse_Dinamica",
+								"referenceName": "SinkTable1",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -788,21 +787,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "SqlDWSource",
-								"sqlReaderStoredProcedureName": "[[dbo].[UnpivotTable]",
-								"storedProcedureParameters": {
-									"NombreTabla": {
-										"type": "String",
-										"value": {
-											"value": "@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
-											"type": "Expression"
-										}
-									},
-									"Filter": {
-										"type": "String",
-										"value": "PASS"
-									}
-								}
+								"type": "AzureSqlSource"
 							},
 							"sink": {
 								"type": "SqlDWSink",
@@ -812,7 +797,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Warehouse_Dinamica",
+								"referenceName": "SourceTable1",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -926,7 +911,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]",
 				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]",
-				"[concat(variables('factoryId'), '/datasets/Warehouse_Dinamica')]",
+				"[concat(variables('factoryId'), '/datasets/SinkTable1')]",
+				"[concat(variables('factoryId'), '/datasets/SourceTable1')]",
 				"[concat(variables('factoryId'), '/datasets/Unificado_Warehouse')]"
 			]
 		},
@@ -1179,85 +1165,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Source_Customer')]",
 				"[concat(variables('factoryId'), '/datasets/Lakegen2ClusterParquet')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ADW_Unificado')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ADW_SETTLEMENT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "CHROM",
-						"type": "varchar"
-					},
-					{
-						"name": "POS",
-						"type": "varchar"
-					},
-					{
-						"name": "ID",
-						"type": "varchar"
-					},
-					{
-						"name": "REF",
-						"type": "varchar"
-					},
-					{
-						"name": "ALT",
-						"type": "varchar"
-					},
-					{
-						"name": "QUAL",
-						"type": "varchar"
-					},
-					{
-						"name": "FILTER",
-						"type": "varchar"
-					},
-					{
-						"name": "INFO",
-						"type": "varchar"
-					},
-					{
-						"name": "FORMAT",
-						"type": "varchar"
-					},
-					{
-						"name": "MUESTRA",
-						"type": "varchar"
-					},
-					{
-						"name": "VALOR",
-						"type": "varchar"
-					},
-					{
-						"name": "ORIGEN",
-						"type": "varchar"
-					},
-					{
-						"name": "FECHA_COPIA",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RESULTADO",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[Unificado]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
 			]
 		},
 		{
@@ -2197,29 +2104,6 @@
 				],
 				"typeProperties": {
 					"tableName": "[[dbo].[Unificado]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Warehouse_Dinamica')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ADW_SETTLEMENT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [],
-				"typeProperties": {
-					"tableName": {
-						"value": "[dbo].@{replace(replace(activity('ReadFile').output.itemName,'.vcf',''),'-','_')}",
-						"type": "Expression"
-					}
 				}
 			},
 			"dependsOn": [

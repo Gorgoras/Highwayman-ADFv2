@@ -479,85 +479,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ADW_Unificado')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ADW_SETTLEMENT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [
-					{
-						"name": "CHROM",
-						"type": "varchar"
-					},
-					{
-						"name": "POS",
-						"type": "varchar"
-					},
-					{
-						"name": "ID",
-						"type": "varchar"
-					},
-					{
-						"name": "REF",
-						"type": "varchar"
-					},
-					{
-						"name": "ALT",
-						"type": "varchar"
-					},
-					{
-						"name": "QUAL",
-						"type": "varchar"
-					},
-					{
-						"name": "FILTER",
-						"type": "varchar"
-					},
-					{
-						"name": "INFO",
-						"type": "varchar"
-					},
-					{
-						"name": "FORMAT",
-						"type": "varchar"
-					},
-					{
-						"name": "MUESTRA",
-						"type": "varchar"
-					},
-					{
-						"name": "VALOR",
-						"type": "varchar"
-					},
-					{
-						"name": "ORIGEN",
-						"type": "varchar"
-					},
-					{
-						"name": "FECHA_COPIA",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RESULTADO",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[Unificado]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ADW_SETTLEMENT')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Caravan2_brahmin')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -660,6 +581,96 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStore1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Lakegen2ClusterParquet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "DataFactory",
+						"fileSystem": "clusterhdinsight"
+					},
+					"compressionCodec": "gzip"
+				},
+				"schema": [
+					{
+						"name": "Indice",
+						"type": "INT32"
+					},
+					{
+						"name": "CustomerID",
+						"type": "INT32"
+					},
+					{
+						"name": "NameStyle",
+						"type": "BOOLEAN"
+					},
+					{
+						"name": "Title",
+						"type": "UTF8"
+					},
+					{
+						"name": "FirstName",
+						"type": "UTF8"
+					},
+					{
+						"name": "MiddleName",
+						"type": "UTF8"
+					},
+					{
+						"name": "LastName",
+						"type": "UTF8"
+					},
+					{
+						"name": "Suffix",
+						"type": "UTF8"
+					},
+					{
+						"name": "SalesPerson",
+						"type": "UTF8"
+					},
+					{
+						"name": "EmailAddress",
+						"type": "UTF8"
+					},
+					{
+						"name": "Phone",
+						"type": "UTF8"
+					},
+					{
+						"name": "PasswordHash",
+						"type": "UTF8"
+					},
+					{
+						"name": "PasswordSalt",
+						"type": "UTF8"
+					},
+					{
+						"name": "rowguid",
+						"type": "UTF8"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "INT96"
+					},
+					{
+						"name": "CompanyName",
+						"type": "UTF8"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
 			]
 		}
 	]
