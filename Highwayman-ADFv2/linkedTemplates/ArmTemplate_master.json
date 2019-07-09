@@ -55,10 +55,6 @@
 			"type": "string",
 			"defaultValue": "caravan2/VCF"
 		},
-		"CsvSales_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "*.csv"
-		},
 		"LakeSales_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": ""
@@ -237,9 +233,6 @@
 					},
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
-					},
-					"CsvSales_properties_typeProperties_fileName": {
-						"value": "[parameters('CsvSales_properties_typeProperties_fileName')]"
 					}
 				}
 			},

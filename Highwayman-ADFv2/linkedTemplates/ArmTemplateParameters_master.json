@@ -41,9 +41,6 @@
 		"Caravan2_brahmin_properties_typeProperties_folderPath": {
 			"value": "caravan2/VCF"
 		},
-		"CsvSales_properties_typeProperties_fileName": {
-			"value": "*.csv"
-		},
 		"LakeSales_properties_typeProperties_fileName": {
 			"value": ""
 		},
