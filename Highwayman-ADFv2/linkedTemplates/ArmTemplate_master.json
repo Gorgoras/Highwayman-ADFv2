@@ -47,6 +47,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
 		},
+		"TunnelSnakeLinkedServ_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'TunnelSnakeLinkedServ'"
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
@@ -159,6 +163,9 @@
 					"Mi_Databricks_accessToken": {
 						"value": "[parameters('Mi_Databricks_accessToken')]"
 					},
+					"TunnelSnakeLinkedServ_functionKey": {
+						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
+					},
 					"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri')]"
 					},
@@ -185,12 +192,6 @@
 					},
 					"Caravan2_brahmin_properties_typeProperties_folderPath": {
 						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
-					},
-					"LakeSales_properties_typeProperties_fileName": {
-						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
-					},
-					"LakeSales_properties_typeProperties_folderPath": {
-						"value": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -218,6 +219,12 @@
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"LakeSales_properties_typeProperties_fileName": {
+						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
+					},
+					"LakeSales_properties_typeProperties_folderPath": {
+						"value": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
 					},
 					"Lakegen2clusterAvro_properties_typeProperties_fileName": {
 						"value": "[parameters('Lakegen2clusterAvro_properties_typeProperties_fileName')]"

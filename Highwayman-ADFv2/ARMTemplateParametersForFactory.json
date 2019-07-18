@@ -35,6 +35,9 @@
 		"SQL_WASTELAND_connectionString": {
 			"value": ""
 		},
+		"TunnelSnakeLinkedServ_functionKey": {
+			"value": ""
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"value": "TSVC_variants_IonCode_0106.vcf"
 		},

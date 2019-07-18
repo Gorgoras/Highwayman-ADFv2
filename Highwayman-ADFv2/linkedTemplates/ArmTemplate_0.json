@@ -35,6 +35,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
+		"TunnelSnakeLinkedServ_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'TunnelSnakeLinkedServ'"
+		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
@@ -70,14 +74,6 @@
 		"Caravan2_brahmin_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "caravan2/VCF"
-		},
-		"LakeSales_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"LakeSales_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "Sales"
 		}
 	},
 	"variables": {
@@ -300,6 +296,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/TunnelSnakeLinkedServ')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://tunnelsnake.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/IR-DBs')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
 			"apiVersion": "2018-06-01",
@@ -327,6 +340,44 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureFunctionCall')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PythonFunc",
+						"type": "AzureFunctionActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"functionName": "HttpTrigger",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"name": "martin"
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "TunnelSnakeLinkedServ",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/TunnelSnakeLinkedServ')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/PipeConDatabricks')]",
@@ -552,60 +603,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CsvSales')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/LakeSales')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStore1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureDataLakeStoreFile",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": ",",
-						"rowDelimiter": "",
-						"nullValue": "\\N",
-						"treatEmptyAsNull": true,
-						"skipLineCount": 0,
-						"firstRowAsHeader": false
-					},
-					"fileName": "[parameters('LakeSales_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStore1')]"
 			]
 		}
 	]
