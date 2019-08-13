@@ -38,6 +38,12 @@
 		"TunnelSnakeLinkedServ_functionKey": {
 			"value": ""
 		},
+		"AzureBlob1_properties_typeProperties_fileName": {
+			"value": ""
+		},
+		"AzureBlob1_properties_typeProperties_folderPath": {
+			"value": "caravan2"
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"value": "TSVC_variants_IonCode_0106.vcf"
 		},
@@ -79,6 +85,9 @@
 		},
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://chargecard764Id.vault.azure.net/"
+		},
+		"FS_Notebook_properties_typeProperties_host": {
+			"value": "C:\\Laburo\\Tests"
 		},
 		"FS_Notebook_properties_typeProperties_userId": {
 			"value": "DESKTOP-DIIS9C2\\marti"

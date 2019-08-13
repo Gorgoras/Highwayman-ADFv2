@@ -51,6 +51,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'TunnelSnakeLinkedServ'"
 		},
+		"AzureBlob1_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"AzureBlob1_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2"
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
@@ -106,6 +114,10 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
+		},
+		"FS_Notebook_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Laburo\\Tests"
 		},
 		"FS_Notebook_properties_typeProperties_userId": {
 			"type": "string",
@@ -467,7 +479,7 @@
 							"source": {
 								"type": "ParquetSource",
 								"storeSettings": {
-									"type": "AzureBlobFSReadSetting",
+									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
 									"wildcardFileName": "*.parquet"
 								}
@@ -529,6 +541,57 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobToblob')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BlobSource",
+								"recursive": true
+							},
+							"sink": {
+								"type": "BlobSink",
+								"copyBehavior": "PreserveHierarchy"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureBlob1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureBlob1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureBlob1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/forEachPipe')]",
@@ -665,11 +728,11 @@
 								"structure"
 							],
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting",
+								"type": "AzureBlobStorageReadSettings",
 								"recursive": true
 							},
 							"formatSettings": {
-								"type": "DelimitedTextReadSetting"
+								"type": "DelimitedTextReadSettings"
 							}
 						}
 					}
@@ -704,13 +767,15 @@
 								"type": "DatasetReference",
 								"parameters": {}
 							},
-							"fieldList": [],
+							"fieldList": [
+								"exists"
+							],
 							"storeSettings": {
-								"type": "AzureBlobStorageReadSetting",
+								"type": "AzureBlobStorageReadSettings",
 								"recursive": true
 							},
 							"formatSettings": {
-								"type": "DelimitedTextReadSetting"
+								"type": "DelimitedTextReadSettings"
 							}
 						}
 					}
@@ -1231,7 +1296,7 @@
 							"sink": {
 								"type": "ParquetSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSetting"
+									"type": "AzureBlobFSWriteSettings"
 								}
 							},
 							"enableStaging": false
@@ -1257,6 +1322,34 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Source_Customer')]",
 				"[concat(variables('factoryId'), '/datasets/Lakegen2ClusterParquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlob1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('AzureBlob1_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
 			]
 		},
 		{
@@ -1526,6 +1619,58 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "trip",
+						"container": "hivecontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
 			]
 		},
 		{
@@ -2361,7 +2506,7 @@
 				"annotations": [],
 				"type": "FileServer",
 				"typeProperties": {
-					"host": "C:\\Laburo\\Tests",
+					"host": "[parameters('FS_Notebook_properties_typeProperties_host')]",
 					"userId": "[parameters('FS_Notebook_properties_typeProperties_userId')]",
 					"password": {
 						"type": "SecureString",

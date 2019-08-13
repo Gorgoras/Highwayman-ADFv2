@@ -51,6 +51,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'TunnelSnakeLinkedServ'"
 		},
+		"AzureBlob1_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"AzureBlob1_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2"
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
@@ -106,6 +114,10 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
+		},
+		"FS_Notebook_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Laburo\\Tests"
 		},
 		"FS_Notebook_properties_typeProperties_userId": {
 			"type": "string",
@@ -187,6 +199,12 @@
 					"LakeGen2_cluster_properties_typeProperties_url": {
 						"value": "[parameters('LakeGen2_cluster_properties_typeProperties_url')]"
 					},
+					"AzureBlob1_properties_typeProperties_fileName": {
+						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
+					},
+					"AzureBlob1_properties_typeProperties_folderPath": {
+						"value": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
+					},
 					"Caravan2_brahmin_properties_typeProperties_fileName": {
 						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]"
 					},
@@ -237,6 +255,9 @@
 					},
 					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
+					},
+					"FS_Notebook_properties_typeProperties_host": {
+						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
 					},
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"

@@ -67,6 +67,14 @@
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
 		},
+		"AzureBlob1_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"AzureBlob1_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2"
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
@@ -530,6 +538,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlob1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": ",",
+						"rowDelimiter": "",
+						"treatEmptyAsNull": true,
+						"skipLineCount": 0,
+						"firstRowAsHeader": false
+					},
+					"fileName": "[parameters('AzureBlob1_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Caravan2_brahmin')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -555,51 +591,6 @@
 					"fileName": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CsvBrahmin')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Blob_brahminstorage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "AuditLog.csv",
-						"container": "caravan2"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "CreationDate",
-						"type": "String"
-					},
-					{
-						"name": "UserIds",
-						"type": "String"
-					},
-					{
-						"name": "Operations",
-						"type": "String"
-					},
-					{
-						"name": "AuditData",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
