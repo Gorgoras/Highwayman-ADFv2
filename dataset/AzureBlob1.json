@@ -15,7 +15,9 @@
 				"treatEmptyAsNull": true,
 				"skipLineCount": 0,
 				"firstRowAsHeader": false
-			}
+			},
+			"fileName": "",
+			"folderPath": "caravan2"
 		}
 	}
 }
