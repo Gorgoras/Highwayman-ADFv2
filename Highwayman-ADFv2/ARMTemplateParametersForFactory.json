@@ -29,6 +29,9 @@
 		"Mi_Databricks_accessToken": {
 			"value": ""
 		},
+		"SQL_SERVERLESS_connectionString": {
+			"value": ""
+		},
 		"SQL_SOURCEDB_connectionString": {
 			"value": ""
 		},

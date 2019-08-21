@@ -39,6 +39,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
+		"SQL_SERVERLESS_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SQL_SERVERLESS'"
+		},
 		"SQL_SOURCEDB_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_SOURCEDB'"
@@ -231,6 +235,9 @@
 					},
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
+					},
+					"SQL_SERVERLESS_connectionString": {
+						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
 					"SQL_SOURCEDB_connectionString": {
 						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
