@@ -1,0 +1,16 @@
+{
+	"name": "SQL_SERVERLESS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=vaults.database.windows.net;initial catalog=serverlesssqltest;user id=fallout",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkhJR0hXQVlNQU4tQURGVjJfY2JhYmFlNjktOGIxMy00MGRkLTkzMTgtMjVkMzdhNDZlMmViIg0KfQ=="
+		},
+		"connectVia": {
+			"referenceName": "IR-DBs",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
