@@ -1,0 +1,26 @@
+{
+	"name": "getTriggerFileName",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set Variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileNameTrigger",
+					"value": {
+						"value": "@pipeline().TriggerType",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"FileNameTrigger": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
