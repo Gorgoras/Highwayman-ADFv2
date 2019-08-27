@@ -1,0 +1,26 @@
+{
+	"name": "textpy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_brahminstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "@item().name",
+				"container": "caravan3-python"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
+}

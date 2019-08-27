@@ -10,14 +10,16 @@
 		"typeProperties": {
 			"format": {
 				"type": "TextFormat",
-				"columnDelimiter": ",",
-				"rowDelimiter": "",
+				"columnDelimiter": "|",
+				"quoteChar": "\"",
+				"nullValue": "\\N",
+				"encodingName": null,
 				"treatEmptyAsNull": true,
 				"skipLineCount": 0,
-				"firstRowAsHeader": false
+				"firstRowAsHeader": true
 			},
 			"fileName": "",
-			"folderPath": "caravan2"
+			"folderPath": "caravan3-python"
 		}
 	}
 }

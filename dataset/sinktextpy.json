@@ -1,0 +1,29 @@
+{
+	"name": "sinktextpy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_brahminstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@concat(activity('Get Metadata1').output.childItems, '.csv')",
+					"type": "Expression"
+				},
+				"container": "caravan3-python"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
+}
