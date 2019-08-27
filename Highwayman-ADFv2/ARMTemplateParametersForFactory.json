@@ -45,7 +45,7 @@
 			"value": ""
 		},
 		"AzureBlob1_properties_typeProperties_folderPath": {
-			"value": "caravan2"
+			"value": "caravan3-python"
 		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"value": "TSVC_variants_IonCode_0106.vcf"

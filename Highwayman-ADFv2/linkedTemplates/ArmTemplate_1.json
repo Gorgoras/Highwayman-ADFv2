@@ -369,6 +369,30 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SinkBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "hivecontainer"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Unificado_Parquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -534,6 +558,70 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/sinktextpy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat(activity('Get Metadata1').output.childItems, '.csv')",
+							"type": "Expression"
+						},
+						"container": "caravan3-python"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/textpy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@item().name",
+							"type": "Expression"
+						},
+						"container": "caravan3-python"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/FS_Notebook')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -613,8 +701,8 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy Data1",
-						"type": "Copy",
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
@@ -625,35 +713,96 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"source": {
-								"type": "BlobSource",
-								"recursive": true
-							},
-							"sink": {
-								"type": "BlobSink",
-								"copyBehavior": "PreserveHierarchy"
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
+							"dataset": {
 								"referenceName": "AzureBlob1",
 								"type": "DatasetReference",
 								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							]
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
 							}
 						],
-						"outputs": [
-							{
-								"referenceName": "AzureBlob1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata1').output.childItems",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy Data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "DelimitedTextSource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*.*"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextReadSettings"
+											}
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "textpy",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "sinktextpy",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
 					}
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/textpy')]",
+				"[concat(variables('factoryId'), '/datasets/sinktextpy')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/readCsvMetadata')]",
@@ -696,217 +845,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/readLakeMetadata')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "CsvBrahmin",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"exists"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CustomerSink')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_WASTELAND",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "NameStyle",
-						"type": "bit"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "varchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[SalesLT].[Customer]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/CustomerSource')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_SOURCEDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "NameStyle",
-						"type": "bit"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "LastName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "varchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[SalesLT].[Customer]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
 			]
 		}
 	]
