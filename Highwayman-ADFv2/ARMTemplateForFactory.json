@@ -705,6 +705,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/getTriggerFileName')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileNameTrigger",
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"variables": {
+					"FileNameTrigger": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_unificado')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",

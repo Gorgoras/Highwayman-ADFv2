@@ -208,12 +208,6 @@
 					},
 					"AzureBlob1_properties_typeProperties_folderPath": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
-					},
-					"Caravan2_brahmin_properties_typeProperties_fileName": {
-						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]"
-					},
-					"Caravan2_brahmin_properties_typeProperties_folderPath": {
-						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -244,6 +238,12 @@
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"Caravan2_brahmin_properties_typeProperties_fileName": {
+						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]"
+					},
+					"Caravan2_brahmin_properties_typeProperties_folderPath": {
+						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
 					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"

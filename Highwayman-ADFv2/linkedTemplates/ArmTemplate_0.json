@@ -74,14 +74,6 @@
 		"AzureBlob1_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "caravan2"
-		},
-		"Caravan2_brahmin_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
-		},
-		"Caravan2_brahmin_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "caravan2/VCF"
 		}
 	},
 	"variables": {
@@ -114,6 +106,35 @@
 						}
 					}
 				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/getTriggerFileName')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set Variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "FileNameTrigger",
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"variables": {
+					"FileNameTrigger": {
+						"type": "String"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": []
@@ -559,37 +580,6 @@
 					},
 					"fileName": "[parameters('AzureBlob1_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Caravan2_brahmin')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Blob_brahminstorage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": "\t",
-						"rowDelimiter": "\n",
-						"quoteChar": "\"",
-						"nullValue": "\\N",
-						"encodingName": null,
-						"treatEmptyAsNull": true,
-						"skipLineCount": 1266,
-						"firstRowAsHeader": true
-					},
-					"fileName": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
 				}
 			},
 			"dependsOn": [
