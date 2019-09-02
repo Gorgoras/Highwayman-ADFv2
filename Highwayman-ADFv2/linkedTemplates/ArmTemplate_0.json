@@ -189,6 +189,11 @@
 						}
 					}
 				],
+				"parameters": {
+					"Param1": {
+						"type": "string"
+					}
+				},
 				"annotations": []
 			},
 			"dependsOn": []
