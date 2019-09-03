@@ -1639,7 +1639,7 @@
 				"typeProperties": {
 					"schema": "",
 					"table": {
-						"value": "@item()",
+						"value": "@item().table_name",
 						"type": "Expression"
 					}
 				}
@@ -2847,7 +2847,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": {
-							"value": "@item()",
+							"value": "@item().table_name",
 							"type": "Expression"
 						},
 						"folderPath": "data",
