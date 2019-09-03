@@ -131,7 +131,7 @@
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
 		},
-		"triggerTumb_properties_pipeline_parameters_FileName": {
+		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
 		},
@@ -273,8 +273,8 @@
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
 					},
-					"triggerTumb_properties_pipeline_parameters_FileName": {
-						"value": "[parameters('triggerTumb_properties_pipeline_parameters_FileName')]"
+					"triggerwin_properties_pipeline_parameters_FileName": {
+						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
 					}
 				}
 			},

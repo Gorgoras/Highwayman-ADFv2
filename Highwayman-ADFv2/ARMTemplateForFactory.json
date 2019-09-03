@@ -131,7 +131,7 @@
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
 		},
-		"triggerTumb_properties_pipeline_parameters_FileName": {
+		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
 		}
@@ -2999,7 +2999,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/triggerTumb')]",
+			"name": "[concat(parameters('factoryName'), '/triggerwin')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -3011,14 +3011,14 @@
 						"type": "PipelineReference"
 					},
 					"parameters": {
-						"FileName": "[parameters('triggerTumb_properties_pipeline_parameters_FileName')]"
+						"FileName": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
 					}
 				},
 				"type": "TumblingWindowTrigger",
 				"typeProperties": {
 					"frequency": "Minute",
 					"interval": 15,
-					"startTime": "2019-09-03T00:20:00.000Z",
+					"startTime": "2019-09-02T00:00:00.000Z",
 					"delay": "00:00:00",
 					"maxConcurrency": 50,
 					"retryPolicy": {
