@@ -5,6 +5,8 @@
 			{
 				"name": "Set Variable1",
 				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Var1",
 					"value": {
@@ -23,7 +25,8 @@
 			"Var1": {
 				"type": "String"
 			}
-		}
+		},
+		"annotations": []
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }
