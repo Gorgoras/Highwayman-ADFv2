@@ -1,0 +1,12 @@
+{
+	"name": "QueryNacho",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Houses_Nacho",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": []
+	}
+}

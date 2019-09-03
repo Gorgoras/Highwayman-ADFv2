@@ -1,0 +1,23 @@
+{
+	"name": "lake_nacho_dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Lake_Nacho",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "@item()",
+				"folderPath": "data",
+				"fileSystem": "adventure-works"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
