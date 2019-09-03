@@ -10,7 +10,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "@item()",
+				"fileName": {
+					"value": "@item().table_name",
+					"type": "Expression"
+				},
 				"folderPath": "data",
 				"fileSystem": "adventure-works"
 			},
