@@ -23,7 +23,13 @@
 		"FS_Notebook_password": {
 			"value": ""
 		},
+		"Houses_Nacho_connectionString": {
+			"value": ""
+		},
 		"LakeGen2_cluster_accountKey": {
+			"value": ""
+		},
+		"Lake_Nacho_accountKey": {
 			"value": ""
 		},
 		"Mi_Databricks_accessToken": {
@@ -97,6 +103,9 @@
 		},
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"value": "https://gen2cluster.dfs.core.windows.net"
+		},
+		"Lake_Nacho_properties_typeProperties_url": {
+			"value": "https://dataflowlake.dfs.core.windows.net/"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"value": "@trigger().outputs.windowStartTime"

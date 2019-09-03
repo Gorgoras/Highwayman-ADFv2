@@ -31,9 +31,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
 		},
+		"Houses_Nacho_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Houses_Nacho'"
+		},
 		"LakeGen2_cluster_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LakeGen2_cluster'"
+		},
+		"Lake_Nacho_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Lake_Nacho'"
 		},
 		"Mi_Databricks_accessToken": {
 			"type": "secureString",
@@ -131,6 +139,10 @@
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
 		},
+		"Lake_Nacho_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataflowlake.dfs.core.windows.net/"
+		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
@@ -206,12 +218,6 @@
 					},
 					"LakeGen2_cluster_properties_typeProperties_url": {
 						"value": "[parameters('LakeGen2_cluster_properties_typeProperties_url')]"
-					},
-					"AzureBlob1_properties_typeProperties_fileName": {
-						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
-					},
-					"AzureBlob1_properties_typeProperties_folderPath": {
-						"value": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -234,14 +240,23 @@
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
 					},
+					"Houses_Nacho_connectionString": {
+						"value": "[parameters('Houses_Nacho_connectionString')]"
+					},
+					"Lake_Nacho_accountKey": {
+						"value": "[parameters('Lake_Nacho_accountKey')]"
+					},
 					"SQL_SERVERLESS_connectionString": {
 						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
 					"SQL_SOURCEDB_connectionString": {
 						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
-					"SQL_WASTELAND_connectionString": {
-						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					"AzureBlob1_properties_typeProperties_fileName": {
+						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
+					},
+					"AzureBlob1_properties_typeProperties_folderPath": {
+						"value": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
 					},
 					"Caravan2_brahmin_properties_typeProperties_fileName": {
 						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]"
@@ -273,8 +288,8 @@
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
 					},
-					"triggerwin_properties_pipeline_parameters_FileName": {
-						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
+					"Lake_Nacho_properties_typeProperties_url": {
+						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -295,6 +310,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SQL_WASTELAND_connectionString": {
+						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"triggerwin_properties_pipeline_parameters_FileName": {
+						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
 					}
 				}
 			},

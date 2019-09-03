@@ -31,9 +31,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'FS_Notebook'"
 		},
+		"Houses_Nacho_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Houses_Nacho'"
+		},
 		"LakeGen2_cluster_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LakeGen2_cluster'"
+		},
+		"Lake_Nacho_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Lake_Nacho'"
 		},
 		"Mi_Databricks_accessToken": {
 			"type": "secureString",
@@ -130,6 +138,10 @@
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
+		},
+		"Lake_Nacho_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dataflowlake.dfs.core.windows.net/"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
@@ -518,6 +530,112 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Unificado_Parquet')]",
 				"[concat(variables('factoryId'), '/datasets/Sql_unificado_wasteland')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StealingNachoData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"sqlReaderQuery": "SELECT table_name FROM information_schema.tables"
+							},
+							"dataset": {
+								"referenceName": "QueryNacho",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.table_name",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Copy Data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlDWSource"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "AzureSqlDWTable1",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "lake_nacho_dataset",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/QueryNacho')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSqlDWTable1')]",
+				"[concat(variables('factoryId'), '/datasets/lake_nacho_dataset')]"
 			]
 		},
 		{
@@ -1507,6 +1625,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDWTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Houses_Nacho",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": {
+						"value": "@item()",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Houses_Nacho')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Caravan2_brahmin')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1990,6 +2132,24 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QueryNacho')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Houses_Nacho",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Houses_Nacho')]"
 			]
 		},
 		{
@@ -2673,6 +2833,37 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/lake_nacho_dataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Lake_Nacho",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@item()",
+							"type": "Expression"
+						},
+						"folderPath": "data",
+						"fileSystem": "adventure-works"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Lake_Nacho')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sinktextpy')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2856,6 +3047,25 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Houses_Nacho')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('Houses_Nacho_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IR-RobaNacho",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-RobaNacho')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/LakeGen2_cluster')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -2871,6 +3081,29 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Lake_Nacho')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('Lake_Nacho_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('Lake_Nacho_accountKey')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-RobaNacho",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/IR-RobaNacho')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Mi_Databricks')]",
@@ -3028,6 +3261,25 @@
 			"properties": {
 				"type": "SelfHosted",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/IR-RobaNacho')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "South Central US",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
 			},
 			"dependsOn": []
 		}
