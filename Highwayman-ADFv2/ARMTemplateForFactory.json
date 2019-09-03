@@ -130,6 +130,10 @@
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
+		},
+		"triggerTumb_properties_pipeline_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
 		}
 	},
 	"variables": {
@@ -2993,6 +2997,39 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/triggerTumb')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "setVar",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"FileName": "[parameters('triggerTumb_properties_pipeline_parameters_FileName')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2019-09-03T00:20:00.000Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/setVar')]"
+			]
 		}
 	]
 }

@@ -98,6 +98,9 @@
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"value": "https://gen2cluster.dfs.core.windows.net"
 		},
+		"triggerTumb_properties_pipeline_parameters_FileName": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
 		"containerUri": {
 			"value": ""
 		},

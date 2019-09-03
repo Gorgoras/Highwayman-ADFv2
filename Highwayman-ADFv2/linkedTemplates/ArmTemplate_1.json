@@ -62,6 +62,10 @@
 		"FS_Notebook_properties_typeProperties_userId": {
 			"type": "string",
 			"defaultValue": "DESKTOP-DIIS9C2\\marti"
+		},
+		"triggerTumb_properties_pipeline_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
 		}
 	},
 	"variables": {
@@ -695,6 +699,37 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/triggerTumb')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "setVar",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"FileName": "[parameters('triggerTumb_properties_pipeline_parameters_FileName')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2019-09-03T00:20:00.000Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/blobToblob')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -802,49 +837,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/textpy')]",
 				"[concat(variables('factoryId'), '/datasets/sinktextpy')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/readCsvMetadata')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "CsvBrahmin",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"structure"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					}
-				],
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]"
 			]
 		}
 	]
