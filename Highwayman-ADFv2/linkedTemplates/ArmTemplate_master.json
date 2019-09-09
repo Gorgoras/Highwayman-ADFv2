@@ -147,6 +147,10 @@
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
 		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -218,6 +222,9 @@
 					},
 					"LakeGen2_cluster_properties_typeProperties_url": {
 						"value": "[parameters('LakeGen2_cluster_properties_typeProperties_url')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -248,9 +255,6 @@
 					},
 					"SQL_SERVERLESS_connectionString": {
 						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
-					},
-					"SQL_SOURCEDB_connectionString": {
-						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"AzureBlob1_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
@@ -310,6 +314,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SQL_SOURCEDB_connectionString": {
+						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"

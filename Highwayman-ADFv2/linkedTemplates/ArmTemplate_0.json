@@ -66,6 +66,10 @@
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
+		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
 		}
 	},
 	"variables": {
@@ -387,6 +391,21 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/RestService1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RestService1_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureFunctionCall')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -528,50 +547,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/setVar')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/writeAsParquetDB')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Lee Escribe",
-						"type": "DatabricksNotebook",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/ADFScripts/ScriptJob1",
-							"baseParameters": {
-								"input": {
-									"value": "@pipeline().parameters.input",
-									"type": "Expression"
-								}
-							}
-						},
-						"linkedServiceName": {
-							"referenceName": "Mi_Databricks",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"parameters": {
-					"input": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Mi_Databricks')]"
 			]
 		}
 	]
