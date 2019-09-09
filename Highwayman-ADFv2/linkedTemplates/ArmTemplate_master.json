@@ -143,13 +143,13 @@
 			"type": "string",
 			"defaultValue": "https://dataflowlake.dfs.core.windows.net/"
 		},
-		"triggerwin_properties_pipeline_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.windowStartTime"
-		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
+		},
+		"triggerwin_properties_pipeline_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
 		},
 		"containerUri": {
 			"type": "string",
@@ -253,9 +253,6 @@
 					"Lake_Nacho_accountKey": {
 						"value": "[parameters('Lake_Nacho_accountKey')]"
 					},
-					"SQL_SERVERLESS_connectionString": {
-						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
-					},
 					"AzureBlob1_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
 					},
@@ -314,6 +311,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SQL_SERVERLESS_connectionString": {
+						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
 					"SQL_SOURCEDB_connectionString": {
 						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
