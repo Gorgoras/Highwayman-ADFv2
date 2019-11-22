@@ -38,7 +38,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Caravan2_brahmin",
+						"referenceName": "BlobCsv",
 						"type": "DatasetReference"
 					}
 				]

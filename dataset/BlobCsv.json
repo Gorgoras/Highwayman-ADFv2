@@ -1,0 +1,26 @@
+{
+	"name": "BlobCsv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_brahminstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureBlob",
+		"typeProperties": {
+			"format": {
+				"type": "TextFormat",
+				"columnDelimiter": "\t",
+				"rowDelimiter": "\n",
+				"quoteChar": "\"",
+				"nullValue": "\\N",
+				"encodingName": null,
+				"treatEmptyAsNull": true,
+				"skipLineCount": 1266,
+				"firstRowAsHeader": true
+			},
+			"fileName": "blobcsvfromhttp.csv",
+			"folderPath": "caravan2/VCF"
+		}
+	}
+}
