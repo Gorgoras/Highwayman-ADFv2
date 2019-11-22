@@ -116,6 +116,12 @@
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"value": "@trigger().outputs.windowStartTime"
 		},
+		"BlobCsv_properties_typeProperties_fileName": {
+			"value": "blobcsvfromhttp.csv"
+		},
+		"BlobCsv_properties_typeProperties_folderPath": {
+			"value": "caravan2/VCF"
+		},
 		"containerUri": {
 			"value": ""
 		},

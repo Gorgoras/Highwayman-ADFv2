@@ -154,6 +154,14 @@
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
+		},
+		"BlobCsv_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "blobcsvfromhttp.csv"
+		},
+		"BlobCsv_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2/VCF"
 		}
 	},
 	"variables": {
@@ -479,7 +487,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Caravan2_brahmin",
+								"referenceName": "BlobCsv",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -490,7 +498,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/CsvHttp')]",
-				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]"
+				"[concat(variables('factoryId'), '/datasets/BlobCsv')]"
 			]
 		},
 		{
@@ -3476,6 +3484,37 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BlobCsv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureBlob",
+				"typeProperties": {
+					"format": {
+						"type": "TextFormat",
+						"columnDelimiter": "\t",
+						"rowDelimiter": "\n",
+						"quoteChar": "\"",
+						"nullValue": "\\N",
+						"encodingName": null,
+						"treatEmptyAsNull": true,
+						"skipLineCount": 1266,
+						"firstRowAsHeader": true
+					},
+					"fileName": "[parameters('BlobCsv_properties_typeProperties_fileName')]",
+					"folderPath": "[parameters('BlobCsv_properties_typeProperties_folderPath')]"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
 		}
 	]
 }

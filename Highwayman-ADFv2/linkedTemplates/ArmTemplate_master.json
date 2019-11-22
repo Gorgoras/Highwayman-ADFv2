@@ -155,6 +155,14 @@
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
 		},
+		"BlobCsv_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "blobcsvfromhttp.csv"
+		},
+		"BlobCsv_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2/VCF"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -330,6 +338,12 @@
 					},
 					"triggerwin_properties_pipeline_parameters_FileName": {
 						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
+					},
+					"BlobCsv_properties_typeProperties_fileName": {
+						"value": "[parameters('BlobCsv_properties_typeProperties_fileName')]"
+					},
+					"BlobCsv_properties_typeProperties_folderPath": {
+						"value": "[parameters('BlobCsv_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
