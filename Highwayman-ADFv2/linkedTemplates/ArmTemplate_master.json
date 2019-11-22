@@ -4,7 +4,7 @@
 	"parameters": {
 		"factoryName": {
 			"type": "string",
-			"metadata": "Data Factory Name",
+			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
 		"ADW_SETTLEMENT_connectionString": {
@@ -135,6 +135,10 @@
 			"type": "string",
 			"defaultValue": "DESKTOP-DIIS9C2\\marti"
 		},
+		"HttpServer_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://api.worldtradingdata.com/api/v1/history?symbol=SNAP&output=csv&sort=newest&api_token=demo"
+		},
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://gen2cluster.dfs.core.windows.net"
@@ -157,7 +161,7 @@
 		},
 		"containerSasToken": {
 			"type": "string",
-			"metadata": "Sas Token to storage account containing linked ARM templates"
+			"metadata": "Sas token to storage account containing linked ARM templates"
 		}
 	},
 	"variables": {
@@ -220,6 +224,9 @@
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
 					},
+					"HttpServer_properties_typeProperties_url": {
+						"value": "[parameters('HttpServer_properties_typeProperties_url')]"
+					},
 					"LakeGen2_cluster_properties_typeProperties_url": {
 						"value": "[parameters('LakeGen2_cluster_properties_typeProperties_url')]"
 					},
@@ -246,12 +253,6 @@
 					},
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
-					},
-					"Houses_Nacho_connectionString": {
-						"value": "[parameters('Houses_Nacho_connectionString')]"
-					},
-					"Lake_Nacho_accountKey": {
-						"value": "[parameters('Lake_Nacho_accountKey')]"
 					},
 					"AzureBlob1_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
@@ -288,9 +289,6 @@
 					},
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
-					},
-					"Lake_Nacho_properties_typeProperties_url": {
-						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -312,6 +310,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"Houses_Nacho_connectionString": {
+						"value": "[parameters('Houses_Nacho_connectionString')]"
+					},
+					"Lake_Nacho_accountKey": {
+						"value": "[parameters('Lake_Nacho_accountKey')]"
+					},
 					"SQL_SERVERLESS_connectionString": {
 						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
@@ -320,6 +324,9 @@
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"Lake_Nacho_properties_typeProperties_url": {
+						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
 					},
 					"triggerwin_properties_pipeline_parameters_FileName": {
 						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"

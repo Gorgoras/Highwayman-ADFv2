@@ -101,6 +101,9 @@
 		"FS_Notebook_properties_typeProperties_userId": {
 			"value": "DESKTOP-DIIS9C2\\marti"
 		},
+		"HttpServer_properties_typeProperties_url": {
+			"value": "https://api.worldtradingdata.com/api/v1/history?symbol=SNAP&output=csv&sort=newest&api_token=demo"
+		},
 		"LakeGen2_cluster_properties_typeProperties_url": {
 			"value": "https://gen2cluster.dfs.core.windows.net"
 		},
