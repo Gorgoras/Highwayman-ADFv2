@@ -71,6 +71,14 @@
 			"type": "string",
 			"defaultValue": "caravan3-python"
 		},
+		"BlobCsv_properties_typeProperties_fileName": {
+			"type": "string",
+			"defaultValue": "blobcsvfromhttp.csv"
+		},
+		"BlobCsv_properties_typeProperties_folderPath": {
+			"type": "string",
+			"defaultValue": "caravan2/VCF"
+		},
 		"Caravan2_brahmin_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": "TSVC_variants_IonCode_0106.vcf"
@@ -154,14 +162,6 @@
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
-		},
-		"BlobCsv_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "blobcsvfromhttp.csv"
-		},
-		"BlobCsv_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "caravan2/VCF"
 		},
 		"containerUri": {
 			"type": "string",
@@ -259,14 +259,17 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"FS_Notebook_password": {
-						"value": "[parameters('FS_Notebook_password')]"
-					},
 					"AzureBlob1_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
 					},
 					"AzureBlob1_properties_typeProperties_folderPath": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_folderPath')]"
+					},
+					"BlobCsv_properties_typeProperties_fileName": {
+						"value": "[parameters('BlobCsv_properties_typeProperties_fileName')]"
+					},
+					"BlobCsv_properties_typeProperties_folderPath": {
+						"value": "[parameters('BlobCsv_properties_typeProperties_folderPath')]"
 					},
 					"Caravan2_brahmin_properties_typeProperties_fileName": {
 						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_fileName')]"
@@ -291,12 +294,6 @@
 					},
 					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
-					},
-					"FS_Notebook_properties_typeProperties_host": {
-						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
-					},
-					"FS_Notebook_properties_typeProperties_userId": {
-						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
 					}
 				}
 			},
@@ -318,6 +315,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"FS_Notebook_password": {
+						"value": "[parameters('FS_Notebook_password')]"
+					},
 					"Houses_Nacho_connectionString": {
 						"value": "[parameters('Houses_Nacho_connectionString')]"
 					},
@@ -333,17 +333,17 @@
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
 					},
+					"FS_Notebook_properties_typeProperties_host": {
+						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
+					},
+					"FS_Notebook_properties_typeProperties_userId": {
+						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
+					},
 					"Lake_Nacho_properties_typeProperties_url": {
 						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
 					},
 					"triggerwin_properties_pipeline_parameters_FileName": {
 						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
-					},
-					"BlobCsv_properties_typeProperties_fileName": {
-						"value": "[parameters('BlobCsv_properties_typeProperties_fileName')]"
-					},
-					"BlobCsv_properties_typeProperties_folderPath": {
-						"value": "[parameters('BlobCsv_properties_typeProperties_folderPath')]"
 					}
 				}
 			},

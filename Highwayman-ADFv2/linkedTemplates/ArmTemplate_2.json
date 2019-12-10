@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
+		"FS_Notebook_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FS_Notebook'"
+		},
 		"Houses_Nacho_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Houses_Nacho'"
@@ -27,6 +31,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
 		},
+		"FS_Notebook_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Laburo\\Tests"
+		},
+		"FS_Notebook_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DIIS9C2\\marti"
+		},
 		"Lake_Nacho_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dataflowlake.dfs.core.windows.net/"
@@ -34,20 +46,66 @@
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
-		},
-		"BlobCsv_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": "blobcsvfromhttp.csv"
-		},
-		"BlobCsv_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "caravan2/VCF"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/textpy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@item().name",
+							"type": "Expression"
+						},
+						"container": "caravan3-python"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FS_Notebook')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FS_Notebook_properties_typeProperties_host')]",
+					"userId": "[parameters('FS_Notebook_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FS_Notebook_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-Notebook",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Houses_Nacho')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -169,35 +227,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/BlobCsv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Blob_brahminstorage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlob",
-				"typeProperties": {
-					"format": {
-						"type": "TextFormat",
-						"columnDelimiter": "\t",
-						"rowDelimiter": "\n",
-						"quoteChar": "\"",
-						"nullValue": "\\N",
-						"encodingName": null,
-						"treatEmptyAsNull": true,
-						"skipLineCount": 1266,
-						"firstRowAsHeader": true
-					},
-					"fileName": "[parameters('BlobCsv_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('BlobCsv_properties_typeProperties_folderPath')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/GetCsv')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -249,9 +278,7 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/BlobCsv')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RestApi')]",
@@ -408,7 +435,9 @@
 				],
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/textpy')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/readCsvMetadata')]",
@@ -868,29 +897,6 @@
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_WASTELAND",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"tableName": {
-						"value": "@pipeline().parameters.TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SinkTable1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
