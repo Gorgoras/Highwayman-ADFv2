@@ -47,6 +47,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
+		"S3_Pi_secretAccessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'secretAccessKey' of 'S3_Pi'"
+		},
 		"SQL_SERVERLESS_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_SERVERLESS'"
@@ -159,6 +163,10 @@
 			"type": "string",
 			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
 		},
+		"S3_Pi_properties_typeProperties_accessKeyId": {
+			"type": "string",
+			"defaultValue": "AKIAQT5ATOS5WHFFSN6L"
+		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
@@ -211,6 +219,9 @@
 					"Mi_Databricks_accessToken": {
 						"value": "[parameters('Mi_Databricks_accessToken')]"
 					},
+					"S3_Pi_secretAccessKey": {
+						"value": "[parameters('S3_Pi_secretAccessKey')]"
+					},
 					"TunnelSnakeLinkedServ_functionKey": {
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
 					},
@@ -240,6 +251,9 @@
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"S3_Pi_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
 					}
 				}
 			},
@@ -369,6 +383,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_3')]"
 			]
 		}
 	]

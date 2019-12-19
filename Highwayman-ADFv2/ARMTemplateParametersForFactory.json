@@ -35,6 +35,9 @@
 		"Mi_Databricks_accessToken": {
 			"value": ""
 		},
+		"S3_Pi_secretAccessKey": {
+			"value": ""
+		},
 		"SQL_SERVERLESS_connectionString": {
 			"value": ""
 		},
@@ -118,6 +121,9 @@
 		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
+		},
+		"S3_Pi_properties_typeProperties_accessKeyId": {
+			"value": "AKIAQT5ATOS5WHFFSN6L"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"value": "@trigger().outputs.windowStartTime"

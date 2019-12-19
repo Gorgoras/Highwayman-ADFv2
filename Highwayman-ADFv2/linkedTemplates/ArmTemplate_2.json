@@ -53,6 +53,115 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Unificado_Warehouse')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ADW_SETTLEMENT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlDWTable",
+				"schema": [
+					{
+						"name": "CHROM",
+						"type": "varchar"
+					},
+					{
+						"name": "POS",
+						"type": "varchar"
+					},
+					{
+						"name": "ID",
+						"type": "varchar"
+					},
+					{
+						"name": "REF",
+						"type": "varchar"
+					},
+					{
+						"name": "ALT",
+						"type": "varchar"
+					},
+					{
+						"name": "QUAL",
+						"type": "varchar"
+					},
+					{
+						"name": "FILTER",
+						"type": "varchar"
+					},
+					{
+						"name": "INFO",
+						"type": "varchar"
+					},
+					{
+						"name": "FORMAT",
+						"type": "varchar"
+					},
+					{
+						"name": "MUESTRA",
+						"type": "varchar"
+					},
+					{
+						"name": "VALOR",
+						"type": "varchar"
+					},
+					{
+						"name": "ORIGEN",
+						"type": "varchar"
+					},
+					{
+						"name": "FECHA_COPIA",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RESULTADO",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[Unificado]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sinktextpy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@concat(activity('Get Metadata1').output.childItems, '.csv')",
+							"type": "Expression"
+						},
+						"container": "caravan3-python"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/textpy')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -436,7 +545,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/textpy')]"
+				"[concat(variables('factoryId'), '/datasets/textpy')]",
+				"[concat(variables('factoryId'), '/datasets/sinktextpy')]"
 			]
 		},
 		{
@@ -808,114 +918,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Serverless_Customer')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_SERVERLESS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "NameStyle",
-						"type": "varchar"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "varchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "varchar"
-					},
-					{
-						"name": "LastName",
-						"type": "varchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "varchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Customer"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SERVERLESS')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_WASTELAND",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"tableName": {
-						"value": "@pipeline().parameters.TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
 			]
 		}
 	]
