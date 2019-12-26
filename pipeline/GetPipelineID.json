@@ -1,0 +1,26 @@
+{
+	"name": "GetPipelineID",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "PipeId",
+					"value": {
+						"value": "@uriComponentToString(concat('select \"', pipeline().RunId,'\" as RunID'))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"PipeId": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
