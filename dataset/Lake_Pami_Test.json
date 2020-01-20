@@ -1,0 +1,28 @@
+{
+	"name": "Lake_Pami_Test",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Lake_Pami",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Lu_Beneficio.rar",
+				"folderPath": "BENEFICIO",
+				"fileSystem": "pruebas"
+			},
+			"columnDelimiter": ",",
+			"compressionCodec": "ZipDeflate",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"type": "String"
+			}
+		]
+	}
+}
