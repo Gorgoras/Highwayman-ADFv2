@@ -38,6 +38,22 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "WaitForASecond",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Copy Data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
 			}
 		],
 		"annotations": []
