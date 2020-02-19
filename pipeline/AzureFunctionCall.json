@@ -16,13 +16,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"functionName": "HttpTrigger",
-					"method": "POST",
+					"method": "GET",
 					"body": {
 						"name": "martin"
 					}
 				},
 				"linkedServiceName": {
-					"referenceName": "TunnelSnakeLinkedServ",
+					"referenceName": "NameTest",
 					"type": "LinkedServiceReference"
 				}
 			}
