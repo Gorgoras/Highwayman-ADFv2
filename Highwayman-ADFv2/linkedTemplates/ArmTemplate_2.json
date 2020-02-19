@@ -53,6 +53,90 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "DataFactory",
+						"fileSystem": "clusterhdinsight"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "INT32"
+					},
+					{
+						"name": "NameStyle",
+						"type": "BOOLEAN"
+					},
+					{
+						"name": "Title",
+						"type": "UTF8"
+					},
+					{
+						"name": "FirstName",
+						"type": "UTF8"
+					},
+					{
+						"name": "MiddleName",
+						"type": "UTF8"
+					},
+					{
+						"name": "LastName",
+						"type": "UTF8"
+					},
+					{
+						"name": "Suffix",
+						"type": "UTF8"
+					},
+					{
+						"name": "CompanyName",
+						"type": "UTF8"
+					},
+					{
+						"name": "SalesPerson",
+						"type": "UTF8"
+					},
+					{
+						"name": "EmailAddress",
+						"type": "UTF8"
+					},
+					{
+						"name": "Phone",
+						"type": "UTF8"
+					},
+					{
+						"name": "PasswordHash",
+						"type": "UTF8"
+					},
+					{
+						"name": "PasswordSalt",
+						"type": "UTF8"
+					},
+					{
+						"name": "rowguid",
+						"type": "UTF8"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "INT96"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RestDataset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -803,30 +887,6 @@
 				"annotations": []
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureSqlDWTable1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Houses_Nacho",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "",
-					"table": {
-						"value": "@item().table_name",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/Houses_Nacho')]"
-			]
 		}
 	]
 }

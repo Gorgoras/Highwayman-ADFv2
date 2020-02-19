@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
+		"NameTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'NameTest'"
+		},
 		"S3_Pi_secretAccessKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'secretAccessKey' of 'S3_Pi'"
@@ -229,6 +233,9 @@
 					},
 					"Mi_Databricks_accessToken": {
 						"value": "[parameters('Mi_Databricks_accessToken')]"
+					},
+					"NameTest_functionKey": {
+						"value": "[parameters('NameTest_functionKey')]"
 					},
 					"S3_Pi_secretAccessKey": {
 						"value": "[parameters('S3_Pi_secretAccessKey')]"

@@ -38,6 +38,9 @@
 		"Mi_Databricks_accessToken": {
 			"value": ""
 		},
+		"NameTest_functionKey": {
+			"value": ""
+		},
 		"S3_Pi_secretAccessKey": {
 			"value": ""
 		},

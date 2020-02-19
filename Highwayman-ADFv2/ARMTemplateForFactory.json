@@ -51,6 +51,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
+		"NameTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'NameTest'"
+		},
 		"S3_Pi_secretAccessKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'secretAccessKey' of 'S3_Pi'"
@@ -265,7 +269,7 @@
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "TunnelSnakeLinkedServ",
+							"referenceName": "NameTest",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -273,7 +277,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/TunnelSnakeLinkedServ')]"
+				"[concat(variables('factoryId'), '/linkedServices/NameTest')]"
 			]
 		},
 		{
@@ -3756,6 +3760,23 @@
 						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
 					},
 					"newClusterVersion": "5.4.x-scala2.11"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NameTest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://pruebadesdeubuntu.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('NameTest_functionKey')]"
+					}
 				}
 			},
 			"dependsOn": []

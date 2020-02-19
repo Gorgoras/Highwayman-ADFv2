@@ -39,6 +39,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
+		"NameTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'NameTest'"
+		},
 		"S3_Pi_secretAccessKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'secretAccessKey' of 'S3_Pi'"
@@ -407,6 +411,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/NameTest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://pruebadesdeubuntu.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('NameTest_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RestService1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -472,16 +493,6 @@
 						}
 					}
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/IR-Notebook')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
 			},
 			"dependsOn": []
 		}
