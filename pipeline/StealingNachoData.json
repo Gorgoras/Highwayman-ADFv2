@@ -64,7 +64,7 @@
 								"sink": {
 									"type": "DelimitedTextSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
+										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
 										"type": "DelimitedTextWriteSettings",
@@ -82,7 +82,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "lake_nacho_dataset",
+									"referenceName": "DelimitedText1",
 									"type": "DatasetReference"
 								}
 							]
