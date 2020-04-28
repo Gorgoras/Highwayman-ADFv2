@@ -1078,6 +1078,35 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/getDate')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Format-date",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "date",
+							"value": {
+								"value": "@addhours(startOfHour(utcnow()), -3)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"variables": {
+					"date": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/getTriggerFileName')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2368,7 +2397,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "trip",
 						"container": "hivecontainer"
 					},
 					"columnDelimiter": ",",
@@ -3983,9 +4011,6 @@
 							"dataset": {
 								"referenceName": "CsvBrahmin",
 								"type": "DatasetReference"
-							},
-							"typeProperties": {
-								"readMode": null
 							}
 						}
 					],
@@ -4020,8 +4045,7 @@
 								"referenceName": "CsvBrahmin",
 								"type": "DatasetReference"
 							},
-							"name": "source1",
-							"typeProperties": {}
+							"name": "source1"
 						}
 					],
 					"sinks": [

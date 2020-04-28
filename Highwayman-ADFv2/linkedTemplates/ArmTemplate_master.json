@@ -323,12 +323,6 @@
 					},
 					"Lakegen2clusterAvro_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterAvro_properties_typeProperties_folderPath')]"
-					},
-					"Lakegen2clusterORC_properties_typeProperties_fileName": {
-						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_fileName')]"
-					},
-					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
-						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -367,6 +361,12 @@
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"Lakegen2clusterORC_properties_typeProperties_fileName": {
+						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_fileName')]"
+					},
+					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
+						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
 					},
 					"FS_Notebook_properties_typeProperties_host": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
