@@ -1,0 +1,26 @@
+{
+	"name": "getDate",
+	"properties": {
+		"activities": [
+			{
+				"name": "Format-date",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "date",
+					"value": {
+						"value": "@addhours(startOfHour(utcnow()), -3)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"date": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
