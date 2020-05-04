@@ -1,0 +1,509 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Highwayman-ADFv2"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/process_vcf')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetListOfFiles",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "EsperaLimpieza",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BlobCsv",
+								"type": "DatasetReference"
+							},
+							"fieldList": [
+								"itemName"
+							]
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "GetListOfFiles",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('GetListOfFiles').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 10,
+							"activities": [
+								{
+									"name": "readvcf_file",
+									"type": "GetMetadata",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "DelimitedText1",
+											"type": "DatasetReference"
+										},
+										"fieldList": [
+											"itemName"
+										],
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true
+										},
+										"formatSettings": {
+											"type": "DelimitedTextReadSettings"
+										}
+									}
+								},
+								{
+									"name": "load_metadata_file",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "readvcf_file",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "StoredProc_tests",
+										"storedProcedureParameters": {
+											"NombreTabla": {
+												"value": {
+													"value": "@replace(replace(activity('readvcf_file').output.itemName,'.vcf',''),'-','_')\n",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"Campo": {
+												"value": {
+													"value": "@concat(string(take(activity('readvcf_file').output.structure, length(activity('readvcf_file').output.structure))))",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "SQL_SOURCEDB",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "sp_create_tabladinamica_sql",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "load_metadata_file",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "StoredProc_tests_2",
+										"storedProcedureParameters": {
+											"NombreTabla": {
+												"value": {
+													"value": "@replace(replace(activity('readvcf_file').output.itemName,'.vcf',''),'-','_')",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "SQL_SOURCEDB",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "copy_VcfToSql",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "sp_create_tabladinamica_sql",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BlobSource",
+											"recursive": true
+										},
+										"sink": {
+											"type": "AzureSqlSink"
+										},
+										"enableStaging": false,
+										"dataIntegrationUnits": 0
+									},
+									"inputs": [
+										{
+											"referenceName": "BlobCsv",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "CustomerSink",
+											"type": "DatasetReference"
+										}
+									]
+								},
+								{
+									"name": "unpivotTablePASS",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "copy_VcfToSql",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00"
+										},
+										"sink": {
+											"type": "AzureSqlSink"
+										},
+										"enableStaging": false,
+										"dataIntegrationUnits": 0
+									},
+									"inputs": [
+										{
+											"referenceName": "SourceDboSales",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SinkTable",
+											"type": "DatasetReference"
+										}
+									]
+								},
+								{
+									"name": "dropTable",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "unpivotTableNOCALL",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "StoredProc_3",
+										"storedProcedureParameters": {
+											"NombreTabla": {
+												"value": {
+													"value": "@replace(replace(activity('readvcf_file').output.itemName,'.vcf',''),'-','_')",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "SQL_SOURCEDB",
+										"type": "LinkedServiceReference"
+									}
+								},
+								{
+									"name": "unpivotTableNOCALL",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "unpivotTablePASS",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00"
+										},
+										"sink": {
+											"type": "AzureSqlSink"
+										},
+										"enableStaging": false,
+										"dataIntegrationUnits": 0
+									},
+									"inputs": [
+										{
+											"referenceName": "SourceTable1",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SinkTable",
+											"type": "DatasetReference"
+										}
+									]
+								},
+								{
+									"name": "copy_to_transient_tmp",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "dropTable",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BlobSource",
+											"recursive": false
+										},
+										"sink": {
+											"type": "BlobSink"
+										},
+										"enableStaging": false,
+										"dataIntegrationUnits": 0
+									},
+									"inputs": [
+										{
+											"referenceName": "BlobCsv",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Caravan2_brahmin",
+											"type": "DatasetReference"
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "AgregarColumnaResultado",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded",
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "StoredProc_4"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_SOURCEDB",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "AgregarTransTmpToLake",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "AgregarColumnaResultado",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://s1events.azure-automation.net/webhooks?token=6Toq9gJyYwOZiCIappT1m6gZ5pN9QrRs",
+							"method": "POST",
+							"body": "{p}"
+						}
+					},
+					{
+						"name": "CleanDB",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://s1events.azure-automation.net/webhooks?token=MDDcyqc2Im%2bV38JYTU527w0%2fqpYA",
+							"method": "POST",
+							"body": "{p}"
+						}
+					},
+					{
+						"name": "EsperaLimpieza",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "CleanDB",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 30
+						}
+					},
+					{
+						"name": "LimpiarDuplicados",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "AgregarColumnaResultado",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "StoredProc_5"
+						},
+						"linkedServiceName": {
+							"referenceName": "SQL_SOURCEDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		}
+	]
+}
