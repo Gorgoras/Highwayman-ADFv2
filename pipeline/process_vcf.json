@@ -418,7 +418,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://s1events.azure-automation.net/webhooks?token=6Toq9gJyYwOZiCIappT1m6gZ5pN9QrRscGG%2f1Rgu%2bfc",
+					"url": "https://s1events.azure-automation.net/webhooks?token=6Toq9gJyYwOZiCIappT1m6gZ5pN9QrRs",
 					"method": "POST",
 					"body": "{p}"
 				}
@@ -436,7 +436,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://s1events.azure-automation.net/webhooks?token=MDDcyqc2Im%2bV38JYTU527w0%2fqpYAqxgXVbKMxgOp4PM",
+					"url": "https://s1events.azure-automation.net/webhooks?token=MDDcyqc2Im%2bV38JYTU527w0%2fqpYA",
 					"method": "POST",
 					"body": "{p}"
 				}
