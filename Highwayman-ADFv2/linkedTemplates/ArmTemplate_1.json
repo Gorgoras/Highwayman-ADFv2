@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
+		"TunnelSnakeLinkedServ_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'TunnelSnakeLinkedServ'"
+		},
 		"AzureBlob1_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": ""
@@ -38,20 +42,29 @@
 		"LakeSales_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "Sales"
-		},
-		"Lakegen2clusterAvro_properties_typeProperties_fileName": {
-			"type": "string",
-			"defaultValue": ""
-		},
-		"Lakegen2clusterAvro_properties_typeProperties_folderPath": {
-			"type": "string",
-			"defaultValue": "clusterhdinsight/DataFactoryAvro"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/TunnelSnakeLinkedServ')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://tunnelsnake.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/IR-DBs')]",
 			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
@@ -834,27 +847,6 @@
 						"type": "UTF8"
 					}
 				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Lakegen2clusterAvro')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "LakeGen2_cluster",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureBlobFSFile",
-				"typeProperties": {
-					"format": {
-						"type": "AvroFormat"
-					},
-					"fileName": "[parameters('Lakegen2clusterAvro_properties_typeProperties_fileName')]",
-					"folderPath": "[parameters('Lakegen2clusterAvro_properties_typeProperties_folderPath')]"
-				}
 			},
 			"dependsOn": []
 		}

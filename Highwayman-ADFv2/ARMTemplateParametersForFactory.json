@@ -14,6 +14,9 @@
 		"AzureDataLakeStore1_servicePrincipalKey": {
 			"value": ""
 		},
+		"AzureTableGen2Cluster_connectionString": {
+			"value": ""
+		},
 		"Blob_brahminstorage_connectionString": {
 			"value": ""
 		},
