@@ -1,0 +1,15 @@
+{
+	"name": "TableFeedback",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureTableGen2Cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "Feedback"
+		}
+	}
+}
