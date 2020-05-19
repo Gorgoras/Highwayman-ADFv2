@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
 		},
+		"ConnectToTables_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ConnectToTables'"
+		},
 		"Databricks_Meli_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
@@ -265,15 +269,19 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"functionName": "HttpTrigger",
+							"functionName": "insertRow",
 							"method": "POST",
-							"headers": {},
+							"headers": {
+								"name": "reference"
+							},
 							"body": {
-								"name": "martin"
+								"PartitionKey": "ref",
+								"RowKey": "001",
+								"Valor": "3000"
 							}
 						},
 						"linkedServiceName": {
-							"referenceName": "NameTest",
+							"referenceName": "ConnectToTables",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -281,7 +289,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/NameTest')]"
+				"[concat(variables('factoryId'), '/linkedServices/ConnectToTables')]"
 			]
 		},
 		{
@@ -4282,6 +4290,23 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('Blob_brahminstorage_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ConnectToTables')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://connecttotables.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ConnectToTables_functionKey')]"
+					}
 				}
 			},
 			"dependsOn": []

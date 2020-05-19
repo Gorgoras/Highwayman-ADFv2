@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
 		},
+		"ConnectToTables_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ConnectToTables'"
+		},
 		"Databricks_Meli_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
@@ -229,6 +233,9 @@
 					"Blob_brahminstorage_connectionString": {
 						"value": "[parameters('Blob_brahminstorage_connectionString')]"
 					},
+					"ConnectToTables_functionKey": {
+						"value": "[parameters('ConnectToTables_functionKey')]"
+					},
 					"Databricks_Meli_accessToken": {
 						"value": "[parameters('Databricks_Meli_accessToken')]"
 					},
@@ -243,9 +250,6 @@
 					},
 					"NameTest_functionKey": {
 						"value": "[parameters('NameTest_functionKey')]"
-					},
-					"S3_Pi_secretAccessKey": {
-						"value": "[parameters('S3_Pi_secretAccessKey')]"
 					},
 					"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri')]"
@@ -276,9 +280,6 @@
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
-					},
-					"S3_Pi_properties_typeProperties_accessKeyId": {
-						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
 					}
 				}
 			},
@@ -298,8 +299,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"S3_Pi_secretAccessKey": {
+						"value": "[parameters('S3_Pi_secretAccessKey')]"
+					},
 					"TunnelSnakeLinkedServ_functionKey": {
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
+					},
+					"S3_Pi_properties_typeProperties_accessKeyId": {
+						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
 					},
 					"AzureBlob1_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"

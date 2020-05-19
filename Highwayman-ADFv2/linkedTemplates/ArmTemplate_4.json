@@ -13,6 +13,38 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/WranglingDataFlow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "CsvBrahmin",
+							"script": "",
+							"dataset": {
+								"referenceName": "CsvBrahmin",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"sinks": [
+						{
+							"name": "Sink1",
+							"dataset": {
+								"referenceName": "TestingWranglingDataflows",
+								"type": "DatasetReference"
+							},
+							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> Sink1"
+						}
+					],
+					"script": "section Section1;\r\nshared CsvBrahmin = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://brahminstorage.blob.core.windows.net/caravan2/AuditLog.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = CsvBrahmin,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each ([UserIds] = \"mzurita@piconsulting.com.ar\")),\r\n  #\"Filtered rows 1\" = Table.SelectRows(#\"Filtered rows\", each ([Operations] <> \"CreateDataset\" and [Operations] <> \"Import\" and [Operations] <> \"ViewDashboard\"))\r\nin\r\n  #\"Filtered rows 1\";\r\n"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",

@@ -20,6 +20,9 @@
 		"Blob_brahminstorage_connectionString": {
 			"value": ""
 		},
+		"ConnectToTables_functionKey": {
+			"value": ""
+		},
 		"Databricks_Meli_accessToken": {
 			"value": ""
 		},

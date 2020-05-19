@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'Blob_brahminstorage'"
 		},
+		"ConnectToTables_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'ConnectToTables'"
+		},
 		"Databricks_Meli_accessToken": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Databricks_Meli'"
@@ -46,10 +50,6 @@
 		"NameTest_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'NameTest'"
-		},
-		"S3_Pi_secretAccessKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'secretAccessKey' of 'S3_Pi'"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -90,10 +90,6 @@
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
-		},
-		"S3_Pi_properties_typeProperties_accessKeyId": {
-			"type": "string",
-			"defaultValue": "AKIAQT5ATOS5WHFFSN6L"
 		}
 	},
 	"variables": {
@@ -363,6 +359,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ConnectToTables')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "https://connecttotables.azurewebsites.net",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('ConnectToTables_functionKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Databricks_Meli')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -480,24 +493,6 @@
 					"url": "[parameters('RestService1_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/S3_Pi')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AmazonS3",
-				"typeProperties": {
-					"serviceUrl": "",
-					"accessKeyId": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]",
-					"secretAccessKey": {
-						"type": "SecureString",
-						"value": "[parameters('S3_Pi_secretAccessKey')]"
-					}
 				}
 			},
 			"dependsOn": []
