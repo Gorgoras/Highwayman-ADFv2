@@ -668,89 +668,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Serverless_Customer')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_SERVERLESS",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "NameStyle",
-						"type": "varchar"
-					},
-					{
-						"name": "Title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "FirstName",
-						"type": "varchar"
-					},
-					{
-						"name": "MiddleName",
-						"type": "varchar"
-					},
-					{
-						"name": "LastName",
-						"type": "varchar"
-					},
-					{
-						"name": "Suffix",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CompanyName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "nvarchar"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Phone",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "varchar"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "varchar"
-					},
-					{
-						"name": "rowguid",
-						"type": "uniqueidentifier"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "Customer"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1084,6 +1001,38 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/WranglingDataFlow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "WranglingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"name": "CsvBrahmin",
+							"script": "",
+							"dataset": {
+								"referenceName": "CsvBrahmin",
+								"type": "DatasetReference"
+							}
+						}
+					],
+					"sinks": [
+						{
+							"name": "Sink1",
+							"dataset": {
+								"referenceName": "TestingWranglingDataflows",
+								"type": "DatasetReference"
+							},
+							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> Sink1"
+						}
+					],
+					"script": "section Section1;\r\nshared CsvBrahmin = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://brahminstorage.blob.core.windows.net/caravan2/AuditLog.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = CsvBrahmin,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each ([UserIds] = \"mzurita@piconsulting.com.ar\")),\r\n  #\"Filtered rows 1\" = Table.SelectRows(#\"Filtered rows\", each ([Operations] <> \"CreateDataset\" and [Operations] <> \"Import\" and [Operations] <> \"ViewDashboard\"))\r\nin\r\n  #\"Filtered rows 1\";\r\n"
+				}
 			},
 			"dependsOn": []
 		}
