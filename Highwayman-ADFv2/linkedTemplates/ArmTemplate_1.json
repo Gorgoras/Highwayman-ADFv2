@@ -707,6 +707,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "*.parquet",
+						"folderPath": "?",
 						"fileSystem": "raw-tests"
 					}
 				}
