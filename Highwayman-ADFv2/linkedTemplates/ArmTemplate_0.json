@@ -75,6 +75,10 @@
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
 		},
+		"ConnectToTables_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://connecttotables.azurewebsites.net"
+		},
 		"HttpServer_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.worldtradingdata.com/api/v1/history?symbol=SNAP&output=csv&sort=newest&api_token=demo"
@@ -86,6 +90,10 @@
 		"Lake_Pami_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://pamilakegen2.dfs.core.windows.net"
+		},
+		"NameTest_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://pruebadesdeubuntu.azurewebsites.net"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
@@ -366,7 +374,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://connecttotables.azurewebsites.net",
+					"functionAppUrl": "[parameters('ConnectToTables_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('ConnectToTables_functionKey')]"
@@ -473,7 +481,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://pruebadesdeubuntu.azurewebsites.net",
+					"functionAppUrl": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('NameTest_functionKey')]"

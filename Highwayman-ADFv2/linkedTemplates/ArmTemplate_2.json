@@ -58,16 +58,43 @@
 		"Lake_Nacho_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dataflowlake.dfs.core.windows.net/"
-		},
-		"triggerwin_properties_pipeline_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@trigger().outputs.windowStartTime"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Lake_Pami_Test')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Lake_Pami",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "Lu_Beneficio.rar",
+						"folderPath": "BENEFICIO",
+						"fileSystem": "pruebas"
+					},
+					"columnDelimiter": ",",
+					"compressionCodec": "ZipDeflate",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Lakegen2ClusterParquet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -730,37 +757,6 @@
 				"connectVia": {
 					"referenceName": "IR-DBs",
 					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/triggerwin')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "setVar",
-						"type": "PipelineReference"
-					},
-					"parameters": {
-						"FileName": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
-					}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 15,
-					"startTime": "2019-09-02T00:00:00.000Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
 				}
 			},
 			"dependsOn": []

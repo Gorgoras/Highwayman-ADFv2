@@ -116,6 +116,9 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://chargecard764Id.vault.azure.net/"
 		},
+		"ConnectToTables_properties_typeProperties_functionAppUrl": {
+			"value": "https://connecttotables.azurewebsites.net"
+		},
 		"FS_Notebook_properties_typeProperties_host": {
 			"value": "C:\\Laburo\\Tests"
 		},
@@ -134,11 +137,17 @@
 		"Lake_Pami_properties_typeProperties_url": {
 			"value": "https://pamilakegen2.dfs.core.windows.net"
 		},
+		"NameTest_properties_typeProperties_functionAppUrl": {
+			"value": "https://pruebadesdeubuntu.azurewebsites.net"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"value": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
 		},
 		"S3_Pi_properties_typeProperties_accessKeyId": {
 			"value": "AKIAQT5ATOS5WHFFSN6L"
+		},
+		"TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl": {
+			"value": "https://tunnelsnake.azurewebsites.net"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"value": "@trigger().outputs.windowStartTime"

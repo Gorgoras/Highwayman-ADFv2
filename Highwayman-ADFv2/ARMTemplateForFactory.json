@@ -155,6 +155,10 @@
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
 		},
+		"ConnectToTables_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://connecttotables.azurewebsites.net"
+		},
 		"FS_Notebook_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "C:\\Laburo\\Tests"
@@ -179,6 +183,10 @@
 			"type": "string",
 			"defaultValue": "https://pamilakegen2.dfs.core.windows.net"
 		},
+		"NameTest_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://pruebadesdeubuntu.azurewebsites.net"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
@@ -186,6 +194,10 @@
 		"S3_Pi_properties_typeProperties_accessKeyId": {
 			"type": "string",
 			"defaultValue": "AKIAQT5ATOS5WHFFSN6L"
+		},
+		"TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://tunnelsnake.azurewebsites.net"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
@@ -1050,6 +1062,45 @@
 				"[concat(variables('factoryId'), '/datasets/AzureBlob1')]",
 				"[concat(variables('factoryId'), '/datasets/textpy')]",
 				"[concat(variables('factoryId'), '/datasets/sinktextpy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/deleteActivity')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Delete1",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "DeleteDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"enableLogging": false,
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"wildcardFileName": "?/*.parquet"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DeleteDataset')]"
 			]
 		},
 		{
@@ -2930,6 +2981,28 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DeleteDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "raw-tests"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4167,7 +4240,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://connecttotables.azurewebsites.net",
+					"functionAppUrl": "[parameters('ConnectToTables_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('ConnectToTables_functionKey')]"
@@ -4340,7 +4413,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://pruebadesdeubuntu.azurewebsites.net",
+					"functionAppUrl": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('NameTest_functionKey')]"
@@ -4447,7 +4520,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://tunnelsnake.azurewebsites.net",
+					"functionAppUrl": "[parameters('TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"

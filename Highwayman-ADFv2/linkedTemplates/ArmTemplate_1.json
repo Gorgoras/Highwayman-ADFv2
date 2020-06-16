@@ -19,6 +19,10 @@
 			"type": "string",
 			"defaultValue": "AKIAQT5ATOS5WHFFSN6L"
 		},
+		"TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://tunnelsnake.azurewebsites.net"
+		},
 		"AzureBlob1_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": ""
@@ -82,7 +86,7 @@
 				"annotations": [],
 				"type": "AzureFunction",
 				"typeProperties": {
-					"functionAppUrl": "https://tunnelsnake.azurewebsites.net",
+					"functionAppUrl": "[parameters('TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl')]",
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
@@ -690,6 +694,26 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DeleteDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "raw-tests"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -760,37 +784,6 @@
 					"fileName": "[parameters('LakeSales_properties_typeProperties_fileName')]",
 					"folderPath": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Lake_Pami_Test')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Lake_Pami",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": "Lu_Beneficio.rar",
-						"folderPath": "BENEFICIO",
-						"fileSystem": "pruebas"
-					},
-					"columnDelimiter": ",",
-					"compressionCodec": "ZipDeflate",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": []
 		}

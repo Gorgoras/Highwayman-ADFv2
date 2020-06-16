@@ -155,6 +155,10 @@
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
 		},
+		"ConnectToTables_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://connecttotables.azurewebsites.net"
+		},
 		"FS_Notebook_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "C:\\Laburo\\Tests"
@@ -179,6 +183,10 @@
 			"type": "string",
 			"defaultValue": "https://pamilakegen2.dfs.core.windows.net"
 		},
+		"NameTest_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://pruebadesdeubuntu.azurewebsites.net"
+		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml"
@@ -186,6 +194,10 @@
 		"S3_Pi_properties_typeProperties_accessKeyId": {
 			"type": "string",
 			"defaultValue": "AKIAQT5ATOS5WHFFSN6L"
+		},
+		"TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://tunnelsnake.azurewebsites.net"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
@@ -269,6 +281,9 @@
 					"AzureKeyVault1_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault1_properties_typeProperties_baseUrl')]"
 					},
+					"ConnectToTables_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('ConnectToTables_properties_typeProperties_functionAppUrl')]"
+					},
 					"HttpServer_properties_typeProperties_url": {
 						"value": "[parameters('HttpServer_properties_typeProperties_url')]"
 					},
@@ -277,6 +292,9 @@
 					},
 					"Lake_Pami_properties_typeProperties_url": {
 						"value": "[parameters('Lake_Pami_properties_typeProperties_url')]"
+					},
+					"NameTest_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"
@@ -307,6 +325,9 @@
 					},
 					"S3_Pi_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
+					},
+					"TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl')]"
 					},
 					"AzureBlob1_properties_typeProperties_fileName": {
 						"value": "[parameters('AzureBlob1_properties_typeProperties_fileName')]"
@@ -390,9 +411,6 @@
 					},
 					"Lake_Nacho_properties_typeProperties_url": {
 						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
-					},
-					"triggerwin_properties_pipeline_parameters_FileName": {
-						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
 					}
 				}
 			},
@@ -413,6 +431,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"triggerwin_properties_pipeline_parameters_FileName": {
+						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
 					}
 				}
 			},
