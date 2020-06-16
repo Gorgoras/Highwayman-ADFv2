@@ -2994,7 +2994,7 @@
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileName": "*.parquet",
-						"folderPath": "?",
+						"folderPath": "*",
 						"fileSystem": "raw-tests"
 					}
 				}
