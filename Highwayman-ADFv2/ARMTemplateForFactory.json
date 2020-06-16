@@ -1091,7 +1091,8 @@
 							"enableLogging": false,
 							"storeSettings": {
 								"type": "AzureBlobFSReadSettings",
-								"recursive": true
+								"recursive": true,
+								"wildcardFileName": "*.parquet"
 							}
 						}
 					}
@@ -2993,7 +2994,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "*.parquet",
 						"folderPath": "*",
 						"fileSystem": "raw-tests"
 					}
