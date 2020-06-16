@@ -22,7 +22,8 @@
 					"enableLogging": false,
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
-						"recursive": true
+						"recursive": true,
+						"wildcardFileName": "*.parquet"
 					}
 				}
 			}
