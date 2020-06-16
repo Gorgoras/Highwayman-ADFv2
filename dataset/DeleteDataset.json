@@ -1,0 +1,17 @@
+{
+	"name": "DeleteDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LakeGen2_cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "raw-tests"
+			}
+		}
+	}
+}
