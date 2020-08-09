@@ -1,0 +1,23 @@
+{
+	"name": "FailPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Var1",
+					"value": "Martin"
+				}
+			}
+		],
+		"variables": {
+			"Var1": {
+				"type": "Boolean"
+			}
+		},
+		"annotations": []
+	}
+}
