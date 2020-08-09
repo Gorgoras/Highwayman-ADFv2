@@ -232,7 +232,8 @@
 								"sqlReaderQuery": {
 									"value": "@concat('select *, pipeId=', pipeline().RunId,' from SalesLT.Address')",
 									"type": "Expression"
-								}
+								},
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureSqlSink"
@@ -305,6 +306,32 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/FailPipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Var1",
+							"value": "Martin"
+						}
+					}
+				],
+				"variables": {
+					"Var1": {
+						"type": "Boolean"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/GenericSourceDB-Wasteland')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -324,7 +351,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource"
+								"type": "AzureSqlSource",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureSqlSink"
@@ -383,7 +411,8 @@
 								"sqlReaderQuery": {
 									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as old from @{pipeline().parameters.TableName}",
 									"type": "Expression"
-								}
+								},
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "CustomerSink",
@@ -410,7 +439,8 @@
 								"sqlReaderQuery": {
 									"value": "select MAX(@{pipeline().parameters.WatermarkField}) as new from @{pipeline().parameters.TableName}",
 									"type": "Expression"
-								}
+								},
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "CustomerSource",
@@ -450,7 +480,8 @@
 								"sqlReaderQuery": {
 									"value": "SELECT * FROM @{pipeline().parameters.TableName} where @{pipeline().parameters.WatermarkField} > @{activity('OldWatermark').output.firstRow.old} AND @{pipeline().parameters.WatermarkField} <= @{activity('NewWatermark').output.firstRow.new}",
 									"type": "Expression"
-								}
+								},
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureSqlSink"
@@ -838,7 +869,8 @@
 						"typeProperties": {
 							"source": {
 								"type": "SqlDWSource",
-								"sqlReaderQuery": "SELECT table_name FROM information_schema.tables"
+								"sqlReaderQuery": "SELECT table_name FROM information_schema.tables",
+								"partitionOption": "None"
 							},
 							"dataset": {
 								"referenceName": "QueryNacho",
@@ -881,7 +913,8 @@
 									"userProperties": [],
 									"typeProperties": {
 										"source": {
-											"type": "SqlDWSource"
+											"type": "SqlDWSource",
+											"partitionOption": "None"
 										},
 										"sink": {
 											"type": "DelimitedTextSink",
@@ -1238,7 +1271,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource"
+								"type": "AzureSqlSource",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureSqlSink"
@@ -1500,7 +1534,8 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"queryTimeout": "02:00:00"
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
 										},
 										"sink": {
 											"type": "AzureSqlSink"
@@ -1581,7 +1616,8 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
-											"queryTimeout": "02:00:00"
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
 										},
 										"sink": {
 											"type": "AzureSqlSink"
@@ -2026,7 +2062,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource"
+								"type": "AzureSqlSource",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "SqlDWSink"
@@ -2233,7 +2270,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource"
+								"type": "AzureSqlSource",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureBlobFSSink"
@@ -2283,7 +2321,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource"
+								"type": "AzureSqlSource",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "AzureBlobFSSink"
@@ -2377,7 +2416,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "AzureSqlSource"
+								"type": "AzureSqlSource",
+								"partitionOption": "None"
 							},
 							"sink": {
 								"type": "ParquetSink",

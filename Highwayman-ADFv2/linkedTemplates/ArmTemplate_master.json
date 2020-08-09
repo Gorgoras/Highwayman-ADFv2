@@ -295,9 +295,6 @@
 					},
 					"NameTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]"
-					},
-					"RestService1_properties_typeProperties_url": {
-						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -323,6 +320,9 @@
 					"TunnelSnakeLinkedServ_functionKey": {
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
 					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
 					"S3_Pi_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
 					},
@@ -346,12 +346,6 @@
 					},
 					"Caravan2_brahmin_properties_typeProperties_folderPath": {
 						"value": "[parameters('Caravan2_brahmin_properties_typeProperties_folderPath')]"
-					},
-					"LakeSales_properties_typeProperties_fileName": {
-						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
-					},
-					"LakeSales_properties_typeProperties_folderPath": {
-						"value": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
 					}
 				}
 			},
@@ -388,8 +382,11 @@
 					"SQL_SOURCEDB_connectionString": {
 						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
-					"SQL_WASTELAND_connectionString": {
-						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					"LakeSales_properties_typeProperties_fileName": {
+						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
+					},
+					"LakeSales_properties_typeProperties_folderPath": {
+						"value": "[parameters('LakeSales_properties_typeProperties_folderPath')]"
 					},
 					"Lakegen2clusterAvro_properties_typeProperties_fileName": {
 						"value": "[parameters('Lakegen2clusterAvro_properties_typeProperties_fileName')]"
@@ -431,6 +428,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SQL_WASTELAND_connectionString": {
+						"value": "[parameters('SQL_WASTELAND_connectionString')]"
 					},
 					"triggerwin_properties_pipeline_parameters_FileName": {
 						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
