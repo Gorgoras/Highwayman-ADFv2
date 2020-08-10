@@ -11,6 +11,23 @@
 					"variableName": "Var1",
 					"value": "Martin"
 				}
+			},
+			{
+				"name": "Set variable2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Var1",
+					"value": true
+				}
 			}
 		],
 		"variables": {
