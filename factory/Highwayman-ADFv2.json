@@ -1,0 +1,11 @@
+{
+	"name": "Highwayman-ADFv2",
+	"properties": {
+		"globalParameters": {
+			"sec": {
+				"type": "string",
+				"value": "secret1"
+			}
+		}
+	}
+}
