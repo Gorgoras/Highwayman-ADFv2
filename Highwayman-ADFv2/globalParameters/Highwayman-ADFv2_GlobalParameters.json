@@ -1,1 +1,6 @@
-{}
+{
+	"sec": {
+		"type": "string",
+		"value": "secret1"
+	}
+}

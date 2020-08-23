@@ -69,7 +69,7 @@
 			"value": "caravan3-python"
 		},
 		"BlobCsv_properties_typeProperties_fileName": {
-			"value": "blobcsvfromhttp.csv"
+			"value": ""
 		},
 		"BlobCsv_properties_typeProperties_folderPath": {
 			"value": "caravan2/VCF"
@@ -148,6 +148,15 @@
 		},
 		"TunnelSnakeLinkedServ_properties_typeProperties_functionAppUrl": {
 			"value": "https://tunnelsnake.azurewebsites.net"
+		},
+		"EventTrigger_properties_EventPipe_parameters_FolderPath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"EventTrigger_properties_EventPipe_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"EventTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/fc2b6f69-07e8-4361-a14c-926b7e50d69e/resourceGroups/HDINSIGHT-RG/providers/Microsoft.Storage/storageAccounts/gen2cluster"
 		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"value": "@trigger().outputs.windowStartTime"

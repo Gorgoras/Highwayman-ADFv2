@@ -93,7 +93,7 @@
 		},
 		"BlobCsv_properties_typeProperties_fileName": {
 			"type": "string",
-			"defaultValue": "blobcsvfromhttp.csv"
+			"defaultValue": ""
 		},
 		"BlobCsv_properties_typeProperties_folderPath": {
 			"type": "string",
@@ -199,6 +199,18 @@
 			"type": "string",
 			"defaultValue": "https://tunnelsnake.azurewebsites.net"
 		},
+		"EventTrigger_properties_EventPipe_parameters_FolderPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"EventTrigger_properties_EventPipe_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"EventTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/fc2b6f69-07e8-4361-a14c-926b7e50d69e/resourceGroups/HDINSIGHT-RG/providers/Microsoft.Storage/storageAccounts/gen2cluster"
+		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
@@ -303,6 +315,80 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ConnectToTables')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EventPipe')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy event",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BlobSink"
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "CsvEvento",
+								"type": "DatasetReference",
+								"parameters": {
+									"FolderPath": {
+										"value": "@pipeline().parameters.FolderPath",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "BlobCsv",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"parameters": {
+					"FolderPath": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/CsvEvento')]",
+				"[concat(variables('factoryId'), '/datasets/BlobCsv')]"
 			]
 		},
 		{
@@ -1639,51 +1725,6 @@
 											"parameters": {}
 										}
 									]
-								},
-								{
-									"name": "copy_to_transient_tmp",
-									"type": "Copy",
-									"dependsOn": [
-										{
-											"activity": "dropTable",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "BlobSource",
-											"recursive": false
-										},
-										"sink": {
-											"type": "BlobSink"
-										},
-										"enableStaging": false,
-										"dataIntegrationUnits": 0
-									},
-									"inputs": [
-										{
-											"referenceName": "BlobCsv",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "Caravan2_brahmin",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
 								}
 							]
 						}
@@ -1814,8 +1855,7 @@
 				"[concat(variables('factoryId'), '/datasets/CustomerSink')]",
 				"[concat(variables('factoryId'), '/datasets/SourceDboSales')]",
 				"[concat(variables('factoryId'), '/datasets/SinkTable')]",
-				"[concat(variables('factoryId'), '/datasets/SourceTable1')]",
-				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]"
+				"[concat(variables('factoryId'), '/datasets/SourceTable1')]"
 			]
 		},
 		{
@@ -2609,6 +2649,48 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CsvEvento')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"FolderPath": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().FolderPath",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
 			]
 		},
 		{
@@ -4569,6 +4651,39 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/EventTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "EventPipe",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FolderPath": "[parameters('EventTrigger_properties_EventPipe_parameters_FolderPath')]",
+							"FileName": "[parameters('EventTrigger_properties_EventPipe_parameters_FileName')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/raw-tests/blobs/events/",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('EventTrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/EventPipe')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/triggerwin')]",

@@ -93,7 +93,7 @@
 		},
 		"BlobCsv_properties_typeProperties_fileName": {
 			"type": "string",
-			"defaultValue": "blobcsvfromhttp.csv"
+			"defaultValue": ""
 		},
 		"BlobCsv_properties_typeProperties_folderPath": {
 			"type": "string",
@@ -199,6 +199,18 @@
 			"type": "string",
 			"defaultValue": "https://tunnelsnake.azurewebsites.net"
 		},
+		"EventTrigger_properties_EventPipe_parameters_FolderPath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"EventTrigger_properties_EventPipe_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"EventTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/fc2b6f69-07e8-4361-a14c-926b7e50d69e/resourceGroups/HDINSIGHT-RG/providers/Microsoft.Storage/storageAccounts/gen2cluster"
+		},
 		"triggerwin_properties_pipeline_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@trigger().outputs.windowStartTime"
@@ -217,7 +229,7 @@
 	},
 	"resources": [
 		{
-			"name": "ArmTemplate_0",
+			"name": "Highwayman-ADFv2_ArmTemplate_0",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -301,7 +313,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "ArmTemplate_1",
+			"name": "Highwayman-ADFv2_ArmTemplate_1",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -350,11 +362,11 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_0')]"
 			]
 		},
 		{
-			"name": "ArmTemplate_2",
+			"name": "Highwayman-ADFv2_ArmTemplate_2",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -378,9 +390,6 @@
 					},
 					"SQL_SERVERLESS_connectionString": {
 						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
-					},
-					"SQL_SOURCEDB_connectionString": {
-						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
@@ -412,11 +421,11 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_1')]"
+				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_1')]"
 			]
 		},
 		{
-			"name": "ArmTemplate_3",
+			"name": "Highwayman-ADFv2_ArmTemplate_3",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -429,6 +438,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SQL_SOURCEDB_connectionString": {
+						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
+					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
 					},
@@ -438,11 +450,11 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_2')]"
+				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_2')]"
 			]
 		},
 		{
-			"name": "ArmTemplate_4",
+			"name": "Highwayman-ADFv2_ArmTemplate_4",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2018-02-01",
 			"properties": {
@@ -454,11 +466,20 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"EventTrigger_properties_EventPipe_parameters_FolderPath": {
+						"value": "[parameters('EventTrigger_properties_EventPipe_parameters_FolderPath')]"
+					},
+					"EventTrigger_properties_EventPipe_parameters_FileName": {
+						"value": "[parameters('EventTrigger_properties_EventPipe_parameters_FileName')]"
+					},
+					"EventTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('EventTrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_3')]"
+				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_3')]"
 			]
 		}
 	]
