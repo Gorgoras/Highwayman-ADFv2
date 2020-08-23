@@ -25,6 +25,9 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
+					"sink": {
+						"type": "BlobSink"
+					},
 					"enableStaging": false
 				},
 				"inputs": [
@@ -41,6 +44,12 @@
 								"type": "Expression"
 							}
 						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobCsv",
+						"type": "DatasetReference"
 					}
 				]
 			}
