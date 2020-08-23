@@ -224,7 +224,8 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"queryTimeout": "02:00:00"
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "AzureSqlSink"
@@ -303,7 +304,8 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"queryTimeout": "02:00:00"
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "AzureSqlSink"
@@ -320,49 +322,6 @@
 							"outputs": [
 								{
 									"referenceName": "SinkTable",
-									"type": "DatasetReference"
-								}
-							]
-						},
-						{
-							"name": "copy_to_transient_tmp",
-							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "dropTable",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "BlobSource",
-									"recursive": false
-								},
-								"sink": {
-									"type": "BlobSink"
-								},
-								"enableStaging": false,
-								"dataIntegrationUnits": 0
-							},
-							"inputs": [
-								{
-									"referenceName": "BlobCsv",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "Caravan2_brahmin",
 									"type": "DatasetReference"
 								}
 							]
