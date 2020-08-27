@@ -307,6 +307,9 @@
 					},
 					"NameTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -331,9 +334,6 @@
 					},
 					"TunnelSnakeLinkedServ_functionKey": {
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
-					},
-					"RestService1_properties_typeProperties_url": {
-						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					},
 					"S3_Pi_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
@@ -391,6 +391,9 @@
 					"SQL_SERVERLESS_connectionString": {
 						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
+					"SQL_SOURCEDB_connectionString": {
+						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
+					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
 					},
@@ -437,9 +440,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"SQL_SOURCEDB_connectionString": {
-						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"

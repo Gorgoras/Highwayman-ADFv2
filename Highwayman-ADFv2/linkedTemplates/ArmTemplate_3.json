@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
-		"SQL_SOURCEDB_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'SQL_SOURCEDB'"
-		},
 		"SQL_WASTELAND_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
@@ -24,23 +20,6 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_SOURCEDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('SQL_SOURCEDB_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "IR-DBs",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SQL_WASTELAND')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -582,13 +561,18 @@
 					"referenceName": "Houses_Nacho",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "AzureSqlDWTable",
 				"schema": [],
 				"typeProperties": {
 					"schema": "",
 					"table": {
-						"value": "@item().table_name",
+						"value": "@dataset().TableName",
 						"type": "Expression"
 					}
 				}
@@ -759,9 +743,7 @@
 					"tableName": "[[SalesLT].[Customer]"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/QueryNacho')]",
@@ -854,9 +836,7 @@
 					"tableName": "[[dbo].[Unificado]"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
@@ -964,9 +944,7 @@
 					"tableName": "[[dbo].[Sales]"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SourceTable')]",
@@ -987,9 +965,28 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SQL_SOURCEDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"tableName": {
+						"value": "@pipeline().parameters.TableName",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }

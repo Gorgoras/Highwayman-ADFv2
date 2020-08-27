@@ -400,12 +400,67 @@
 					{
 						"name": "Set variable1",
 						"type": "SetVariable",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
 							"variableName": "Var1",
 							"value": "Martin"
 						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlDWSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSqlDWTable1",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "Cualquiera"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DelimitedText1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"variables": {
@@ -415,7 +470,10 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzureSqlDWTable1')]",
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/GenericSourceDB-Wasteland')]",
@@ -1019,7 +1077,9 @@
 										{
 											"referenceName": "AzureSqlDWTable1",
 											"type": "DatasetReference",
-											"parameters": {}
+											"parameters": {
+												"TableName": "@item().table_name"
+											}
 										}
 									],
 									"outputs": [
@@ -2529,13 +2589,18 @@
 					"referenceName": "Houses_Nacho",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"TableName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "AzureSqlDWTable",
 				"schema": [],
 				"typeProperties": {
 					"schema": "",
 					"table": {
-						"value": "@item().table_name",
+						"value": "@dataset().TableName",
 						"type": "Expression"
 					}
 				}
