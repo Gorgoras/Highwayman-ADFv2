@@ -5,13 +5,18 @@
 			"referenceName": "Houses_Nacho",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlDWTable",
 		"schema": [],
 		"typeProperties": {
 			"schema": "",
 			"table": {
-				"value": "@item().table_name",
+				"value": "@dataset().TableName",
 				"type": "Expression"
 			}
 		}

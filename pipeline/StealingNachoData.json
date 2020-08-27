@@ -17,7 +17,8 @@
 				"typeProperties": {
 					"source": {
 						"type": "SqlDWSource",
-						"sqlReaderQuery": "SELECT table_name FROM information_schema.tables"
+						"sqlReaderQuery": "SELECT table_name FROM information_schema.tables",
+						"partitionOption": "None"
 					},
 					"dataset": {
 						"referenceName": "QueryNacho",
@@ -59,7 +60,8 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "SqlDWSource"
+									"type": "SqlDWSource",
+									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "DelimitedTextSink",
@@ -77,7 +79,10 @@
 							"inputs": [
 								{
 									"referenceName": "AzureSqlDWTable1",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"TableName": "@item().table_name"
+									}
 								}
 							],
 							"outputs": [
