@@ -9,14 +9,18 @@
 					{
 						"activity": "Copy data1",
 						"dependencyConditions": [
-							"Succeeded"
+							"Succeeded",
+							"Failed"
 						]
 					}
 				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "Var1",
-					"value": "Martin"
+					"value": {
+						"value": "@string(length(activity('Copy data1').output.errors))",
+						"type": "Expression"
+					}
 				}
 			},
 			{
@@ -33,9 +37,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "SqlDWSource",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
+						"type": "BlobSource",
+						"recursive": true
 					},
 					"sink": {
 						"type": "DelimitedTextSink",
@@ -52,11 +55,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "AzureSqlDWTable1",
-						"type": "DatasetReference",
-						"parameters": {
-							"TableName": "Cualquiera"
-						}
+						"referenceName": "Caravan2_brahmin",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
@@ -69,7 +69,7 @@
 		],
 		"variables": {
 			"Var1": {
-				"type": "Boolean"
+				"type": "String"
 			}
 		},
 		"annotations": []
