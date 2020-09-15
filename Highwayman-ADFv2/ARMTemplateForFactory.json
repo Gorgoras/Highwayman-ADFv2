@@ -404,14 +404,18 @@
 							{
 								"activity": "Copy data1",
 								"dependencyConditions": [
-									"Succeeded"
+									"Succeeded",
+									"Failed"
 								]
 							}
 						],
 						"userProperties": [],
 						"typeProperties": {
 							"variableName": "Var1",
-							"value": "Martin"
+							"value": {
+								"value": "@string(length(activity('Copy data1').output.errors))",
+								"type": "Expression"
+							}
 						}
 					},
 					{
@@ -428,9 +432,8 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "SqlDWSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
+								"type": "BlobSource",
+								"recursive": true
 							},
 							"sink": {
 								"type": "DelimitedTextSink",
@@ -447,11 +450,9 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "AzureSqlDWTable1",
+								"referenceName": "Caravan2_brahmin",
 								"type": "DatasetReference",
-								"parameters": {
-									"TableName": "Cualquiera"
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
@@ -465,13 +466,13 @@
 				],
 				"variables": {
 					"Var1": {
-						"type": "Boolean"
+						"type": "String"
 					}
 				},
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/AzureSqlDWTable1')]",
+				"[concat(variables('factoryId'), '/datasets/Caravan2_brahmin')]",
 				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
 			]
 		},
@@ -2832,168 +2833,7 @@
 					"firstRowAsHeader": true,
 					"quoteChar": "\""
 				},
-				"schema": [
-					{
-						"name": "This POC is up to date",
-						"type": "String"
-					},
-					{
-						"name": "Zone POC ID Mapping",
-						"type": "String"
-					},
-					{
-						"name": "POC ID",
-						"type": "String"
-					},
-					{
-						"name": "Poc Name",
-						"type": "String"
-					},
-					{
-						"name": "Zone",
-						"type": "String"
-					},
-					{
-						"name": "Country",
-						"type": "String"
-					},
-					{
-						"name": "Type",
-						"type": "String"
-					},
-					{
-						"name": "Kitchen",
-						"type": "String"
-					},
-					{
-						"name": "Subtype (optional)",
-						"type": "String"
-					},
-					{
-						"name": "Brand",
-						"type": "String"
-					},
-					{
-						"name": "Owned or Franchised",
-						"type": "String"
-					},
-					{
-						"name": "Status",
-						"type": "String"
-					},
-					{
-						"name": "Opening Date",
-						"type": "String"
-					},
-					{
-						"name": "Date Closed",
-						"type": "String"
-					},
-					{
-						"name": "Reputology Expected Listings",
-						"type": "String"
-					},
-					{
-						"name": "Address",
-						"type": "String"
-					},
-					{
-						"name": "Google Maps Address",
-						"type": "String"
-					},
-					{
-						"name": "Date of conversion: Owned POC to Franchise POC",
-						"type": "String"
-					},
-					{
-						"name": "Number of Seats",
-						"type": "String"
-					},
-					{
-						"name": "Area (square meters)",
-						"type": "String"
-					},
-					{
-						"name": "Number of FTEs",
-						"type": "String"
-					},
-					{
-						"name": "Total opening CAPEX (in Local Currency)",
-						"type": "String"
-					},
-					{
-						"name": "Seed/Launch/Grow Classification",
-						"type": "String"
-					},
-					{
-						"name": "Comments",
-						"type": "String"
-					},
-					{
-						"name": "In Scope For EBITDA Challenge",
-						"type": "String"
-					},
-					{
-						"name": "Latitude",
-						"type": "String"
-					},
-					{
-						"name": "Longitude",
-						"type": "String"
-					},
-					{
-						"name": "Supervisor",
-						"type": "String"
-					},
-					{
-						"name": "Owner",
-						"type": "String"
-					},
-					{
-						"name": "Reputology Name",
-						"type": "String"
-					},
-					{
-						"name": "ICG POS Dataname",
-						"type": "String"
-					},
-					{
-						"name": "Zone Division",
-						"type": "String"
-					},
-					{
-						"name": "Audit Frequency",
-						"type": "String"
-					},
-					{
-						"name": "Trading Hours",
-						"type": "String"
-					},
-					{
-						"name": "Old POC ID",
-						"type": "String"
-					},
-					{
-						"name": "NR Source",
-						"type": "String"
-					},
-					{
-						"name": "POS ID Number",
-						"type": "String"
-					},
-					{
-						"name": "Lavu Dataname",
-						"type": "String"
-					},
-					{
-						"name": "Lavu Token",
-						"type": "String"
-					},
-					{
-						"name": "Lavu Key",
-						"type": "String"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/S3_Pi')]"
@@ -3458,68 +3298,7 @@
 					},
 					"compressionCodec": "snappy"
 				},
-				"schema": [
-					{
-						"name": "CustomerID",
-						"type": "INT32"
-					},
-					{
-						"name": "NameStyle",
-						"type": "BOOLEAN"
-					},
-					{
-						"name": "Title",
-						"type": "UTF8"
-					},
-					{
-						"name": "FirstName",
-						"type": "UTF8"
-					},
-					{
-						"name": "MiddleName",
-						"type": "UTF8"
-					},
-					{
-						"name": "LastName",
-						"type": "UTF8"
-					},
-					{
-						"name": "Suffix",
-						"type": "UTF8"
-					},
-					{
-						"name": "CompanyName",
-						"type": "UTF8"
-					},
-					{
-						"name": "SalesPerson",
-						"type": "UTF8"
-					},
-					{
-						"name": "EmailAddress",
-						"type": "UTF8"
-					},
-					{
-						"name": "Phone",
-						"type": "UTF8"
-					},
-					{
-						"name": "PasswordHash",
-						"type": "UTF8"
-					},
-					{
-						"name": "PasswordSalt",
-						"type": "UTF8"
-					},
-					{
-						"name": "rowguid",
-						"type": "UTF8"
-					},
-					{
-						"name": "ModifiedDate",
-						"type": "INT96"
-					}
-				]
+				"schema": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
@@ -4235,6 +4014,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/csv_test_dataflow')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Blob_brahminstorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "unificado1.csv",
+						"container": "caravan3-python"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/lake_nacho_dataset')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4876,7 +4683,7 @@
 					"sources": [
 						{
 							"dataset": {
-								"referenceName": "CsvBrahmin",
+								"referenceName": "csv_test_dataflow",
 								"type": "DatasetReference"
 							},
 							"name": "source1"
@@ -4891,19 +4698,12 @@
 							"name": "sink1"
 						}
 					],
-					"transformations": [
-						{
-							"name": "DerivedColumn1"
-						},
-						{
-							"name": "Aggregate1"
-						}
-					],
-					"script": "source(output(\n\t\tCreationDate as string,\n\t\tUserIds as string,\n\t\tOperations as string,\n\t\tAuditData as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(UserIds = UserIds,\n\t\tCreationDate = CreationDate,\n\t\tOperations = Operations,\n\t\tAuditData = AuditData,\n\t\tOperationsNew = concat(Operations, AuditData)) ~> DerivedColumn1\nDerivedColumn1 aggregate(UserIds = max(UserIds)) ~> Aggregate1\nAggregate1 sink(input(\n\t\tCustomerID as integer,\n\t\tNameStyle as boolean,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tSuffix as string,\n\t\tCompanyName as string,\n\t\tSalesPerson as string,\n\t\tEmailAddress as string,\n\t\tPhone as string,\n\t\tPasswordHash as string,\n\t\tPasswordSalt as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+					"transformations": [],
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]",
+				"[concat(variables('factoryId'), '/datasets/csv_test_dataflow')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
 			]
 		}

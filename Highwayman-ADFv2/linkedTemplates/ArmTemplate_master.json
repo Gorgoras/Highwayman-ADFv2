@@ -391,9 +391,6 @@
 					"SQL_SERVERLESS_connectionString": {
 						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
-					"SQL_SOURCEDB_connectionString": {
-						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
-					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
 					},
@@ -440,6 +437,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SQL_SOURCEDB_connectionString": {
+						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
