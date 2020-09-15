@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "CsvBrahmin",
+						"referenceName": "Csv_S3",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -29,7 +29,7 @@
 					"name": "Aggregate1"
 				}
 			],
-			"script": "source(output(\n\t\tCreationDate as string,\n\t\tUserIds as string,\n\t\tOperations as string,\n\t\tAuditData as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(UserIds = UserIds,\n\t\tCreationDate = CreationDate,\n\t\tOperations = Operations,\n\t\tAuditData = AuditData,\n\t\tOperationsNew = concat(Operations, AuditData)) ~> DerivedColumn1\nDerivedColumn1 aggregate(UserIds = max(UserIds)) ~> Aggregate1\nAggregate1 sink(input(\n\t\tCustomerID as integer,\n\t\tNameStyle as boolean,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tSuffix as string,\n\t\tCompanyName as string,\n\t\tSalesPerson as string,\n\t\tEmailAddress as string,\n\t\tPhone as string,\n\t\tPasswordHash as string,\n\t\tPasswordSalt as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+			"script": "source(output(\n\t\t{This POC is up to date} as string,\n\t\t{Zone POC ID Mapping} as string,\n\t\t{POC ID} as string,\n\t\t{Poc Name} as string,\n\t\tZone as string,\n\t\tCountry as string,\n\t\tType as string,\n\t\tKitchen as string,\n\t\t{Subtype (optional)} as string,\n\t\tBrand as string,\n\t\t{Owned or Franchised} as string,\n\t\tStatus as string,\n\t\t{Opening Date} as string,\n\t\t{Date Closed} as string,\n\t\t{Reputology Expected Listings} as string,\n\t\tAddress as string,\n\t\t{Google Maps Address} as string,\n\t\t{Date of conversion: Owned POC to Franchise POC} as string,\n\t\t{Number of Seats} as string,\n\t\t{Area (square meters)} as string,\n\t\t{Number of FTEs} as string,\n\t\t{Total opening CAPEX (in Local Currency)} as string,\n\t\t{Seed/Launch/Grow Classification} as string,\n\t\tComments as string,\n\t\t{In Scope For EBITDA Challenge} as string,\n\t\tLatitude as string,\n\t\tLongitude as string,\n\t\tSupervisor as string,\n\t\tOwner as string,\n\t\t{Reputology Name} as string,\n\t\t{ICG POS Dataname} as string,\n\t\t{Zone Division} as string,\n\t\t{Audit Frequency} as string,\n\t\t{Trading Hours} as string,\n\t\t{Old POC ID} as string,\n\t\t{NR Source} as string,\n\t\t{POS ID Number} as string,\n\t\t{Lavu Dataname} as string,\n\t\t{Lavu Token} as string,\n\t\t{Lavu Key} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 derive(UserIds = UserIds,\n\t\tCreationDate = CreationDate,\n\t\tOperations = Operations,\n\t\tAuditData = AuditData,\n\t\tOperationsNew = concat(Operations, AuditData)) ~> DerivedColumn1\nDerivedColumn1 aggregate(UserIds = max(UserIds)) ~> Aggregate1\nAggregate1 sink(input(\n\t\tCustomerID as integer,\n\t\tNameStyle as boolean,\n\t\tTitle as string,\n\t\tFirstName as string,\n\t\tMiddleName as string,\n\t\tLastName as string,\n\t\tSuffix as string,\n\t\tCompanyName as string,\n\t\tSalesPerson as string,\n\t\tEmailAddress as string,\n\t\tPhone as string,\n\t\tPasswordHash as string,\n\t\tPasswordSalt as string,\n\t\trowguid as string,\n\t\tModifiedDate as timestamp\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
 		}
 	}
 }
