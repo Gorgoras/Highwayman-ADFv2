@@ -1,0 +1,23 @@
+{
+	"name": "csv_test_dataflow",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Blob_brahminstorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "unificado1.csv",
+				"container": "caravan3-python"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
