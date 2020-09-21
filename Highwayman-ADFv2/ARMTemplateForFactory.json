@@ -242,7 +242,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "@concat('select *, pipeId=', pipeline().RunId,' from SalesLT.Address')",
+									"value": "select *, pipeId='@{pipeline().RunId}' from SalesLT.Address",
 									"type": "Expression"
 								},
 								"partitionOption": "None"
@@ -4741,7 +4741,7 @@
 						}
 					],
 					"transformations": [],
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
 				}
 			},
 			"dependsOn": [
