@@ -18,9 +18,10 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@concat('select *, pipeId=', pipeline().RunId,' from SalesLT.Address')",
+							"value": "select *, pipeId='@{pipeline().RunId}' from SalesLT.Address",
 							"type": "Expression"
-						}
+						},
+						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "AzureSqlSink"
