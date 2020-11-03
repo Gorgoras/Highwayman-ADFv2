@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), 'pipeline().parameters.TargetNodes'))",
+						"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), string(pipeline().parameters.TargetNodes)))",
 						"type": "Expression"
 					},
 					"activities": [
