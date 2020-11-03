@@ -22,9 +22,8 @@
 						"Content-Type": "application/json; odata=minimalmetadata"
 					},
 					"body": {
-						"nodeDeallocationOption": "requeue",
-						"targetDedicatedNodes": 1,
-						"targetLowPriorityNodes": 0
+						"value": "{\"nodeDeallocationOption\":\"requeue\",\"targetDedicatedNodes\":@{pipeline().parameters.TargetNodes},\"targetLowPriorityNodes\":0}",
+						"type": "Expression"
 					},
 					"authentication": {
 						"type": "MSI",
@@ -46,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), '1'))",
+						"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), 'pipeline().parameters.TargetNodes'))",
 						"type": "Expression"
 					},
 					"activities": [
@@ -132,6 +131,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"TargetNodes": {
+				"type": "string"
+			}
+		},
 		"variables": {
 			"State": {
 				"type": "String"
