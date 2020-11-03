@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ADW_SETTLEMENT'"
 		},
+		"AzureBatch_test_accessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessKey' of 'AzureBatch_test'"
+		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
@@ -130,6 +134,18 @@
 		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryORC"
+		},
+		"AzureBatch_test_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "pruebatch"
+		},
+		"AzureBatch_test_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://pruebatch.westus2.batch.azure.com"
+		},
+		"AzureBatch_test_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "asd"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -379,17 +395,14 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureBatch_test_accessKey": {
+						"value": "[parameters('AzureBatch_test_accessKey')]"
+					},
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
 					},
 					"Houses_Nacho_connectionString": {
 						"value": "[parameters('Houses_Nacho_connectionString')]"
-					},
-					"Lake_Nacho_accountKey": {
-						"value": "[parameters('Lake_Nacho_accountKey')]"
-					},
-					"SQL_SERVERLESS_connectionString": {
-						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
 					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
@@ -409,14 +422,20 @@
 					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
 					},
+					"AzureBatch_test_properties_typeProperties_accountName": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]"
+					},
+					"AzureBatch_test_properties_typeProperties_batchUri": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]"
+					},
+					"AzureBatch_test_properties_typeProperties_poolName": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]"
+					},
 					"FS_Notebook_properties_typeProperties_host": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
 					},
 					"FS_Notebook_properties_typeProperties_userId": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
-					},
-					"Lake_Nacho_properties_typeProperties_url": {
-						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -438,11 +457,20 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"Lake_Nacho_accountKey": {
+						"value": "[parameters('Lake_Nacho_accountKey')]"
+					},
+					"SQL_SERVERLESS_connectionString": {
+						"value": "[parameters('SQL_SERVERLESS_connectionString')]"
+					},
 					"SQL_SOURCEDB_connectionString": {
 						"value": "[parameters('SQL_SOURCEDB_connectionString')]"
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"Lake_Nacho_properties_typeProperties_url": {
+						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"
 					},
 					"triggerwin_properties_pipeline_parameters_FileName": {
 						"value": "[parameters('triggerwin_properties_pipeline_parameters_FileName')]"
@@ -466,6 +494,26 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "Highwayman-ADFv2_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"EventTrigger_properties_EventPipe_parameters_FolderPath": {
 						"value": "[parameters('EventTrigger_properties_EventPipe_parameters_FolderPath')]"
@@ -479,7 +527,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_3')]"
+				"[resourceId('Microsoft.Resources/deployments', 'Highwayman-ADFv2_ArmTemplate_4')]"
 			]
 		}
 	]

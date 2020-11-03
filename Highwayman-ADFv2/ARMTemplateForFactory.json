@@ -11,6 +11,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ADW_SETTLEMENT'"
 		},
+		"AzureBatch_test_accessKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessKey' of 'AzureBatch_test'"
+		},
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
@@ -130,6 +134,18 @@
 		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryORC"
+		},
+		"AzureBatch_test_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "pruebatch"
+		},
+		"AzureBatch_test_properties_typeProperties_batchUri": {
+			"type": "string",
+			"defaultValue": "https://pruebatch.westus2.batch.azure.com"
+		},
+		"AzureBatch_test_properties_typeProperties_poolName": {
+			"type": "string",
+			"defaultValue": "asd"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -4197,6 +4213,31 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureBatch_test')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBatch",
+				"typeProperties": {
+					"accountName": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]",
+					"accessKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureBatch_test_accessKey')]"
+					},
+					"batchUri": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]",
+					"poolName": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]",
+					"linkedServiceName": {
+						"referenceName": "Blob_brahminstorage",
+						"type": "LinkedServiceReference"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4487,7 +4528,8 @@
 					"secretAccessKey": {
 						"type": "SecureString",
 						"value": "[parameters('S3_Pi_secretAccessKey')]"
-					}
+					},
+					"authenticationType": "AccessKey"
 				}
 			},
 			"dependsOn": []
@@ -4748,6 +4790,47 @@
 				"[concat(variables('factoryId'), '/datasets/csv_test_dataflow')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/resizeAzureBachPool')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Rest Api resize",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://pruebatch.westus2.batch.azure.com/pools/asd/resize?api-version=2020-09-01.12.0",
+							"method": "POST",
+							"headers": {
+								"return-client-request-id": "True",
+								"Content-Type": "application/json; odata=minimalmetadata"
+							},
+							"body": {
+								"nodeDeallocationOption": "requeue",
+								"targetDedicatedNodes": 0,
+								"targetLowPriorityNodes": 0
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://batch.core.windows.net/"
+							}
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }
