@@ -23,7 +23,7 @@
 					},
 					"body": {
 						"nodeDeallocationOption": "requeue",
-						"targetDedicatedNodes": 0,
+						"targetDedicatedNodes": 1,
 						"targetLowPriorityNodes": 0
 					},
 					"authentication": {
@@ -31,8 +31,115 @@
 						"resource": "https://batch.core.windows.net/"
 					}
 				}
+			},
+			{
+				"name": "Control resize",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Rest Api resize",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), '1'))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "GetPoolStatus",
+							"type": "WebActivity",
+							"dependsOn": [
+								{
+									"activity": "Wait 30 secs",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://pruebatch.westus2.batch.azure.com/pools/asd?api-version=2020-09-01.12.0",
+								"method": "GET",
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://batch.core.windows.net/"
+								}
+							}
+						},
+						{
+							"name": "Set State variable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "GetPoolStatus",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "State",
+								"value": {
+									"value": "@activity('GetPoolStatus').output.allocationState",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Nodes variable",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "GetPoolStatus",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentDedicatedNodes",
+								"value": {
+									"value": "@string(activity('GetPoolStatus').output.currentDedicatedNodes)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Wait 30 secs",
+							"type": "Wait",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 30
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
 			}
 		],
+		"variables": {
+			"State": {
+				"type": "String"
+			},
+			"CurrentDedicatedNodes": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
