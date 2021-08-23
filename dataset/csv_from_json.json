@@ -1,0 +1,23 @@
+{
+	"name": "csv_from_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LakeGen2_cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "result.csv",
+				"folderPath": "json",
+				"fileSystem": "raw-tests"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

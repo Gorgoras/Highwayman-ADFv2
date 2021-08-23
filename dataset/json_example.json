@@ -1,0 +1,89 @@
+{
+	"name": "json_example",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LakeGen2_cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "example.json",
+				"folderPath": "json",
+				"fileSystem": "raw-tests"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"reseller": {
+					"type": "object",
+					"properties": {
+						"en-ca": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"MarketPlaceResellerId": {
+										"type": "string"
+									},
+									"ResellerPrice": {
+										"type": "string"
+									},
+									"ResellerFormattedPrice": {
+										"type": "string"
+									},
+									"InventoryStatus": {
+										"type": "integer"
+									}
+								}
+							}
+						},
+						"en-us": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"MarketPlaceResellerId": {
+										"type": "string"
+									},
+									"ResellerPrice": {
+										"type": "string"
+									},
+									"ResellerFormattedPrice": {
+										"type": "string"
+									},
+									"InventoryStatus": {
+										"type": "integer"
+									}
+								}
+							}
+						},
+						"fr-ca": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"MarketPlaceResellerId": {
+										"type": "string"
+									},
+									"ResellerPrice": {
+										"type": "string"
+									},
+									"ResellerFormattedPrice": {
+										"type": "string"
+									},
+									"InventoryStatus": {
+										"type": "integer"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
