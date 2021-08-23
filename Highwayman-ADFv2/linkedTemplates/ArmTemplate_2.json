@@ -11,14 +11,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessKey' of 'AzureBatch_test'"
 		},
-		"FS_Notebook_password": {
-			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'FS_Notebook'"
-		},
-		"Houses_Nacho_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'Houses_Nacho'"
-		},
 		"LakeSales_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": ""
@@ -43,10 +35,6 @@
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryORC"
 		},
-		"AzureBatch_test_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "pruebatch"
-		},
 		"AzureBatch_test_properties_typeProperties_batchUri": {
 			"type": "string",
 			"defaultValue": "https://pruebatch.westus2.batch.azure.com"
@@ -55,13 +43,9 @@
 			"type": "string",
 			"defaultValue": "asd"
 		},
-		"FS_Notebook_properties_typeProperties_host": {
+		"AzureBatch_test_properties_typeProperties_accountName": {
 			"type": "string",
-			"defaultValue": "C:\\Laburo\\Tests"
-		},
-		"FS_Notebook_properties_typeProperties_userId": {
-			"type": "string",
-			"defaultValue": "DESKTOP-DIIS9C2\\marti"
+			"defaultValue": "pruebatch"
 		}
 	},
 	"variables": {
@@ -580,6 +564,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/csv_from_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "result.csv",
+						"folderPath": "json",
+						"fileSystem": "raw-tests"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/csv_test_dataflow')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -602,6 +612,98 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/json_example')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "example.json",
+						"folderPath": "json",
+						"fileSystem": "raw-tests"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"reseller": {
+							"type": "object",
+							"properties": {
+								"en-ca": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								},
+								"en-us": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								},
+								"fr-ca": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
 			},
 			"dependsOn": []
 		},
@@ -677,56 +779,17 @@
 				"annotations": [],
 				"type": "AzureBatch",
 				"typeProperties": {
-					"accountName": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]",
-					"accessKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureBatch_test_accessKey')]"
-					},
 					"batchUri": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]",
 					"poolName": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]",
+					"accountName": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]",
 					"linkedServiceName": {
 						"referenceName": "Blob_brahminstorage",
 						"type": "LinkedServiceReference"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/FS_Notebook')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "FileServer",
-				"typeProperties": {
-					"host": "[parameters('FS_Notebook_properties_typeProperties_host')]",
-					"userId": "[parameters('FS_Notebook_properties_typeProperties_userId')]",
-					"password": {
+					},
+					"accessKey": {
 						"type": "SecureString",
-						"value": "[parameters('FS_Notebook_password')]"
+						"value": "[parameters('AzureBatch_test_accessKey')]"
 					}
-				},
-				"connectVia": {
-					"referenceName": "IR-Notebook",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Houses_Nacho')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDW",
-				"typeProperties": {
-					"connectionString": "[parameters('Houses_Nacho_connectionString')]"
-				},
-				"connectVia": {
-					"referenceName": "IR-RobaNacho",
-					"type": "IntegrationRuntimeReference"
 				}
 			},
 			"dependsOn": []

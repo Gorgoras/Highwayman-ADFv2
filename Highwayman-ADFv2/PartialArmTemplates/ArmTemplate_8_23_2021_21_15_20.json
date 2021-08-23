@@ -1,0 +1,301 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Highwayman-ADFv2"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 1
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 2
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 3
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 4
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 5
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 6
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 7
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 8
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 9
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 10
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 11
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 12
+										}
+									}
+								],
+								"collectionReference": "",
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "json_example",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "csv_from_json",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/json_example')]",
+				"[concat(variables('factoryId'), '/datasets/csv_from_json')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_from_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "result.csv",
+						"folderPath": "json",
+						"fileSystem": "raw-tests"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/json_example')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "example.json",
+						"folderPath": "json",
+						"fileSystem": "raw-tests"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"reseller": {
+							"type": "object",
+							"properties": {
+								"en-ca": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								},
+								"en-us": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								},
+								"fr-ca": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

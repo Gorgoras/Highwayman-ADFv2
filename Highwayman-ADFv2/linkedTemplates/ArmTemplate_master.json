@@ -135,10 +135,6 @@
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryORC"
 		},
-		"AzureBatch_test_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "pruebatch"
-		},
 		"AzureBatch_test_properties_typeProperties_batchUri": {
 			"type": "string",
 			"defaultValue": "https://pruebatch.westus2.batch.azure.com"
@@ -146,6 +142,10 @@
 		"AzureBatch_test_properties_typeProperties_poolName": {
 			"type": "string",
 			"defaultValue": "asd"
+		},
+		"AzureBatch_test_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "pruebatch"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -323,9 +323,6 @@
 					},
 					"NameTest_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]"
-					},
-					"RestService1_properties_typeProperties_url": {
-						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -350,6 +347,9 @@
 					},
 					"TunnelSnakeLinkedServ_functionKey": {
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
 					},
 					"S3_Pi_properties_typeProperties_accessKeyId": {
 						"value": "[parameters('S3_Pi_properties_typeProperties_accessKeyId')]"
@@ -398,12 +398,6 @@
 					"AzureBatch_test_accessKey": {
 						"value": "[parameters('AzureBatch_test_accessKey')]"
 					},
-					"FS_Notebook_password": {
-						"value": "[parameters('FS_Notebook_password')]"
-					},
-					"Houses_Nacho_connectionString": {
-						"value": "[parameters('Houses_Nacho_connectionString')]"
-					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
 					},
@@ -422,20 +416,14 @@
 					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
 					},
-					"AzureBatch_test_properties_typeProperties_accountName": {
-						"value": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]"
-					},
 					"AzureBatch_test_properties_typeProperties_batchUri": {
 						"value": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]"
 					},
 					"AzureBatch_test_properties_typeProperties_poolName": {
 						"value": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]"
 					},
-					"FS_Notebook_properties_typeProperties_host": {
-						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
-					},
-					"FS_Notebook_properties_typeProperties_userId": {
-						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
+					"AzureBatch_test_properties_typeProperties_accountName": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]"
 					}
 				}
 			},
@@ -457,6 +445,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"FS_Notebook_password": {
+						"value": "[parameters('FS_Notebook_password')]"
+					},
+					"Houses_Nacho_connectionString": {
+						"value": "[parameters('Houses_Nacho_connectionString')]"
+					},
 					"Lake_Nacho_accountKey": {
 						"value": "[parameters('Lake_Nacho_accountKey')]"
 					},
@@ -468,6 +462,12 @@
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"FS_Notebook_properties_typeProperties_host": {
+						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
+					},
+					"FS_Notebook_properties_typeProperties_userId": {
+						"value": "[parameters('FS_Notebook_properties_typeProperties_userId')]"
 					},
 					"Lake_Nacho_properties_typeProperties_url": {
 						"value": "[parameters('Lake_Nacho_properties_typeProperties_url')]"

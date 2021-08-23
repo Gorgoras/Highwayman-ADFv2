@@ -7,6 +7,14 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
+		"FS_Notebook_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FS_Notebook'"
+		},
+		"Houses_Nacho_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'Houses_Nacho'"
+		},
 		"Lake_Nacho_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'Lake_Nacho'"
@@ -23,6 +31,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'SQL_WASTELAND'"
 		},
+		"FS_Notebook_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "C:\\Laburo\\Tests"
+		},
+		"FS_Notebook_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "DESKTOP-DIIS9C2\\marti"
+		},
 		"Lake_Nacho_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://dataflowlake.dfs.core.windows.net/"
@@ -36,6 +52,45 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/FS_Notebook')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "FileServer",
+				"typeProperties": {
+					"host": "[parameters('FS_Notebook_properties_typeProperties_host')]",
+					"userId": "[parameters('FS_Notebook_properties_typeProperties_userId')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FS_Notebook_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "IR-Notebook",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Houses_Nacho')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('Houses_Nacho_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "IR-RobaNacho",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Lake_Nacho')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -128,7 +183,7 @@
 				"typeProperties": {
 					"frequency": "Minute",
 					"interval": 15,
-					"startTime": "2019-09-02T00:00:00.000Z",
+					"startTime": "2019-09-02T00:00:00Z",
 					"delay": "00:00:00",
 					"maxConcurrency": 50,
 					"retryPolicy": {
@@ -624,6 +679,172 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 1
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 2
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 3
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 4
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 5
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 6
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 7
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 8
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 9
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 10
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 11
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 12
+										}
+									}
+								],
+								"collectionReference": "",
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "json_example",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "csv_from_json",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/readCsvMetadata')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -730,7 +951,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Houses_Nacho')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/CustomerSink')]",
@@ -898,124 +1121,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QueryNacho')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Houses_Nacho",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlDWTable",
-				"schema": [],
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SQL_Unificado')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_SOURCEDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "CHROM",
-						"type": "varchar"
-					},
-					{
-						"name": "POS",
-						"type": "varchar"
-					},
-					{
-						"name": "ID",
-						"type": "varchar"
-					},
-					{
-						"name": "REF",
-						"type": "varchar"
-					},
-					{
-						"name": "ALT",
-						"type": "varchar"
-					},
-					{
-						"name": "QUAL",
-						"type": "varchar"
-					},
-					{
-						"name": "FILTER",
-						"type": "varchar"
-					},
-					{
-						"name": "INFO",
-						"type": "varchar"
-					},
-					{
-						"name": "FORMAT",
-						"type": "varchar"
-					},
-					{
-						"name": "MUESTRA",
-						"type": "varchar"
-					},
-					{
-						"name": "VALOR",
-						"type": "varchar"
-					},
-					{
-						"name": "ORIGEN",
-						"type": "varchar"
-					},
-					{
-						"name": "FECHA_COPIA",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RESULTADO",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[dbo].[Unificado]"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_SOURCEDB')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SinkTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SQL_WASTELAND",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"tableName": {
-						"value": "@pipeline().parameters.TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SQL_WASTELAND')]"
 			]
 		}
 	]

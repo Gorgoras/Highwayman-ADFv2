@@ -135,10 +135,6 @@
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryORC"
 		},
-		"AzureBatch_test_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "pruebatch"
-		},
 		"AzureBatch_test_properties_typeProperties_batchUri": {
 			"type": "string",
 			"defaultValue": "https://pruebatch.westus2.batch.azure.com"
@@ -146,6 +142,10 @@
 		"AzureBatch_test_properties_typeProperties_poolName": {
 			"type": "string",
 			"defaultValue": "asd"
+		},
+		"AzureBatch_test_properties_typeProperties_accountName": {
+			"type": "string",
+			"defaultValue": "pruebatch"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
@@ -868,7 +868,8 @@
 							"compute": {
 								"coreCount": 8,
 								"computeType": "General"
-							}
+							},
+							"traceLevel": "Fine"
 						}
 					}
 				],
@@ -1455,6 +1456,175 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "JsonSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": false,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "JsonReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 1
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 2
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 3
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-ca'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 4
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 5
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 6
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 7
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['en-us'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 8
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['MarketPlaceResellerId']"
+										},
+										"sink": {
+											"ordinal": 9
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['ResellerPrice']"
+										},
+										"sink": {
+											"ordinal": 10
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['ResellerFormattedPrice']"
+										},
+										"sink": {
+											"ordinal": 11
+										}
+									},
+									{
+										"source": {
+											"path": "$['reseller']['fr-ca'][0]['InventoryStatus']"
+										},
+										"sink": {
+											"ordinal": 12
+										}
+									}
+								],
+								"collectionReference": "",
+								"mapComplexValuesToString": false
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "json_example",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "csv_from_json",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/json_example')]",
+				"[concat(variables('factoryId'), '/datasets/csv_from_json')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/pipeline_unificado')]",
@@ -2349,6 +2519,159 @@
 				"[concat(variables('factoryId'), '/datasets/SourceTable1')]",
 				"[concat(variables('factoryId'), '/datasets/Unificado_Warehouse')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/resizeAzureBachPool')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Rest Api resize",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://pruebatch.westus2.batch.azure.com/pools/asd/resize?api-version=2020-09-01.12.0",
+							"method": "POST",
+							"headers": {
+								"return-client-request-id": "True",
+								"Content-Type": "application/json; odata=minimalmetadata"
+							},
+							"body": {
+								"value": "{\"nodeDeallocationOption\":\"requeue\",\"targetDedicatedNodes\":@{pipeline().parameters.TargetNodes},\"targetLowPriorityNodes\":0}",
+								"type": "Expression"
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://batch.core.windows.net/"
+							}
+						}
+					},
+					{
+						"name": "Control resize",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Rest Api resize",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), string(pipeline().parameters.TargetNodes)))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "GetPoolStatus",
+									"type": "WebActivity",
+									"dependsOn": [
+										{
+											"activity": "Wait 30 secs",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": "https://pruebatch.westus2.batch.azure.com/pools/asd?api-version=2020-09-01.12.0",
+										"method": "GET",
+										"headers": {},
+										"authentication": {
+											"type": "MSI",
+											"resource": "https://batch.core.windows.net/"
+										}
+									}
+								},
+								{
+									"name": "Set State variable",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "GetPoolStatus",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "State",
+										"value": {
+											"value": "@activity('GetPoolStatus').output.allocationState",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Nodes variable",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "GetPoolStatus",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "CurrentDedicatedNodes",
+										"value": {
+											"value": "@string(activity('GetPoolStatus').output.currentDedicatedNodes)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Wait 30 secs",
+									"type": "Wait",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"waitTimeInSeconds": 30
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					}
+				],
+				"parameters": {
+					"TargetNodes": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"State": {
+						"type": "String"
+					},
+					"CurrentDedicatedNodes": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/setVar')]",
@@ -4072,6 +4395,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/csv_from_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "result.csv",
+						"folderPath": "json",
+						"fileSystem": "raw-tests"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/csv_test_dataflow')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -4097,6 +4448,100 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Blob_brahminstorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/json_example')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "example.json",
+						"folderPath": "json",
+						"fileSystem": "raw-tests"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"reseller": {
+							"type": "object",
+							"properties": {
+								"en-ca": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								},
+								"en-us": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								},
+								"fr-ca": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"MarketPlaceResellerId": {
+												"type": "string"
+											},
+											"ResellerPrice": {
+												"type": "string"
+											},
+											"ResellerFormattedPrice": {
+												"type": "string"
+											},
+											"InventoryStatus": {
+												"type": "integer"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LakeGen2_cluster')]"
 			]
 		},
 		{
@@ -4220,16 +4665,16 @@
 				"annotations": [],
 				"type": "AzureBatch",
 				"typeProperties": {
-					"accountName": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]",
-					"accessKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureBatch_test_accessKey')]"
-					},
 					"batchUri": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]",
 					"poolName": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]",
+					"accountName": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]",
 					"linkedServiceName": {
 						"referenceName": "Blob_brahminstorage",
 						"type": "LinkedServiceReference"
+					},
+					"accessKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureBatch_test_accessKey')]"
 					}
 				}
 			},
@@ -4322,7 +4767,8 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('ConnectToTables_functionKey')]"
-					}
+					},
+					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -4478,7 +4924,8 @@
 					"newClusterSparkEnvVars": {
 						"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
 					},
-					"newClusterVersion": "5.4.x-scala2.11"
+					"newClusterVersion": "5.4.x-scala2.11",
+					"newClusterInitScripts": []
 				}
 			},
 			"dependsOn": []
@@ -4495,7 +4942,8 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('NameTest_functionKey')]"
-					}
+					},
+					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -4603,7 +5051,8 @@
 					"functionKey": {
 						"type": "SecureString",
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
-					}
+					},
+					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": []
@@ -4661,7 +5110,7 @@
 				"typeProperties": {
 					"frequency": "Minute",
 					"interval": 15,
-					"startTime": "2019-09-02T00:00:00.000Z",
+					"startTime": "2019-09-02T00:00:00Z",
 					"delay": "00:00:00",
 					"maxConcurrency": 50,
 					"retryPolicy": {
@@ -4732,29 +5181,18 @@
 					"sources": [
 						{
 							"name": "CsvBrahmin",
-							"script": "",
+							"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~>  CsvBrahmin",
 							"dataset": {
 								"referenceName": "CsvBrahmin",
 								"type": "DatasetReference"
 							}
 						}
 					],
-					"sinks": [
-						{
-							"name": "Sink1",
-							"dataset": {
-								"referenceName": "TestingWranglingDataflows",
-								"type": "DatasetReference"
-							},
-							"script": "sink(allowSchemaDrift: true,\n\tvalidateSchema: false) ~> Sink1"
-						}
-					],
 					"script": "section Section1;\r\nshared CsvBrahmin = let\r\n  AdfDoc = AzureStorage.BlobContents(\"https://brahminstorage.blob.core.windows.net/caravan2/AuditLog.csv\"),\r\n  Csv = Csv.Document(AdfDoc, [Delimiter = \",\", Encoding = TextEncoding.Utf8, QuoteStyle = QuoteStyle.Csv]),\r\n  PromotedHeaders = Table.PromoteHeaders(Csv, [PromoteAllScalars = true])\r\nin\r\n  PromotedHeaders;\r\nshared UserQuery = let\r\n  Source = CsvBrahmin,\r\n  #\"Filtered rows\" = Table.SelectRows(Source, each ([UserIds] = \"mzurita@piconsulting.com.ar\")),\r\n  #\"Filtered rows 1\" = Table.SelectRows(#\"Filtered rows\", each ([Operations] <> \"CreateDataset\" and [Operations] <> \"Import\" and [Operations] <> \"ViewDashboard\"))\r\nin\r\n  #\"Filtered rows 1\";\r\n"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]",
-				"[concat(variables('factoryId'), '/datasets/TestingWranglingDataflows')]"
+				"[concat(variables('factoryId'), '/datasets/CsvBrahmin')]"
 			]
 		},
 		{
@@ -4783,166 +5221,13 @@
 						}
 					],
 					"transformations": [],
-					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> sink1"
+					"script": "source(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> source1\nsource1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet',\n\tumask: 0022) ~> sink1"
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/csv_test_dataflow')]",
 				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/resizeAzureBachPool')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Rest Api resize",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://pruebatch.westus2.batch.azure.com/pools/asd/resize?api-version=2020-09-01.12.0",
-							"method": "POST",
-							"headers": {
-								"return-client-request-id": "True",
-								"Content-Type": "application/json; odata=minimalmetadata"
-							},
-							"body": {
-								"value": "{\"nodeDeallocationOption\":\"requeue\",\"targetDedicatedNodes\":@{pipeline().parameters.TargetNodes},\"targetLowPriorityNodes\":0}",
-								"type": "Expression"
-							},
-							"authentication": {
-								"type": "MSI",
-								"resource": "https://batch.core.windows.net/"
-							}
-						}
-					},
-					{
-						"name": "Control resize",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "Rest Api resize",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@and(equals(variables('State'), 'steady'), equals(variables('CurrentDedicatedNodes'), string(pipeline().parameters.TargetNodes)))",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "GetPoolStatus",
-									"type": "WebActivity",
-									"dependsOn": [
-										{
-											"activity": "Wait 30 secs",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"url": "https://pruebatch.westus2.batch.azure.com/pools/asd?api-version=2020-09-01.12.0",
-										"method": "GET",
-										"headers": {},
-										"authentication": {
-											"type": "MSI",
-											"resource": "https://batch.core.windows.net/"
-										}
-									}
-								},
-								{
-									"name": "Set State variable",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "GetPoolStatus",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "State",
-										"value": {
-											"value": "@activity('GetPoolStatus').output.allocationState",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Set Nodes variable",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "GetPoolStatus",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "CurrentDedicatedNodes",
-										"value": {
-											"value": "@string(activity('GetPoolStatus').output.currentDedicatedNodes)",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Wait 30 secs",
-									"type": "Wait",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"waitTimeInSeconds": 30
-									}
-								}
-							],
-							"timeout": "7.00:00:00"
-						}
-					}
-				],
-				"parameters": {
-					"TargetNodes": {
-						"type": "string"
-					}
-				},
-				"variables": {
-					"State": {
-						"type": "String"
-					},
-					"CurrentDedicatedNodes": {
-						"type": "String"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
 		}
 	]
 }

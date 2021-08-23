@@ -101,14 +101,14 @@
 		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 			"value": "clusterhdinsight/DataFactoryORC"
 		},
-		"AzureBatch_test_properties_typeProperties_accountName": {
-			"value": "pruebatch"
-		},
 		"AzureBatch_test_properties_typeProperties_batchUri": {
 			"value": "https://pruebatch.westus2.batch.azure.com"
 		},
 		"AzureBatch_test_properties_typeProperties_poolName": {
 			"value": "asd"
+		},
+		"AzureBatch_test_properties_typeProperties_accountName": {
+			"value": "pruebatch"
 		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"value": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
