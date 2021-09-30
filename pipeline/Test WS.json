@@ -59,7 +59,13 @@
 				"outputs": [
 					{
 						"referenceName": "Save_as_is",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": {
+								"value": "@concat(pipeline().RunId, '.txt')",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			},
