@@ -726,7 +726,12 @@
 							{
 								"referenceName": "Save_as_is",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"FileName": {
+										"value": "@concat(pipeline().RunId, '.txt')",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					},

@@ -1291,7 +1291,12 @@
 							{
 								"referenceName": "Save_as_is",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"FileName": {
+										"value": "@concat(pipeline().RunId, '.txt')",
+										"type": "Expression"
+									}
+								}
 							}
 						]
 					},
@@ -4120,11 +4125,20 @@
 					"referenceName": "LakeGen2_cluster",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
 						"folderPath": "save_from_webservice",
 						"fileSystem": "raw-tests"
 					},
