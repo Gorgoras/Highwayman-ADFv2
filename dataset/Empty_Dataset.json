@@ -1,0 +1,23 @@
+{
+	"name": "Empty_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LakeGen2_cluster",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "emptyFile.txt",
+				"folderPath": "empty_file",
+				"fileSystem": "raw-tests"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

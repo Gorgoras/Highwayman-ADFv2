@@ -1,0 +1,12 @@
+{
+	"name": "WS_TEST_DATA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CEPU_WS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

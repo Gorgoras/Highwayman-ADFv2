@@ -1,0 +1,98 @@
+{
+	"name": "Test WS",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_into_lake",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Get_WS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "Output",
+								"value": {
+									"value": "@activity('Get_WS').output.Response",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": false,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Empty_Dataset",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Save_as_is",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Get_WS",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData",
+					"method": "GET",
+					"authentication": {
+						"type": "Basic",
+						"username": "S0023639018",
+						"password": {
+							"type": "AzureKeyVaultSecret",
+							"store": {
+								"referenceName": "AzureKeyVault1",
+								"type": "LinkedServiceReference"
+							},
+							"secretName": "CEPU-WS"
+						}
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
