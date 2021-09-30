@@ -128,6 +128,12 @@
 		"AzureKeyVault1_properties_typeProperties_baseUrl": {
 			"value": "https://chargecard764Id.vault.azure.net/"
 		},
+		"CEPU_WS_properties_typeProperties_url": {
+			"value": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData"
+		},
+		"CEPU_WS_properties_typeProperties_userName": {
+			"value": "S0023639018"
+		},
 		"ConnectToTables_properties_typeProperties_functionAppUrl": {
 			"value": "https://connecttotables.azurewebsites.net"
 		},

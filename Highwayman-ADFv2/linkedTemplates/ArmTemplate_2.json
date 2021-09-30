@@ -7,10 +7,6 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
-		"AzureBatch_test_accessKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accessKey' of 'AzureBatch_test'"
-		},
 		"LakeSales_properties_typeProperties_fileName": {
 			"type": "string",
 			"defaultValue": ""
@@ -34,18 +30,6 @@
 		"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 			"type": "string",
 			"defaultValue": "clusterhdinsight/DataFactoryORC"
-		},
-		"AzureBatch_test_properties_typeProperties_batchUri": {
-			"type": "string",
-			"defaultValue": "https://pruebatch.westus2.batch.azure.com"
-		},
-		"AzureBatch_test_properties_typeProperties_poolName": {
-			"type": "string",
-			"defaultValue": "asd"
-		},
-		"AzureBatch_test_properties_typeProperties_accountName": {
-			"type": "string",
-			"defaultValue": "pruebatch"
 		}
 	},
 	"variables": {
@@ -66,6 +50,32 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Empty_Dataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "emptyFile.txt",
+						"folderPath": "empty_file",
+						"fileSystem": "raw-tests"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -326,6 +336,31 @@
 				"type": "RestResource",
 				"typeProperties": {
 					"relativeUrl": "RelatUrl"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Save_as_is')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LakeGen2_cluster",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "save_from_webservice",
+						"fileSystem": "raw-tests"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
 				},
 				"schema": []
 			},
@@ -736,61 +771,6 @@
 						"type": "String"
 					}
 				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/textpy')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "Blob_brahminstorage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@item().name",
-							"type": "Expression"
-						},
-						"container": "caravan3-python"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AzureBatch_test')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBatch",
-				"typeProperties": {
-					"batchUri": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]",
-					"poolName": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]",
-					"accountName": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]",
-					"linkedServiceName": {
-						"referenceName": "Blob_brahminstorage",
-						"type": "LinkedServiceReference"
-					},
-					"accessKey": {
-						"type": "SecureString",
-						"value": "[parameters('AzureBatch_test_accessKey')]"
-					}
-				}
 			},
 			"dependsOn": []
 		}

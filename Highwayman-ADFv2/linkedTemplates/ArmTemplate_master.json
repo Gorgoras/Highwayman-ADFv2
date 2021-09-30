@@ -171,6 +171,14 @@
 			"type": "string",
 			"defaultValue": "https://chargecard764Id.vault.azure.net/"
 		},
+		"CEPU_WS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData"
+		},
+		"CEPU_WS_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "S0023639018"
+		},
 		"ConnectToTables_properties_typeProperties_functionAppUrl": {
 			"type": "string",
 			"defaultValue": "https://connecttotables.azurewebsites.net"
@@ -395,9 +403,6 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"AzureBatch_test_accessKey": {
-						"value": "[parameters('AzureBatch_test_accessKey')]"
-					},
 					"LakeSales_properties_typeProperties_fileName": {
 						"value": "[parameters('LakeSales_properties_typeProperties_fileName')]"
 					},
@@ -415,15 +420,6 @@
 					},
 					"Lakegen2clusterORC_properties_typeProperties_folderPath": {
 						"value": "[parameters('Lakegen2clusterORC_properties_typeProperties_folderPath')]"
-					},
-					"AzureBatch_test_properties_typeProperties_batchUri": {
-						"value": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]"
-					},
-					"AzureBatch_test_properties_typeProperties_poolName": {
-						"value": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]"
-					},
-					"AzureBatch_test_properties_typeProperties_accountName": {
-						"value": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]"
 					}
 				}
 			},
@@ -445,6 +441,9 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureBatch_test_accessKey": {
+						"value": "[parameters('AzureBatch_test_accessKey')]"
+					},
 					"FS_Notebook_password": {
 						"value": "[parameters('FS_Notebook_password')]"
 					},
@@ -462,6 +461,21 @@
 					},
 					"SQL_WASTELAND_connectionString": {
 						"value": "[parameters('SQL_WASTELAND_connectionString')]"
+					},
+					"AzureBatch_test_properties_typeProperties_batchUri": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_batchUri')]"
+					},
+					"AzureBatch_test_properties_typeProperties_poolName": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_poolName')]"
+					},
+					"AzureBatch_test_properties_typeProperties_accountName": {
+						"value": "[parameters('AzureBatch_test_properties_typeProperties_accountName')]"
+					},
+					"CEPU_WS_properties_typeProperties_url": {
+						"value": "[parameters('CEPU_WS_properties_typeProperties_url')]"
+					},
+					"CEPU_WS_properties_typeProperties_userName": {
+						"value": "[parameters('CEPU_WS_properties_typeProperties_userName')]"
 					},
 					"FS_Notebook_properties_typeProperties_host": {
 						"value": "[parameters('FS_Notebook_properties_typeProperties_host')]"
