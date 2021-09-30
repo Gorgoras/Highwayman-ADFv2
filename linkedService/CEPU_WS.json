@@ -1,0 +1,25 @@
+{
+	"name": "CEPU_WS",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Basic",
+			"userName": "S0023639018",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault1",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "CEPU-WS"
+			}
+		},
+		"connectVia": {
+			"referenceName": "IR-DBs",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
