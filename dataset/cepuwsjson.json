@@ -1,0 +1,12 @@
+{
+	"name": "cepuwsjson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CEPU_WS",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
