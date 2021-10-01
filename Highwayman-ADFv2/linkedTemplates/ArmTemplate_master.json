@@ -173,7 +173,7 @@
 		},
 		"CEPU_WS_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData"
+			"defaultValue": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData?$format=json"
 		},
 		"CEPU_WS_properties_typeProperties_userName": {
 			"type": "string",

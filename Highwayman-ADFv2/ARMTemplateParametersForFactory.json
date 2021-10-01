@@ -129,7 +129,7 @@
 			"value": "https://chargecard764Id.vault.azure.net/"
 		},
 		"CEPU_WS_properties_typeProperties_url": {
-			"value": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData"
+			"value": "https://e10074-iflmap.hcisbt.us3.hana.ondemand.com/http/BIAnalytics/Compras/InitialData?$format=json"
 		},
 		"CEPU_WS_properties_typeProperties_userName": {
 			"value": "S0023639018"
