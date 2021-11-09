@@ -1,0 +1,16 @@
+{
+	"name": "DeltaLakeDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DeltaTest",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDatabricksDeltaLakeDataset",
+		"typeProperties": {
+			"database": "default",
+			"table": "delta_test"
+		},
+		"schema": []
+	}
+}
