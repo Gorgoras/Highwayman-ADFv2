@@ -1,0 +1,63 @@
+{
+	"name": "GetGithubFileContent",
+	"properties": {
+		"activities": [
+			{
+				"name": "Read file",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://raw.githubusercontent.com/Gorgoras/trader_bot/main/scriptTest.sql",
+					"method": "GET",
+					"headers": {
+						"Authorization": "token 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"
+					}
+				}
+			},
+			{
+				"name": "Script1",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Read file",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SQL_SOURCEDB",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "@activity('Read file').output.Response",
+								"type": "Expression"
+							}
+						}
+					]
+				}
+			}
+		],
+		"annotations": []
+	}
+}
