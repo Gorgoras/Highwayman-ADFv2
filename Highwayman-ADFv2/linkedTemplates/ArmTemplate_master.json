@@ -183,6 +183,10 @@
 			"type": "string",
 			"defaultValue": "https://connecttotables.azurewebsites.net"
 		},
+		"Databricks_Meli_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0610-153831-abode187"
+		},
 		"FS_Notebook_properties_typeProperties_host": {
 			"type": "string",
 			"defaultValue": "C:\\Laburo\\Tests"
@@ -319,6 +323,9 @@
 					},
 					"ConnectToTables_properties_typeProperties_functionAppUrl": {
 						"value": "[parameters('ConnectToTables_properties_typeProperties_functionAppUrl')]"
+					},
+					"Databricks_Meli_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('Databricks_Meli_properties_typeProperties_existingClusterId')]"
 					},
 					"HttpServer_properties_typeProperties_url": {
 						"value": "[parameters('HttpServer_properties_typeProperties_url')]"

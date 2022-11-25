@@ -137,6 +137,9 @@
 		"ConnectToTables_properties_typeProperties_functionAppUrl": {
 			"value": "https://connecttotables.azurewebsites.net"
 		},
+		"Databricks_Meli_properties_typeProperties_existingClusterId": {
+			"value": "0610-153831-abode187"
+		},
 		"FS_Notebook_properties_typeProperties_host": {
 			"value": "C:\\Laburo\\Tests"
 		},

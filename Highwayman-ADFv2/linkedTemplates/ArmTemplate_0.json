@@ -79,6 +79,10 @@
 			"type": "string",
 			"defaultValue": "https://connecttotables.azurewebsites.net"
 		},
+		"Databricks_Meli_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0610-153831-abode187"
+		},
 		"HttpServer_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://api.worldtradingdata.com/api/v1/history?symbol=SNAP&output=csv&sort=newest&api_token=demo"
@@ -234,7 +238,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/resizeAzureBachPool')]",
+			"name": "[concat(parameters('factoryName'), '/resizeAzureBatchPool')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -574,7 +578,7 @@
 						"type": "SecureString",
 						"value": "[parameters('Databricks_Meli_accessToken')]"
 					},
-					"existingClusterId": "0610-153831-abode187"
+					"existingClusterId": "[parameters('Databricks_Meli_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": []
