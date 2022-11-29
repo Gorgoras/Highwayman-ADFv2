@@ -300,9 +300,6 @@
 					"Mi_Databricks_accessToken": {
 						"value": "[parameters('Mi_Databricks_accessToken')]"
 					},
-					"NameTest_functionKey": {
-						"value": "[parameters('NameTest_functionKey')]"
-					},
 					"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 						"value": "[parameters('AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri')]"
 					},
@@ -335,9 +332,6 @@
 					},
 					"Lake_Pami_properties_typeProperties_url": {
 						"value": "[parameters('Lake_Pami_properties_typeProperties_url')]"
-					},
-					"NameTest_properties_typeProperties_functionAppUrl": {
-						"value": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]"
 					}
 				}
 			},
@@ -357,11 +351,17 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"NameTest_functionKey": {
+						"value": "[parameters('NameTest_functionKey')]"
+					},
 					"S3_Pi_secretAccessKey": {
 						"value": "[parameters('S3_Pi_secretAccessKey')]"
 					},
 					"TunnelSnakeLinkedServ_functionKey": {
 						"value": "[parameters('TunnelSnakeLinkedServ_functionKey')]"
+					},
+					"NameTest_properties_typeProperties_functionAppUrl": {
+						"value": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]"
 					},
 					"RestService1_properties_typeProperties_url": {
 						"value": "[parameters('RestService1_properties_typeProperties_url')]"

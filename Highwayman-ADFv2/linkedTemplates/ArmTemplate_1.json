@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Highwayman-ADFv2"
 		},
+		"NameTest_functionKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'functionKey' of 'NameTest'"
+		},
 		"S3_Pi_secretAccessKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'secretAccessKey' of 'S3_Pi'"
@@ -14,6 +18,10 @@
 		"TunnelSnakeLinkedServ_functionKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'functionKey' of 'TunnelSnakeLinkedServ'"
+		},
+		"NameTest_properties_typeProperties_functionAppUrl": {
+			"type": "string",
+			"defaultValue": "https://pruebadesdeubuntu.azurewebsites.net"
 		},
 		"RestService1_properties_typeProperties_url": {
 			"type": "string",
@@ -56,6 +64,24 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/NameTest')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureFunction",
+				"typeProperties": {
+					"functionAppUrl": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]",
+					"functionKey": {
+						"type": "SecureString",
+						"value": "[parameters('NameTest_functionKey')]"
+					},
+					"authentication": "Anonymous"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RestService1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -619,30 +645,6 @@
 						"fileSystem": "raw-tests"
 					}
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "hivecontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"quoteChar": "\""
-				},
-				"schema": []
 			},
 			"dependsOn": []
 		}

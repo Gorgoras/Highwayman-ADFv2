@@ -47,10 +47,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'Mi_Databricks'"
 		},
-		"NameTest_functionKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'functionKey' of 'NameTest'"
-		},
 		"AzureDataLakeStore1_properties_typeProperties_dataLakeStoreUri": {
 			"type": "string",
 			"defaultValue": "https://lakemead1.azuredatalakestore.net/webhdfs/v1"
@@ -94,10 +90,6 @@
 		"Lake_Pami_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://pamilakegen2.dfs.core.windows.net"
-		},
-		"NameTest_properties_typeProperties_functionAppUrl": {
-			"type": "string",
-			"defaultValue": "https://pruebadesdeubuntu.azurewebsites.net"
 		}
 	},
 	"variables": {
@@ -232,6 +224,43 @@
 					"FileNameTrigger": {
 						"type": "String"
 					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://chargecard764id.vault.azure.net/secrets/PassBD?api-version=7.0",
+							"method": "GET",
+							"headers": {},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://vault.azure.net"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
 				},
 				"annotations": []
 			},
@@ -653,24 +682,6 @@
 					"newClusterVersion": "5.4.x-scala2.11",
 					"newClusterInitScripts": [],
 					"clusterOption": "Fixed"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/NameTest')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureFunction",
-				"typeProperties": {
-					"functionAppUrl": "[parameters('NameTest_properties_typeProperties_functionAppUrl')]",
-					"functionKey": {
-						"type": "SecureString",
-						"value": "[parameters('NameTest_functionKey')]"
-					},
-					"authentication": "Anonymous"
 				}
 			},
 			"dependsOn": []
