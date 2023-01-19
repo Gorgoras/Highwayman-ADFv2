@@ -249,7 +249,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/AddPipeId')]",
+			"name": "[concat(parameters('factoryName'), '/AddPipeId123')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
