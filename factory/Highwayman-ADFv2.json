@@ -5,7 +5,12 @@
 			"sec": {
 				"type": "string",
 				"value": "secret1"
+			},
+			"env": {
+				"type": "string",
+				"value": "dev"
 			}
 		}
-	}
+	},
+	"location": "eastus2"
 }
